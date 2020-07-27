@@ -130,17 +130,17 @@ function registerListener(event, func) {
 <span class=nb>project</span><span class=p>(</span><span class=s>ImageText</span><span class=p>)</span>
 
 <span class=nb>find_package</span><span class=p>(</span><span class=s>VTK</span> <span class=s>COMPONENTS</span> 
-  <span class=s>vtkvtkCommonCore</span>
-  <span class=s>vtkvtkCommonDataModel</span>
-  <span class=s>vtkvtkIOImage</span>
-  <span class=s>vtkvtkImagingCore</span>
-  <span class=s>vtkvtkImagingSources</span>
-  <span class=s>vtkvtkInteractionStyle</span>
-  <span class=s>vtkvtkRenderingContextOpenGL2</span>
-  <span class=s>vtkvtkRenderingCore</span>
-  <span class=s>vtkvtkRenderingFreeType</span>
-  <span class=s>vtkvtkRenderingGL2PSOpenGL2</span>
-  <span class=s>vtkvtkRenderingOpenGL2</span> <span class=s>QUIET</span><span class=p>)</span>
+  <span class=s>vtkCommonCore</span>
+  <span class=s>vtkCommonDataModel</span>
+  <span class=s>vtkIOImage</span>
+  <span class=s>vtkImagingCore</span>
+  <span class=s>vtkImagingSources</span>
+  <span class=s>vtkInteractionStyle</span>
+  <span class=s>vtkRenderingContextOpenGL2</span>
+  <span class=s>vtkRenderingCore</span>
+  <span class=s>vtkRenderingFreeType</span>
+  <span class=s>vtkRenderingGL2PSOpenGL2</span>
+  <span class=s>vtkRenderingOpenGL2</span> <span class=s>QUIET</span><span class=p>)</span>
 <span class=nb>if</span> <span class=p>(</span><span class=s>NOT</span> <span class=s>VTK_FOUND</span><span class=p>)</span>
   <span class=nb>message</span><span class=p>(</span><span class=s2>&quot;Skipping ImageText: ${VTK_NOT_FOUND_MESSAGE}&quot;</span><span class=p>)</span>
   <span class=nb>return</span> <span class=p>()</span>
