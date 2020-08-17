@@ -86,7 +86,7 @@ function registerListener(event, func) {
    cmake -DVTK_DIR:PATH<span class=o>=</span>YOUR_VTK_BIN_DIR -DBUILD_TESTING:BOOL<span class=o>=</span>ON ..
    make
 </code></pre></div> <p>where <strong>YOUR_VTK_BIN_DIR</strong> is the location of your VTK build.</p> <h3 id=update-the-examples-repository>Update the examples repository<a class=headerlink href=#update-the-examples-repository title="Permanent link">&para;</a></h3> <p>From now on, if you cloned the examples repository, you can get the latest updates:</p> <div class=codehilite><pre><span></span><code><span class=nb>cd</span> vtk-examples
-git pull
+git pull --rebase
 <span class=nb>cd</span> build
 cmake ../vtk-examples
 make
