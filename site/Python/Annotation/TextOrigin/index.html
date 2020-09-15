@@ -101,6 +101,7 @@ function registerListener(event, func) {
 </span>    <span class=n>textActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textMapper</span><span class=p>)</span>
     <span class=n>textActor</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>)</span>
     <span class=n>textActor</span><span class=o>.</span><span class=n>AddPosition</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>textActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Peacock&quot;</span><span class=p>))</span>
 
     <span class=c1># Create the Renderer, RenderWindow, and RenderWindowInteractor.</span>
 <span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
@@ -131,6 +132,7 @@ function registerListener(event, func) {
     <span class=n>textActor</span><span class=o>.</span><span class=n>SetCamera</span><span class=p>(</span><span class=n>renderer</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>())</span>
 
     <span class=n>interactor</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;TextOrigin&#39;</span><span class=p>)</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
