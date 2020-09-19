@@ -80,18 +80,18 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCamera.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCylinderSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkProperty.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span>
 <span class=cp>#include</span> <span class=cpf>&lt;array&gt;</span><span class=cp></span>
 
-<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=p>[])</span> <span class=p>{</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=p>{</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
   <span class=c1>// Set the background color.</span>
   <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span> <span class=kt>char</span><span class=p>,</span> <span class=mi>4</span><span class=o>&gt;</span> <span class=n>bkg</span><span class=p>{{</span><span class=mi>26</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>}};</span>
@@ -99,21 +99,19 @@ function registerListener(event, func) {
 
   <span class=c1>// This creates a polygonal cylinder model with eight circumferential facets</span>
   <span class=c1>// (i.e, in practice an octagonal prism).</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkCylinderSource</span><span class=o>&gt;</span> <span class=n>cylinder</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkCylinderSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCylinderSource</span><span class=o>&gt;</span> <span class=n>cylinder</span><span class=p>;</span>
 </span>  <span class=n>cylinder</span><span class=o>-&gt;</span><span class=n>SetResolution</span><span class=p>(</span><span class=mi>8</span><span class=p>);</span>
 
   <span class=c1>// The mapper is responsible for pushing the geometry into the graphics</span>
   <span class=c1>// library. It may also do color mapping, if scalars or other attributes are</span>
   <span class=c1>// defined.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>cylinderMapper</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>cylinderMapper</span><span class=p>;</span>
 </span>  <span class=n>cylinderMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cylinder</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
   <span class=c1>// The actor is a grouping mechanism: besides the geometry (mapper), it</span>
   <span class=c1>// also has a property, transformation matrix, and/or texture map.</span>
   <span class=c1>// Here we set its color and rotate it around the X and Y axes.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>cylinderActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>cylinderActor</span><span class=p>;</span>
 </span>  <span class=n>cylinderActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>cylinderMapper</span><span class=p>);</span>
   <span class=n>cylinderActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
       <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
@@ -123,7 +121,7 @@ function registerListener(event, func) {
   <span class=c1>// The renderer generates the image</span>
   <span class=c1>// which is then displayed on the render window.</span>
   <span class=c1>// It can be thought of as a scene to which the actor is added</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span><span class=p>;</span>
 </span>  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>cylinderActor</span><span class=p>);</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BkgColor&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
   <span class=c1>// Zoom in a little by accessing the camera and invoking its &quot;Zoom&quot; method.</span>
@@ -132,8 +130,7 @@ function registerListener(event, func) {
 
   <span class=c1>// The render window is the actual GUI window</span>
   <span class=c1>// that appears on the computer screen</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=p>,</span> <span class=mi>300</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;Cylinder&quot;</span><span class=p>);</span>
@@ -141,8 +138,7 @@ function registerListener(event, func) {
   <span class=c1>// The render window interactor captures mouse events</span>
   <span class=c1>// and will perform appropriate camera or actor manipulation</span>
   <span class=c1>// depending on the nature of the events.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span>  <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
   <span class=c1>// This starts the event loop and as a side effect causes an initial render.</span>

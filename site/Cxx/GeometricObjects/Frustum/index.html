@@ -81,68 +81,57 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkFrustumSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkMapper.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPlanes.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkProperty.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkShrinkPolyData.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span>
-<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkCamera</span><span class=o>&gt;</span> <span class=n>camera</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkCamera</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCamera</span><span class=o>&gt;</span> <span class=n>camera</span><span class=p>;</span>
 </span>  <span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>.1</span><span class=p>,</span> <span class=mf>.4</span><span class=p>);</span>
   <span class=kt>double</span> <span class=n>planesArray</span><span class=p>[</span><span class=mi>24</span><span class=p>];</span>
 
   <span class=n>camera</span><span class=o>-&gt;</span><span class=n>GetFrustumPlanes</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=n>planesArray</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPlanes</span><span class=o>&gt;</span> <span class=n>planes</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPlanes</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPlanes</span><span class=o>&gt;</span> <span class=n>planes</span><span class=p>;</span>
 </span>  <span class=n>planes</span><span class=o>-&gt;</span><span class=n>SetFrustumPlanes</span><span class=p>(</span><span class=n>planesArray</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkFrustumSource</span><span class=o>&gt;</span> <span class=n>frustumSource</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkFrustumSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFrustumSource</span><span class=o>&gt;</span> <span class=n>frustumSource</span><span class=p>;</span>
 </span>  <span class=n>frustumSource</span><span class=o>-&gt;</span><span class=n>ShowLinesOff</span><span class=p>();</span>
   <span class=n>frustumSource</span><span class=o>-&gt;</span><span class=n>SetPlanes</span><span class=p>(</span><span class=n>planes</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkShrinkPolyData</span><span class=o>&gt;</span> <span class=n>shrink</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkShrinkPolyData</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkShrinkPolyData</span><span class=o>&gt;</span> <span class=n>shrink</span><span class=p>;</span>
 </span>  <span class=n>shrink</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>frustumSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>shrink</span><span class=o>-&gt;</span><span class=n>SetShrinkFactor</span><span class=p>(</span><span class=mf>.9</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapper</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapper</span><span class=p>;</span>
 </span>  <span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>shrink</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkProperty</span><span class=o>&gt;</span> <span class=n>back</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkProperty</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkProperty</span><span class=o>&gt;</span> <span class=n>back</span><span class=p>;</span>
 </span>  <span class=n>back</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>actor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>actor</span><span class=p>;</span>
 </span>  <span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
   <span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>EdgeVisibilityOn</span><span class=p>();</span>
   <span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Banana&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
   <span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetBackfaceProperty</span><span class=p>(</span><span class=n>back</span><span class=p>);</span>
 
   <span class=c1>// a renderer and render window</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;Frustum&quot;</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 
   <span class=c1>// an interactor</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span>  <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
   <span class=c1>// add the actors to the scene</span>
@@ -162,6 +151,7 @@ function registerListener(event, func) {
 
   <span class=c1>// begin mouse interaction</span>
   <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
+
   <span class=k>return</span> <span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=p>}</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span> <span class=s>3.3</span> <span class=s>FATAL_ERROR</span><span class=p>)</span>

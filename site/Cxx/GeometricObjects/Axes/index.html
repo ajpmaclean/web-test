@@ -81,60 +81,51 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCamera.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCaptionActor2D.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSphereSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTextProperty.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTransform.h&gt;</span><span class=cp></span>
 </span>
-<span class=kt>int</span> <span class=nf>main</span> <span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span> <span class=n>sphereSource</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span> <span class=n>sphereSource</span><span class=p>;</span>
 </span>  <span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
   <span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>0.5</span><span class=p>);</span>
 
-  <span class=c1>//create a mapper</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>sphereMapper</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+  <span class=c1>// create a mapper</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>sphereMapper</span><span class=p>;</span>
 </span>  <span class=n>sphereMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
   <span class=c1>// create an actor</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>sphereActor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>sphereActor</span><span class=p>;</span>
 </span>  <span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>sphereMapper</span><span class=p>);</span>
 
   <span class=c1>// a renderer and render window</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;Axes&quot;</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=p>,</span><span class=mi>300</span><span class=p>);</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=p>,</span> <span class=mi>300</span><span class=p>);</span>
 
   <span class=c1>// an interactor</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span>  <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
   <span class=c1>// add the actors to the scene</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>);</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span> <span class=n>transform</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span> <span class=n>transform</span><span class=p>;</span>
 </span>  <span class=n>transform</span><span class=o>-&gt;</span><span class=n>Translate</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkAxesActor</span><span class=o>&gt;</span> <span class=n>axes</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkAxesActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkAxesActor</span><span class=o>&gt;</span> <span class=n>axes</span><span class=p>;</span>
 </span>
   <span class=c1>// The axes are positioned with a user transform</span>
   <span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetUserTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>);</span>
@@ -153,6 +144,7 @@ function registerListener(event, func) {
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Elevation</span><span class=p>(</span><span class=o>-</span><span class=mi>30</span><span class=p>);</span>
 
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;Axes&quot;</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
   <span class=c1>// begin mouse interaction</span>
