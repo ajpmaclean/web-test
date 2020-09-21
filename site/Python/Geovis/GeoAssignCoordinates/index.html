@@ -86,9 +86,9 @@ function registerListener(event, func) {
 </span>
 <span class=hll>    <span class=n>g</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMutableDirectedGraph</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>latitude</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDoubleArray</span><span class=p>()</span>
-</span>    <span class=n>latitude</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s2>&quot;latitude&quot;</span><span class=p>)</span>
+</span>    <span class=n>latitude</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;latitude&#39;</span><span class=p>)</span>
 <span class=hll>    <span class=n>longitude</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDoubleArray</span><span class=p>()</span>
-</span>    <span class=n>longitude</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s2>&quot;longitude&quot;</span><span class=p>)</span>
+</span>    <span class=n>longitude</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;longitude&#39;</span><span class=p>)</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=o>-</span><span class=mi>90</span><span class=p>,</span> <span class=mi>90</span><span class=p>,</span> <span class=mi>10</span><span class=p>):</span>
         <span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=o>-</span><span class=mi>180</span><span class=p>,</span> <span class=mi>180</span><span class=p>,</span> <span class=mi>20</span><span class=p>):</span>
             <span class=n>g</span><span class=o>.</span><span class=n>AddVertex</span><span class=p>()</span>
@@ -100,8 +100,8 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>assign</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGeoAssignCoordinates</span><span class=p>()</span>
 </span>    <span class=n>assign</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>g</span><span class=p>)</span>
 
-    <span class=n>assign</span><span class=o>.</span><span class=n>SetLatitudeArrayName</span><span class=p>(</span><span class=s2>&quot;latitude&quot;</span><span class=p>)</span>
-    <span class=n>assign</span><span class=o>.</span><span class=n>SetLongitudeArrayName</span><span class=p>(</span><span class=s2>&quot;longitude&quot;</span><span class=p>)</span>
+    <span class=n>assign</span><span class=o>.</span><span class=n>SetLatitudeArrayName</span><span class=p>(</span><span class=s1>&#39;latitude&#39;</span><span class=p>)</span>
+    <span class=n>assign</span><span class=o>.</span><span class=n>SetLongitudeArrayName</span><span class=p>(</span><span class=s1>&#39;longitude&#39;</span><span class=p>)</span>
     <span class=n>assign</span><span class=o>.</span><span class=n>SetGlobeRadius</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)</span>
     <span class=n>assign</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
