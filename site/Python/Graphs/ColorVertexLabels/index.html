@@ -80,18 +80,21 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kn>import</span> <span class=nn>vtk</span>
 </span>
+
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
     <span class=c1># Create a graph</span>
 <span class=hll>    <span class=n>graph</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMutableDirectedGraph</span><span class=p>()</span>
 </span>
     <span class=n>v1</span> <span class=o>=</span> <span class=n>graph</span><span class=o>.</span><span class=n>AddVertex</span><span class=p>()</span>
     <span class=n>v2</span> <span class=o>=</span> <span class=n>graph</span><span class=o>.</span><span class=n>AddVertex</span><span class=p>()</span>
-    <span class=n>graph</span><span class=o>.</span><span class=n>AddEdge</span><span class=p>(</span><span class=n>v1</span><span class=p>,</span><span class=n>v2</span><span class=p>)</span>
+    <span class=n>graph</span><span class=o>.</span><span class=n>AddEdge</span><span class=p>(</span><span class=n>v1</span><span class=p>,</span> <span class=n>v2</span><span class=p>)</span>
 
     <span class=c1># Create an array for the vertex labels</span>
 <span class=hll>    <span class=n>vertexIDs</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkIntArray</span><span class=p>()</span>
 </span>    <span class=n>vertexIDs</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-    <span class=n>vertexIDs</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s2>&quot;VertexIDs&quot;</span><span class=p>)</span>
+    <span class=n>vertexIDs</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;VertexIDs&#39;</span><span class=p>)</span>
 
     <span class=c1># Set the vertex labels</span>
     <span class=n>vertexIDs</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
@@ -104,13 +107,17 @@ function registerListener(event, func) {
 </span>    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>graph</span><span class=p>)</span>
     <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>SetVertexLabelVisibility</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>rGraph</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderedGraphRepresentation</span> <span class=p>()</span>
-</span>    <span class=n>rGraph</span><span class=o>.</span><span class=n>SafeDownCast</span><span class=p>(</span><span class=n>graphLayoutView</span><span class=o>.</span><span class=n>GetRepresentation</span><span class=p>())</span><span class=o>.</span><span class=n>GetVertexLabelTextProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>)</span>
+<span class=hll>    <span class=n>rGraph</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderedGraphRepresentation</span><span class=p>()</span>
+</span>    <span class=n>rGraph</span><span class=o>.</span><span class=n>SafeDownCast</span><span class=p>(</span><span class=n>graphLayoutView</span><span class=o>.</span><span class=n>GetRepresentation</span><span class=p>())</span><span class=o>.</span><span class=n>GetVertexLabelTextProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Red&#39;</span><span class=p>))</span>
     <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>SetLayoutStrategyToSimple2D</span><span class=p>()</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>SetVertexLabelArrayName</span><span class=p>(</span><span class=s2>&quot;VertexIDs&quot;</span><span class=p>)</span>
+    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>SetVertexLabelArrayName</span><span class=p>(</span><span class=s1>&#39;VertexIDs&#39;</span><span class=p>)</span>
+    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>SetVertexLabelVisibility</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
     <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
+    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Zoom</span><span class=p>(</span><span class=mf>0.8</span><span class=p>)</span>
     <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
+
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>

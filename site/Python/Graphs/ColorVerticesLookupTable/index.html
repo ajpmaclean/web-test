@@ -80,34 +80,37 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kn>import</span> <span class=nn>vtk</span>
 </span>
+
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
     <span class=c1># Create a graph</span>
 <span class=hll>    <span class=n>graph</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMutableDirectedGraph</span><span class=p>()</span>
 </span>
     <span class=n>v1</span> <span class=o>=</span> <span class=n>graph</span><span class=o>.</span><span class=n>AddVertex</span><span class=p>()</span>
     <span class=n>v2</span> <span class=o>=</span> <span class=n>graph</span><span class=o>.</span><span class=n>AddVertex</span><span class=p>()</span>
     <span class=n>v3</span> <span class=o>=</span> <span class=n>graph</span><span class=o>.</span><span class=n>AddVertex</span><span class=p>()</span>
-    <span class=n>graph</span><span class=o>.</span><span class=n>AddEdge</span><span class=p>(</span><span class=n>v1</span><span class=p>,</span><span class=n>v2</span><span class=p>)</span>
-    <span class=n>graph</span><span class=o>.</span><span class=n>AddEdge</span><span class=p>(</span><span class=n>v2</span><span class=p>,</span><span class=n>v3</span><span class=p>)</span>
+    <span class=n>graph</span><span class=o>.</span><span class=n>AddEdge</span><span class=p>(</span><span class=n>v1</span><span class=p>,</span> <span class=n>v2</span><span class=p>)</span>
+    <span class=n>graph</span><span class=o>.</span><span class=n>AddEdge</span><span class=p>(</span><span class=n>v2</span><span class=p>,</span> <span class=n>v3</span><span class=p>)</span>
 
     <span class=c1># Manually set the position of the vertices</span>
 <span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPoints</span><span class=p>()</span>
-</span>    <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>)</span>
-    <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>)</span>
-    <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>)</span>
+</span>    <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
     <span class=n>graph</span><span class=o>.</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>points</span><span class=p>)</span>
 
     <span class=c1># Create the color array</span>
 <span class=hll>    <span class=n>vertexColors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkIntArray</span><span class=p>()</span>
 </span>    <span class=n>vertexColors</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-    <span class=n>vertexColors</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s2>&quot;Color&quot;</span><span class=p>)</span>
+    <span class=n>vertexColors</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;Color&#39;</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>lookupTable</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>    <span class=n>lookupTable</span><span class=o>.</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
-    <span class=n>lookupTable</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span> <span class=c1># red</span>
-    <span class=n>lookupTable</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span> <span class=c1># white</span>
-    <span class=n>lookupTable</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span> <span class=c1># green</span>
+    <span class=n>lookupTable</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Red&#39;</span><span class=p>))</span>
+    <span class=n>lookupTable</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;White&#39;</span><span class=p>))</span>
+    <span class=n>lookupTable</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Lime&#39;</span><span class=p>))</span>
     <span class=n>lookupTable</span><span class=o>.</span><span class=n>Build</span><span class=p>()</span>
 
     <span class=n>vertexColors</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
@@ -121,7 +124,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>graphLayoutView</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
 </span>    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>graph</span><span class=p>)</span>
     <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>SetLayoutStrategyToPassThrough</span><span class=p>()</span>
-    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>SetVertexColorArrayName</span><span class=p>(</span><span class=s2>&quot;Color&quot;</span><span class=p>)</span>
+    <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>SetVertexColorArrayName</span><span class=p>(</span><span class=s1>&#39;Color&#39;</span><span class=p>)</span>
     <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>ColorVerticesOn</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>theme</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkViewTheme</span><span class=p>()</span>
@@ -132,6 +135,7 @@ function registerListener(event, func) {
     <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
     <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Zoom</span><span class=p>(</span><span class=mf>0.8</span><span class=p>)</span>
     <span class=n>graphLayoutView</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
+
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>

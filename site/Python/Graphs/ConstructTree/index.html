@@ -80,6 +80,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kn>import</span> <span class=nn>vtk</span>
 </span>
+
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
 <span class=hll>    <span class=n>graph</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMutableDirectedGraph</span><span class=p>()</span>
 </span>
@@ -88,20 +89,20 @@ function registerListener(event, func) {
     <span class=n>graph</span><span class=o>.</span><span class=n>AddChild</span><span class=p>(</span><span class=n>v1</span><span class=p>)</span>
     <span class=n>graph</span><span class=o>.</span><span class=n>AddChild</span><span class=p>(</span><span class=n>v2</span><span class=p>)</span>
 
-    <span class=c1>#equivalent to:</span>
-    <span class=c1>#V1 = g.AddVertex()</span>
-    <span class=c1>#V2 = g.AddVertex()</span>
-    <span class=c1>#V3 = g.AddVertex()</span>
-    <span class=c1>#V4 = g.AddVertex()</span>
+    <span class=c1># equivalent to:</span>
+    <span class=c1># V1 = g.AddVertex()</span>
+    <span class=c1># V2 = g.AddVertex()</span>
+    <span class=c1># V3 = g.AddVertex()</span>
+    <span class=c1># V4 = g.AddVertex()</span>
 
-    <span class=c1>#g.AddEdge ( V1, V2 )</span>
-    <span class=c1>#g.AddEdge ( V1, V3 )</span>
-    <span class=c1>#g.AddEdge ( V2, V4 )</span>
+    <span class=c1># g.AddEdge ( V1, V2 )</span>
+    <span class=c1># g.AddEdge ( V1, V3 )</span>
+    <span class=c1># g.AddEdge ( V2, V4 )</span>
 
 <span class=hll>    <span class=n>tree</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTree</span><span class=p>()</span>
 </span>    <span class=n>success</span> <span class=o>=</span> <span class=n>tree</span><span class=o>.</span><span class=n>CheckedShallowCopy</span><span class=p>(</span><span class=n>graph</span><span class=p>)</span>
-    <span class=nb>print</span> <span class=p>(</span><span class=s1>&#39;Success?&#39;</span><span class=p>,</span> <span class=n>success</span><span class=p>)</span>
-    <span class=c1>#std::cout &lt;&lt; &quot;Success? &quot; &lt;&lt; success &lt;&lt; std::endl</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Success?&#39;</span><span class=p>,</span> <span class=n>success</span><span class=p>)</span>
+    <span class=c1># std::cout &lt;&lt; &#39;Success? &#39; &lt;&lt; success &lt;&lt; std::endl</span>
 
 <span class=hll>    <span class=n>treeLayoutView</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGraphLayoutView</span><span class=p>()</span>
 </span>    <span class=n>treeLayoutView</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>tree</span><span class=p>)</span>
@@ -109,6 +110,7 @@ function registerListener(event, func) {
     <span class=n>treeLayoutView</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
     <span class=n>treeLayoutView</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>treeLayoutView</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
+
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
