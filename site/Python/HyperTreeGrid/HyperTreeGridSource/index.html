@@ -84,26 +84,26 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>    <span class=c1># Create hyper tree grid source</span>
 
-    <span class=n>descriptor</span> <span class=o>=</span> <span class=s2>&quot;RRR .R. .RR ..R ..R .R.|R.......................... &quot;</span> \
-                 <span class=s2>&quot;........................... ........................... &quot;</span> \
-                 <span class=s2>&quot;.............R............. ....RR.RR........R......... &quot;</span> \
-                 <span class=s2>&quot;.....RRRR.....R.RR......... ........................... &quot;</span> \
-                 <span class=s2>&quot;........................... &quot;</span> \
-                 <span class=s2>&quot;...........................|........................... &quot;</span> \
-                 <span class=s2>&quot;........................... ........................... &quot;</span> \
-                 <span class=s2>&quot;...RR.RR.......RR.......... ........................... &quot;</span> \
-                 <span class=s2>&quot;RR......................... ........................... &quot;</span> \
-                 <span class=s2>&quot;........................... ........................... &quot;</span> \
-                 <span class=s2>&quot;........................... ........................... &quot;</span> \
-                 <span class=s2>&quot;........................... ........................... &quot;</span> \
-                 <span class=s2>&quot;............RRR............|........................... &quot;</span> \
-                 <span class=s2>&quot;........................... .......RR.................. &quot;</span> \
-                 <span class=s2>&quot;........................... ........................... &quot;</span> \
-                 <span class=s2>&quot;........................... ........................... &quot;</span> \
-                 <span class=s2>&quot;........................... ........................... &quot;</span> \
-                 <span class=s2>&quot;........................... &quot;</span> \
-                 <span class=s2>&quot;...........................|........................... &quot;</span> \
-                 <span class=s2>&quot;...........................&quot;</span>
+    <span class=n>descriptor</span> <span class=o>=</span> <span class=s1>&#39;RRR .R. .RR ..R ..R .R.|R.......................... &#39;</span> \
+                 <span class=s1>&#39;........................... ........................... &#39;</span> \
+                 <span class=s1>&#39;.............R............. ....RR.RR........R......... &#39;</span> \
+                 <span class=s1>&#39;.....RRRR.....R.RR......... ........................... &#39;</span> \
+                 <span class=s1>&#39;........................... &#39;</span> \
+                 <span class=s1>&#39;...........................|........................... &#39;</span> \
+                 <span class=s1>&#39;........................... ........................... &#39;</span> \
+                 <span class=s1>&#39;...RR.RR.......RR.......... ........................... &#39;</span> \
+                 <span class=s1>&#39;RR......................... ........................... &#39;</span> \
+                 <span class=s1>&#39;........................... ........................... &#39;</span> \
+                 <span class=s1>&#39;........................... ........................... &#39;</span> \
+                 <span class=s1>&#39;........................... ........................... &#39;</span> \
+                 <span class=s1>&#39;............RRR............|........................... &#39;</span> \
+                 <span class=s1>&#39;........................... .......RR.................. &#39;</span> \
+                 <span class=s1>&#39;........................... ........................... &#39;</span> \
+                 <span class=s1>&#39;........................... ........................... &#39;</span> \
+                 <span class=s1>&#39;........................... ........................... &#39;</span> \
+                 <span class=s1>&#39;........................... &#39;</span> \
+                 <span class=s1>&#39;...........................|........................... &#39;</span> \
+                 <span class=s1>&#39;...........................&#39;</span>
 
 <span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkHyperTreeGridSource</span><span class=p>()</span>
 </span>    <span class=n>source</span><span class=o>.</span><span class=n>SetMaximumLevel</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span>
@@ -128,7 +128,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Burlywood&quot;</span><span class=p>))</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Burlywood&#39;</span><span class=p>))</span>
 
     <span class=c1># Create the RenderWindow, Renderer and Interactor</span>
 <span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
@@ -137,7 +137,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>interactor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>)</span>
 
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;SlateGray&quot;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>150</span><span class=p>)</span>
@@ -146,7 +146,7 @@ function registerListener(event, func) {
 
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s2>&quot;HyperTreeGridSource&quot;</span><span class=p>)</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;HyperTreeGridSource&#39;</span><span class=p>)</span>
 
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 

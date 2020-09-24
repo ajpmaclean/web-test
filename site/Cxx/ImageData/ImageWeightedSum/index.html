@@ -86,41 +86,29 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageWeightedSum.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkInteractorStyleImage.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span>
-<span class=cp>#include</span> <span class=cpf>&lt;array&gt;</span><span class=cp></span>
-
-<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=p>[])</span> <span class=p>{</span>
+<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=p>{</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
-  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>4</span><span class=o>&gt;</span> <span class=n>bkgL</span> <span class=o>=</span> <span class=p>{{</span><span class=mf>0.6</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.4</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>}};</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>4</span><span class=o>&gt;</span> <span class=n>bkgC</span> <span class=o>=</span> <span class=p>{{</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.4</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>}};</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>4</span><span class=o>&gt;</span> <span class=n>bkgR</span> <span class=o>=</span> <span class=p>{{</span><span class=mf>0.4</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.6</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>}};</span>
-  <span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;leftBkg&quot;</span><span class=p>,</span> <span class=n>bkgL</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
-  <span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;centreBkg&quot;</span><span class=p>,</span> <span class=n>bkgC</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
-  <span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;rightBkg&quot;</span><span class=p>,</span> <span class=n>bkgR</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
-
   <span class=c1>// create an image</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMandelbrotSource</span><span class=o>&gt;</span> <span class=n>source1</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMandelbrotSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMandelbrotSource</span><span class=o>&gt;</span> <span class=n>source1</span><span class=p>;</span>
 </span>  <span class=n>source1</span><span class=o>-&gt;</span><span class=n>SetWholeExtent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>255</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>255</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
   <span class=n>source1</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>source1Double</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>source1Double</span><span class=p>;</span>
 </span>  <span class=n>source1Double</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>source1</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>source1Double</span><span class=o>-&gt;</span><span class=n>SetOutputScalarTypeToDouble</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageSinusoidSource</span><span class=o>&gt;</span> <span class=n>source2</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageSinusoidSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageSinusoidSource</span><span class=o>&gt;</span> <span class=n>source2</span><span class=p>;</span>
 </span>  <span class=n>source2</span><span class=o>-&gt;</span><span class=n>SetWholeExtent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>255</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>255</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
   <span class=n>source2</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageWeightedSum</span><span class=o>&gt;</span> <span class=n>sumFilter</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageWeightedSum</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageWeightedSum</span><span class=o>&gt;</span> <span class=n>sumFilter</span><span class=p>;</span>
 </span>  <span class=n>sumFilter</span><span class=o>-&gt;</span><span class=n>SetWeight</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>.8</span><span class=p>);</span>
   <span class=n>sumFilter</span><span class=o>-&gt;</span><span class=n>SetWeight</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mf>.2</span><span class=p>);</span>
   <span class=n>sumFilter</span><span class=o>-&gt;</span><span class=n>AddInputConnection</span><span class=p>(</span><span class=n>source1Double</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
@@ -128,48 +116,40 @@ function registerListener(event, func) {
 
   <span class=n>sumFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>source1CastFilter</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>source1CastFilter</span><span class=p>;</span>
 </span>  <span class=n>source1CastFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source1</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>source1CastFilter</span><span class=o>-&gt;</span><span class=n>SetOutputScalarTypeToUnsignedChar</span><span class=p>();</span>
   <span class=n>source1CastFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>source2CastFilter</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>source2CastFilter</span><span class=p>;</span>
 </span>  <span class=n>source2CastFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source2</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>source2CastFilter</span><span class=o>-&gt;</span><span class=n>SetOutputScalarTypeToUnsignedChar</span><span class=p>();</span>
   <span class=n>source2CastFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>summedCastFilter</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>summedCastFilter</span><span class=p>;</span>
 </span>  <span class=n>summedCastFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sumFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>summedCastFilter</span><span class=o>-&gt;</span><span class=n>SetOutputScalarTypeToUnsignedChar</span><span class=p>();</span>
   <span class=n>summedCastFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
   <span class=c1>// Create actors</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>source1Actor</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>source1Actor</span><span class=p>;</span>
 </span>  <span class=n>source1Actor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span>
       <span class=n>source1CastFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>source2Actor</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>source2Actor</span><span class=p>;</span>
 </span>  <span class=n>source2Actor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span>
       <span class=n>source2CastFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>summedActor</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>summedActor</span><span class=p>;</span>
 </span>  <span class=n>summedActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span>
       <span class=n>summedCastFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
   <span class=c1>// There will be one render window</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>300</span><span class=p>);</span>
 
   <span class=c1>// And one interactor</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>interactor</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>interactor</span><span class=p>;</span>
 </span>  <span class=n>interactor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
   <span class=c1>// Define viewport ranges</span>
@@ -179,23 +159,20 @@ function registerListener(event, func) {
   <span class=kt>double</span> <span class=n>rightViewport</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=mf>0.66</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>};</span>
 
   <span class=c1>// Setup renderers</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>leftRenderer</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>leftRenderer</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>leftRenderer</span><span class=p>);</span>
   <span class=n>leftRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>leftViewport</span><span class=p>);</span>
-  <span class=n>leftRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;leftBkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>leftRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Peru&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>centerRenderer</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>centerRenderer</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>centerRenderer</span><span class=p>);</span>
   <span class=n>centerRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>centerViewport</span><span class=p>);</span>
-  <span class=n>centerRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;centreBkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>centerRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkTurquoise&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>rightRenderer</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>rightRenderer</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>rightRenderer</span><span class=p>);</span>
   <span class=n>rightRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>rightViewport</span><span class=p>);</span>
-  <span class=n>rightRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;rightBkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>rightRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SteelBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=n>leftRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>source1Actor</span><span class=p>);</span>
   <span class=n>centerRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>source2Actor</span><span class=p>);</span>
@@ -205,6 +182,7 @@ function registerListener(event, func) {
   <span class=n>centerRenderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
   <span class=n>rightRenderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
 
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ImageWeightedSum&quot;</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
   <span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
 

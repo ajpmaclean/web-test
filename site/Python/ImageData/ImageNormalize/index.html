@@ -80,11 +80,10 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kn>import</span> <span class=nn>vtk</span>
 </span>
+
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
-</span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>&quot;right_bkg&quot;</span><span class=p>,</span> <span class=p>[</span><span class=mf>0.4</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.6</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>])</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>&quot;left_bkg&quot;</span><span class=p>,</span> <span class=p>[</span><span class=mf>0.6</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.4</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>])</span>
-
+</span>
     <span class=c1># Create an image</span>
 <span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImageSinusoidSource</span><span class=p>()</span>
 </span>    <span class=n>source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
@@ -128,12 +127,12 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>leftRenderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>leftRenderer</span><span class=p>)</span>
     <span class=n>leftRenderer</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>leftViewport</span><span class=p>)</span>
-    <span class=n>leftRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;left_bkg&quot;</span><span class=p>))</span>
+    <span class=n>leftRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Sienna&#39;</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>rightRenderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>rightRenderer</span><span class=p>)</span>
     <span class=n>rightRenderer</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>rightViewport</span><span class=p>)</span>
-    <span class=n>rightRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;right_bkg&quot;</span><span class=p>))</span>
+    <span class=n>rightRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SteelBlue&#39;</span><span class=p>))</span>
 
     <span class=n>leftRenderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>inputActor</span><span class=p>)</span>
     <span class=n>rightRenderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>normalizedActor</span><span class=p>)</span>
@@ -142,8 +141,10 @@ function registerListener(event, func) {
 
     <span class=n>rightRenderer</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
 
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ImageNormalize&#39;</span><span class=p>)</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
+
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>

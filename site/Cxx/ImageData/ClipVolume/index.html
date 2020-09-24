@@ -92,6 +92,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkLookupTable.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkMapper.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPlanes.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPointData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPoints.h&gt;</span><span class=cp></span>
@@ -100,25 +101,20 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span>
-<span class=cp>#define IMAGESIZE 64  </span><span class=c1>// number of checkerboard squares on a side</span>
-<span class=cp>#define CUBESIZE 20.0 </span><span class=c1>// physical linear dimension of entire system</span>
+<span class=k>namespace</span> <span class=p>{</span>
+
+<span class=k>constexpr</span> <span class=k>auto</span> <span class=n>IMAGESIZE</span><span class=p>{</span><span class=mi>64</span><span class=p>};</span>  <span class=c1>// number of checkerboard squares on a side</span>
+<span class=k>constexpr</span> <span class=k>auto</span> <span class=n>CUBESIZE</span><span class=p>{</span><span class=mf>20.0</span><span class=p>};</span> <span class=c1>// physical linear dimension of entire system</span>
 
 <span class=c1>// Color for the checkerboard image</span>
-<span class=cp>#define IMAGE_R 0.7</span>
-<span class=cp>#define IMAGE_G 0.7</span>
-<span class=cp>#define IMAGE_B 0.7</span>
-<span class=cp>#define IMAGE_A 1.0</span>
-<span class=cp>#define DIM 0.5 </span><span class=c1>// amount to dim the dark squares by</span>
+<span class=k>constexpr</span> <span class=k>auto</span> <span class=n>DIM</span><span class=p>{</span><span class=mf>0.5</span><span class=p>};</span> <span class=c1>// amount to dim the dark squares by</span>
 
 <span class=c1>// Offsets for clipping planes with normals in the X and Y directions</span>
-<span class=cp>#define XOFFSET 8</span>
-<span class=cp>#define YOFFSET 8</span>
+<span class=k>constexpr</span> <span class=k>auto</span> <span class=n>XOFFSET</span><span class=p>{</span><span class=mi>8</span><span class=p>};</span>
+<span class=k>constexpr</span> <span class=k>auto</span> <span class=n>YOFFSET</span><span class=p>{</span><span class=mi>8</span><span class=p>};</span>
 
 <span class=c1>///////////////////</span>
-
-<span class=k>namespace</span> <span class=p>{</span>
 
 <span class=c1>// Make the image data. A checkerboard pattern is used for</span>
 <span class=c1>// simplicity.</span>
@@ -132,28 +128,28 @@ function registerListener(event, func) {
 <span class=hll>  <span class=n>vtkMapper</span><span class=o>::</span><span class=n>SetResolveCoincidentTopologyToPolygonOffset</span><span class=p>();</span>
 </span>
   <span class=c1>// Define colors</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span><span class=hll>  <span class=n>vtkColor3d</span> <span class=n>backgroundColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Wheat&quot;</span><span class=p>);</span>
 </span><span class=hll>  <span class=n>vtkColor3d</span> <span class=n>checkerColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>);</span>
 </span><span class=hll>  <span class=n>vtkColor3d</span> <span class=n>fillColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Banana&quot;</span><span class=p>);</span>
 </span>
-<span class=hll>  <span class=k>auto</span> <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span><span class=p>;</span>
 </span>  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>backgroundColor</span><span class=p>.</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>);</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=k>auto</span> <span class=n>style</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleSwitch</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>interactor</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleSwitch</span><span class=o>&gt;</span> <span class=n>style</span><span class=p>;</span>
 </span>  <span class=n>interactor</span><span class=o>-&gt;</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=n>style</span><span class=p>);</span>
   <span class=n>interactor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
   <span class=k>auto</span> <span class=n>image</span> <span class=o>=</span> <span class=n>makeImage</span><span class=p>(</span><span class=n>IMAGESIZE</span><span class=p>,</span> <span class=n>fillColor</span><span class=p>,</span> <span class=n>checkerColor</span><span class=p>);</span>
 
   <span class=c1>// Clipping planes in the X and Y direction.</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>normals</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=k>auto</span> <span class=n>clipPts</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>&gt;</span> <span class=n>normals</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span> <span class=n>clipPts</span><span class=p>;</span>
 </span>  <span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
   <span class=kt>double</span> <span class=n>xnorm</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=o>-</span><span class=mf>1.</span><span class=p>,</span> <span class=mf>0.</span><span class=p>,</span> <span class=mf>0.</span><span class=p>};</span>
   <span class=kt>double</span> <span class=n>ynorm</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=mf>0.</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.</span><span class=p>,</span> <span class=mf>0.</span><span class=p>};</span>
@@ -163,16 +159,16 @@ function registerListener(event, func) {
   <span class=n>normals</span><span class=o>-&gt;</span><span class=n>InsertNextTuple</span><span class=p>(</span><span class=n>ynorm</span><span class=p>);</span>
   <span class=n>clipPts</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=n>xpt</span><span class=p>);</span>
   <span class=n>clipPts</span><span class=o>-&gt;</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=n>ypt</span><span class=p>);</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>clipPlanes</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPlanes</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPlanes</span><span class=o>&gt;</span> <span class=n>clipPlanes</span><span class=p>;</span>
 </span>  <span class=n>clipPlanes</span><span class=o>-&gt;</span><span class=n>SetNormals</span><span class=p>(</span><span class=n>normals</span><span class=p>);</span>
   <span class=n>clipPlanes</span><span class=o>-&gt;</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>clipPts</span><span class=p>);</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>clipper</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkClipVolume</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkClipVolume</span><span class=o>&gt;</span> <span class=n>clipper</span><span class=p>;</span>
 </span>  <span class=n>clipper</span><span class=o>-&gt;</span><span class=n>SetClipFunction</span><span class=p>(</span><span class=n>clipPlanes</span><span class=p>);</span>
   <span class=n>clipper</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>image</span><span class=p>);</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>imageMapper</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=k>auto</span> <span class=n>imageActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;</span> <span class=n>imageMapper</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>imageActor</span><span class=p>;</span>
 </span>  <span class=n>imageActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>imageMapper</span><span class=p>);</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>imageActor</span><span class=p>);</span>
   <span class=n>imageMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>clipper</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
@@ -181,10 +177,13 @@ function registerListener(event, func) {
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>120</span><span class=p>);</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Elevation</span><span class=p>(</span><span class=mi>30</span><span class=p>);</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>ResetCameraClippingRange</span><span class=p>();</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ClipVolume&quot;</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
   <span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
-  <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+
+  <span class=k>return</span> <span class=n>EXIT_SUCCESS</span><span class=p>;</span>
+  <span class=p>;</span>
 <span class=p>}</span>
 
 <span class=k>namespace</span> <span class=p>{</span>
@@ -193,7 +192,7 @@ function registerListener(event, func) {
 <span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span> <span class=n>makeImage</span><span class=p>(</span><span class=kt>int</span> <span class=n>n</span><span class=p>,</span> <span class=n>vtkColor3d</span> <span class=n>fillColor</span><span class=p>,</span>
 </span><span class=hll>                                        <span class=n>vtkColor3d</span> <span class=n>checkerColor</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>image0</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span> <span class=n>image0</span><span class=p>;</span>
 </span>  <span class=n>image0</span><span class=o>-&gt;</span><span class=n>SetDimensions</span><span class=p>(</span><span class=n>n</span><span class=p>,</span> <span class=n>n</span><span class=p>,</span> <span class=n>n</span><span class=p>);</span>
   <span class=n>image0</span><span class=o>-&gt;</span><span class=n>AllocateScalars</span><span class=p>(</span><span class=n>VTK_UNSIGNED_CHAR</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>
   <span class=n>image0</span><span class=o>-&gt;</span><span class=n>SetSpacing</span><span class=p>(</span><span class=n>CUBESIZE</span> <span class=o>/</span> <span class=n>n</span><span class=p>,</span> <span class=n>CUBESIZE</span> <span class=o>/</span> <span class=n>n</span><span class=p>,</span> <span class=n>CUBESIZE</span> <span class=o>/</span> <span class=n>n</span><span class=p>);</span>
@@ -211,7 +210,7 @@ function registerListener(event, func) {
     <span class=p>}</span>
   <span class=p>}</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>lut</span><span class=p>;</span>
 </span>  <span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
   <span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableRange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>
   <span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>fillColor</span><span class=p>.</span><span class=n>GetRed</span><span class=p>(),</span> <span class=n>fillColor</span><span class=p>.</span><span class=n>GetGreen</span><span class=p>(),</span>
@@ -225,8 +224,9 @@ function registerListener(event, func) {
   <span class=n>map</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>image0</span><span class=p>);</span>
   <span class=n>map</span><span class=o>-&gt;</span><span class=n>GetExecutive</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-  <span class=k>return</span>  <span class=n>map</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
+  <span class=k>return</span> <span class=n>map</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=p>}</span>
+
 <span class=p>}</span> <span class=c1>// namespace</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span> <span class=s>3.3</span> <span class=s>FATAL_ERROR</span><span class=p>)</span>
 
