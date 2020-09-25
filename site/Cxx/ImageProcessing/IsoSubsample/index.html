@@ -84,110 +84,96 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageReader2Factory.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageShrink3D.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkProperty.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span>
-<span class=cp>#include</span> <span class=cpf>&lt;array&gt;</span><span class=cp></span>
+<span class=c1>//#include &lt;array&gt;</span>
 
-<span class=kt>int</span> <span class=nf>main</span> <span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span> <span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
   <span class=c1>// Verify input arguments</span>
-  <span class=k>if</span> <span class=p>(</span> <span class=n>argc</span> <span class=o>!=</span> <span class=mi>2</span> <span class=p>)</span>
+  <span class=k>if</span> <span class=p>(</span><span class=n>argc</span> <span class=o>!=</span> <span class=mi>2</span><span class=p>)</span>
   <span class=p>{</span>
-    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Usage: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
-              <span class=o>&lt;&lt;</span> <span class=s>&quot; Filename&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Usage: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; Filename e.g FullHead.mhd&quot;</span>
+              <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=k>return</span> <span class=n>EXIT_FAILURE</span><span class=p>;</span>
   <span class=p>}</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
-  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span> <span class=kt>char</span> <span class=p>,</span> <span class=mi>4</span><span class=o>&gt;</span> <span class=n>actorColor</span><span class=p>{{</span><span class=mi>235</span><span class=p>,</span> <span class=mi>235</span><span class=p>,</span> <span class=mi>235</span><span class=p>,</span> <span class=mi>255</span><span class=p>}};</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;ActorColor&quot;</span><span class=p>,</span> <span class=n>actorColor</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+  <span class=c1>// std::array&lt;unsigned char , 4&gt; actorColor{{235, 235, 235, 255}};</span>
+  <span class=c1>//  colors-&gt;SetColor(&quot;ActorColor&quot;, actorColor.data());</span>
 
   <span class=c1>// Read the image</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageReader2Factory</span><span class=o>&gt;</span> <span class=n>readerFactory</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageReader2Factory</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageReader2Factory</span><span class=o>&gt;</span> <span class=n>readerFactory</span><span class=p>;</span>
 </span><span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageReader2</span><span class=o>&gt;</span> <span class=n>reader</span><span class=p>;</span>
-</span>  <span class=n>reader</span><span class=p>.</span><span class=n>TakeReference</span><span class=p>(</span>
-    <span class=n>readerFactory</span><span class=o>-&gt;</span><span class=n>CreateImageReader2</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]));</span>
+</span>  <span class=n>reader</span><span class=p>.</span><span class=n>TakeReference</span><span class=p>(</span><span class=n>readerFactory</span><span class=o>-&gt;</span><span class=n>CreateImageReader2</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]));</span>
   <span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
   <span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
   <span class=c1>// Smoothed pipeline</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageGaussianSmooth</span><span class=o>&gt;</span> <span class=n>smooth</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageGaussianSmooth</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageGaussianSmooth</span><span class=o>&gt;</span> <span class=n>smooth</span><span class=p>;</span>
 </span>  <span class=n>smooth</span><span class=o>-&gt;</span><span class=n>SetDimensionality</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
   <span class=n>smooth</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>smooth</span><span class=o>-&gt;</span><span class=n>SetStandardDeviations</span><span class=p>(</span><span class=mf>1.75</span><span class=p>,</span> <span class=mf>1.75</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
   <span class=n>smooth</span><span class=o>-&gt;</span><span class=n>SetRadiusFactor</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageShrink3D</span><span class=o>&gt;</span> <span class=n>subsampleSmoothed</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageShrink3D</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageShrink3D</span><span class=o>&gt;</span> <span class=n>subsampleSmoothed</span><span class=p>;</span>
 </span>  <span class=n>subsampleSmoothed</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>smooth</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>subsampleSmoothed</span><span class=o>-&gt;</span><span class=n>SetShrinkFactors</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMarchingCubes</span><span class=o>&gt;</span> <span class=n>isoSmoothed</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMarchingCubes</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMarchingCubes</span><span class=o>&gt;</span> <span class=n>isoSmoothed</span><span class=p>;</span>
 </span>  <span class=n>isoSmoothed</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>smooth</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>isoSmoothed</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1150</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>isoSmoothedMapper</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>isoSmoothedMapper</span><span class=p>;</span>
 </span>  <span class=n>isoSmoothedMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>isoSmoothed</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>isoSmoothedMapper</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>isoSmoothedActor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>isoSmoothedActor</span><span class=p>;</span>
 </span>  <span class=n>isoSmoothedActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>isoSmoothedMapper</span><span class=p>);</span>
-  <span class=n>isoSmoothedActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;ActorColor&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>isoSmoothedActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Ivory&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// Unsmoothed pipeline</span>
   <span class=c1>// Sub sample the data</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageShrink3D</span><span class=o>&gt;</span> <span class=n>subsample</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageShrink3D</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageShrink3D</span><span class=o>&gt;</span> <span class=n>subsample</span><span class=p>;</span>
 </span>  <span class=n>subsample</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>subsample</span><span class=o>-&gt;</span><span class=n>SetShrinkFactors</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMarchingCubes</span><span class=o>&gt;</span> <span class=n>iso</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMarchingCubes</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMarchingCubes</span><span class=o>&gt;</span> <span class=n>iso</span><span class=p>;</span>
 </span>  <span class=n>iso</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>subsample</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>iso</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1150</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>isoMapper</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>isoMapper</span><span class=p>;</span>
 </span>  <span class=n>isoMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>iso</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>isoMapper</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>isoActor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>isoActor</span><span class=p>;</span>
 </span>  <span class=n>isoActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>isoMapper</span><span class=p>);</span>
-  <span class=n>isoActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;ActorColor&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>isoActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Ivory&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// Rendering Pipeline</span>
   <span class=c1>// Setup render window, renderer, and interactor</span>
   <span class=kt>double</span> <span class=n>leftViewport</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>};</span>
   <span class=kt>double</span> <span class=n>rightViewport</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>};</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>rendererLeft</span> <span class=o>=</span> 
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>rendererLeft</span><span class=p>;</span>
 </span>  <span class=n>rendererLeft</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>leftViewport</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>rendererRight</span> <span class=o>=</span> 
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>rendererRight</span><span class=p>;</span>
 </span>  <span class=n>rendererRight</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>rightViewport</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span> <span class=o>=</span> 
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>rendererLeft</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>rendererRight</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span> <span class=o>=</span> 
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span>  <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
   <span class=n>rendererLeft</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>isoActor</span><span class=p>);</span>
@@ -206,6 +192,7 @@ function registerListener(event, func) {
   <span class=n>rendererRight</span><span class=o>-&gt;</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>rendererLeft</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>());</span>
 
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>);</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;IsoSubsample&quot;</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
   <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>

@@ -91,111 +91,98 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageReader2Factory.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageThreshold.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkInteractorStyleImage.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPointData.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span>
 <span class=cp>#include</span> <span class=cpf>&lt;vector&gt;</span><span class=cp></span>
 
-<span class=k>namespace</span>
-<span class=p>{</span>
-<span class=hll><span class=kt>void</span> <span class=n>AddShotNoise</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span> <span class=o>&amp;</span><span class=n>inputImage</span><span class=p>,</span>
-</span><span class=hll>                  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span> <span class=o>&amp;</span><span class=n>outputImage</span><span class=p>,</span>
-</span>                  <span class=kt>double</span> <span class=n>amplitude</span><span class=p>,</span>
-                  <span class=kt>double</span> <span class=n>noiseFraction</span><span class=p>,</span>
-                  <span class=kt>int</span> <span class=n>extent</span><span class=p>[</span><span class=mi>6</span><span class=p>]);</span>
+<span class=k>namespace</span> <span class=p>{</span>
+<span class=hll><span class=kt>void</span> <span class=n>AddShotNoise</span><span class=p>(</span><span class=n>vtkImageData</span><span class=o>*</span> <span class=n>inputImage</span><span class=p>,</span> <span class=n>vtkImageData</span><span class=o>*</span> <span class=n>outputImage</span><span class=p>,</span>
+</span>                  <span class=kt>double</span> <span class=n>noiseAmplitude</span><span class=p>,</span> <span class=kt>double</span> <span class=n>noiseFraction</span><span class=p>,</span> <span class=kt>int</span> <span class=n>extent</span><span class=p>[</span><span class=mi>6</span><span class=p>]);</span>
 <span class=p>}</span>
-<span class=kt>int</span> <span class=n>main</span> <span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>argv</span><span class=p>[])</span>
+
+<span class=kt>int</span> <span class=n>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span> <span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
   <span class=c1>// Verify input arguments</span>
-  <span class=k>if</span> <span class=p>(</span> <span class=n>argc</span> <span class=o>!=</span> <span class=mi>2</span> <span class=p>)</span>
+  <span class=k>if</span> <span class=p>(</span><span class=n>argc</span> <span class=o>!=</span> <span class=mi>2</span><span class=p>)</span>
   <span class=p>{</span>
-    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Usage: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
-              <span class=o>&lt;&lt;</span> <span class=s>&quot; Filename&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Usage: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; Filename e.g. TestPattern.png&quot;</span>
+              <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=k>return</span> <span class=n>EXIT_FAILURE</span><span class=p>;</span>
   <span class=p>}</span>
 
   <span class=c1>// Read the image</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageReader2Factory</span><span class=o>&gt;</span> <span class=n>readerFactory</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageReader2Factory</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageReader2Factory</span><span class=o>&gt;</span> <span class=n>readerFactory</span><span class=p>;</span>
 </span><span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageReader2</span><span class=o>&gt;</span> <span class=n>reader</span><span class=p>;</span>
-</span>  <span class=n>reader</span><span class=p>.</span><span class=n>TakeReference</span><span class=p>(</span>
-    <span class=n>readerFactory</span><span class=o>-&gt;</span><span class=n>CreateImageReader2</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]));</span>
+</span>  <span class=n>reader</span><span class=p>.</span><span class=n>TakeReference</span><span class=p>(</span><span class=n>readerFactory</span><span class=o>-&gt;</span><span class=n>CreateImageReader2</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]));</span>
   <span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
   <span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
   <span class=kt>int</span> <span class=n>scalarRange</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span>
   <span class=n>scalarRange</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span>
-    <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>()[</span><span class=mi>0</span><span class=p>];</span>
+      <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>()[</span><span class=mi>0</span><span class=p>];</span>
   <span class=n>scalarRange</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span>
-    <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>()[</span><span class=mi>1</span><span class=p>];</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Range: &quot;</span>
-            <span class=o>&lt;&lt;</span> <span class=n>scalarRange</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;, &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>scalarRange</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
+      <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>()[</span><span class=mi>1</span><span class=p>];</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Range: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>scalarRange</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;, &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>scalarRange</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
             <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
   <span class=kt>int</span> <span class=n>middleSlice</span> <span class=o>=</span> <span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetExtent</span><span class=p>()[</span><span class=mi>5</span><span class=p>]</span> <span class=o>-</span>
-                     <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetExtent</span><span class=p>()[</span><span class=mi>4</span><span class=p>])</span> <span class=o>/</span> <span class=mi>2</span><span class=p>;</span>
+                     <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetExtent</span><span class=p>()[</span><span class=mi>4</span><span class=p>])</span> <span class=o>/</span>
+      <span class=mi>2</span><span class=p>;</span>
 
   <span class=c1>// Work with double images</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>cast</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>cast</span><span class=p>;</span>
 </span>  <span class=n>cast</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>cast</span><span class=o>-&gt;</span><span class=n>SetOutputScalarTypeToDouble</span><span class=p>();</span>
   <span class=n>cast</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span> <span class=n>originalData</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span> <span class=n>originalData</span><span class=p>;</span>
 </span>  <span class=n>originalData</span><span class=o>-&gt;</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>cast</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span> <span class=n>noisyData</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span> <span class=n>noisyData</span><span class=p>;</span>
 </span>
-  <span class=n>AddShotNoise</span><span class=p>(</span><span class=n>originalData</span><span class=p>,</span> <span class=n>noisyData</span><span class=p>,</span>
-               <span class=mf>2000.0</span><span class=p>,</span> <span class=mf>.1</span><span class=p>,</span> <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetExtent</span><span class=p>());</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMedian3D</span><span class=o>&gt;</span> <span class=n>median</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMedian3D</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+  <span class=n>AddShotNoise</span><span class=p>(</span><span class=n>originalData</span><span class=p>,</span> <span class=n>noisyData</span><span class=p>,</span> <span class=mf>2000.0</span><span class=p>,</span> <span class=mf>.1</span><span class=p>,</span>
+               <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetExtent</span><span class=p>());</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMedian3D</span><span class=o>&gt;</span> <span class=n>median</span><span class=p>;</span>
 </span>  <span class=n>median</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>noisyData</span><span class=p>);</span>
   <span class=n>median</span><span class=o>-&gt;</span><span class=n>SetKernelSize</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=mi>5</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageHybridMedian2D</span><span class=o>&gt;</span> <span class=n>hybridMedian1</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageHybridMedian2D</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageHybridMedian2D</span><span class=o>&gt;</span> <span class=n>hybridMedian1</span><span class=p>;</span>
 </span>  <span class=n>hybridMedian1</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>noisyData</span><span class=p>);</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageHybridMedian2D</span><span class=o>&gt;</span> <span class=n>hybridMedian</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageHybridMedian2D</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageHybridMedian2D</span><span class=o>&gt;</span> <span class=n>hybridMedian</span><span class=p>;</span>
 </span>  <span class=n>hybridMedian</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>hybridMedian1</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
   <span class=kt>int</span> <span class=n>colorWindow</span> <span class=o>=</span> <span class=p>(</span><span class=n>scalarRange</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>scalarRange</span><span class=p>[</span><span class=mi>0</span><span class=p>]);</span>
   <span class=kt>int</span> <span class=n>colorLevel</span> <span class=o>=</span> <span class=n>colorWindow</span> <span class=o>/</span> <span class=mi>2</span><span class=p>;</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>originalActor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>originalActor</span><span class=p>;</span>
 </span>  <span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>originalData</span><span class=p>);</span>
   <span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColorWindow</span><span class=p>(</span><span class=n>colorWindow</span><span class=p>);</span>
   <span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColorLevel</span><span class=p>(</span><span class=n>colorLevel</span><span class=p>);</span>
   <span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInterpolationTypeToNearest</span><span class=p>();</span>
   <span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>SetDisplayExtent</span><span class=p>(</span>
-    <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetDataExtent</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetDataExtent</span><span class=p>()[</span><span class=mi>1</span><span class=p>],</span>
-    <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetDataExtent</span><span class=p>()[</span><span class=mi>2</span><span class=p>],</span> <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetDataExtent</span><span class=p>()[</span><span class=mi>3</span><span class=p>],</span>
-    <span class=n>middleSlice</span><span class=p>,</span> <span class=n>middleSlice</span><span class=p>);</span>
+      <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetDataExtent</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span> <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetDataExtent</span><span class=p>()[</span><span class=mi>1</span><span class=p>],</span>
+      <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetDataExtent</span><span class=p>()[</span><span class=mi>2</span><span class=p>],</span> <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetDataExtent</span><span class=p>()[</span><span class=mi>3</span><span class=p>],</span> <span class=n>middleSlice</span><span class=p>,</span>
+      <span class=n>middleSlice</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>noisyActor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>noisyActor</span><span class=p>;</span>
 </span>  <span class=n>noisyActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>noisyData</span><span class=p>);</span>
   <span class=n>noisyActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColorWindow</span><span class=p>(</span><span class=n>colorWindow</span><span class=p>);</span>
   <span class=n>noisyActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColorLevel</span><span class=p>(</span><span class=n>colorLevel</span><span class=p>);</span>
   <span class=n>noisyActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInterpolationTypeToNearest</span><span class=p>();</span>
   <span class=n>noisyActor</span><span class=o>-&gt;</span><span class=n>SetDisplayExtent</span><span class=p>(</span><span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>GetDisplayExtent</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>hybridMedianActor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span>  <span class=n>hybridMedianActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>hybridMedian</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>hybridMedianActor</span><span class=p>;</span>
+</span>  <span class=n>hybridMedianActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span>
+      <span class=n>hybridMedian</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>hybridMedianActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColorWindow</span><span class=p>(</span><span class=n>colorWindow</span><span class=p>);</span>
   <span class=n>hybridMedianActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColorLevel</span><span class=p>(</span><span class=n>colorLevel</span><span class=p>);</span>
   <span class=n>hybridMedianActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInterpolationTypeToNearest</span><span class=p>();</span>
   <span class=n>hybridMedianActor</span><span class=o>-&gt;</span><span class=n>SetDisplayExtent</span><span class=p>(</span><span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>GetDisplayExtent</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>medianActor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>medianActor</span><span class=p>;</span>
 </span>  <span class=n>medianActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>median</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>medianActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColorWindow</span><span class=p>(</span><span class=n>colorWindow</span><span class=p>);</span>
   <span class=n>medianActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColorLevel</span><span class=p>(</span><span class=n>colorLevel</span><span class=p>);</span>
@@ -203,20 +190,16 @@ function registerListener(event, func) {
   <span class=n>medianActor</span><span class=o>-&gt;</span><span class=n>SetDisplayExtent</span><span class=p>(</span><span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>GetDisplayExtent</span><span class=p>());</span>
 
   <span class=c1>// Setup renderers</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>originalRenderer</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>originalRenderer</span><span class=p>;</span>
 </span>  <span class=n>originalRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>originalActor</span><span class=p>);</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>noisyRenderer</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>noisyRenderer</span><span class=p>;</span>
 </span>  <span class=n>noisyRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>noisyActor</span><span class=p>);</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>hybridRenderer</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>hybridRenderer</span><span class=p>;</span>
 </span>  <span class=n>hybridRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>hybridMedianActor</span><span class=p>);</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>medianRenderer</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>medianRenderer</span><span class=p>;</span>
 </span>  <span class=n>medianRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>medianActor</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=o>&gt;</span> <span class=n>renderers</span><span class=p>;</span>
+<span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;&gt;</span> <span class=n>renderers</span><span class=p>;</span>
 </span>  <span class=n>renderers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>originalRenderer</span><span class=p>);</span>
   <span class=n>renderers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>noisyRenderer</span><span class=p>);</span>
   <span class=n>renderers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>hybridRenderer</span><span class=p>);</span>
@@ -227,30 +210,28 @@ function registerListener(event, func) {
   <span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>xGridDimensions</span> <span class=o>=</span> <span class=mi>2</span><span class=p>;</span>
   <span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>yGridDimensions</span> <span class=o>=</span> <span class=mi>2</span><span class=p>;</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span>
-    <span class=n>rendererSize</span> <span class=o>*</span> <span class=n>xGridDimensions</span><span class=p>,</span> <span class=n>rendererSize</span> <span class=o>*</span> <span class=n>yGridDimensions</span><span class=p>);</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
+</span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=n>rendererSize</span> <span class=o>*</span> <span class=n>xGridDimensions</span><span class=p>,</span>
+                        <span class=n>rendererSize</span> <span class=o>*</span> <span class=n>yGridDimensions</span><span class=p>);</span>
   <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>row</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>row</span> <span class=o>&lt;</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>yGridDimensions</span><span class=p>);</span> <span class=n>row</span><span class=o>++</span><span class=p>)</span>
   <span class=p>{</span>
     <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>col</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>col</span> <span class=o>&lt;</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>xGridDimensions</span><span class=p>);</span> <span class=n>col</span><span class=o>++</span><span class=p>)</span>
     <span class=p>{</span>
       <span class=kt>int</span> <span class=n>index</span> <span class=o>=</span> <span class=n>row</span> <span class=o>*</span> <span class=n>xGridDimensions</span> <span class=o>+</span> <span class=n>col</span><span class=p>;</span>
       <span class=c1>// (xmin, ymin, xmax, ymax)</span>
-       <span class=kt>double</span> <span class=n>viewport</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span>
-         <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>col</span><span class=p>)</span> <span class=o>/</span> <span class=n>xGridDimensions</span><span class=p>,</span>
-         <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>yGridDimensions</span> <span class=o>-</span> <span class=p>(</span><span class=n>row</span> <span class=o>+</span> <span class=mi>1</span><span class=p>))</span> <span class=o>/</span> <span class=n>yGridDimensions</span><span class=p>,</span>
-         <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>col</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span> <span class=o>/</span> <span class=n>xGridDimensions</span><span class=p>,</span>
-         <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>yGridDimensions</span> <span class=o>-</span> <span class=n>row</span><span class=p>)</span> <span class=o>/</span> <span class=n>yGridDimensions</span><span class=p>};</span>
+      <span class=kt>double</span> <span class=n>viewport</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span>
+          <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>col</span><span class=p>)</span> <span class=o>/</span> <span class=n>xGridDimensions</span><span class=p>,</span>
+          <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>yGridDimensions</span> <span class=o>-</span> <span class=p>(</span><span class=n>row</span> <span class=o>+</span> <span class=mi>1</span><span class=p>))</span> <span class=o>/</span> <span class=n>yGridDimensions</span><span class=p>,</span>
+          <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>col</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span> <span class=o>/</span> <span class=n>xGridDimensions</span><span class=p>,</span>
+          <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>yGridDimensions</span> <span class=o>-</span> <span class=n>row</span><span class=p>)</span> <span class=o>/</span> <span class=n>yGridDimensions</span><span class=p>};</span>
       <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>viewport</span><span class=p>);</span>
       <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]);</span>
     <span class=p>}</span>
   <span class=p>}</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;HybridMedianComparison&quot;</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleImage</span><span class=o>&gt;</span> <span class=n>style</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleImage</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleImage</span><span class=o>&gt;</span> <span class=n>style</span><span class=p>;</span>
 </span>
   <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=n>style</span><span class=p>);</span>
   <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
@@ -267,52 +248,42 @@ function registerListener(event, func) {
   <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
   <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
 
-
   <span class=k>return</span> <span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=p>}</span>
-<span class=k>namespace</span>
+<span class=k>namespace</span> <span class=p>{</span>
+<span class=hll><span class=kt>void</span> <span class=n>AddShotNoise</span><span class=p>(</span><span class=n>vtkImageData</span><span class=o>*</span> <span class=n>inputImage</span><span class=p>,</span> <span class=n>vtkImageData</span><span class=o>*</span> <span class=n>outputImage</span><span class=p>,</span>
+</span>                  <span class=kt>double</span> <span class=n>noiseAmplitude</span><span class=p>,</span> <span class=kt>double</span> <span class=n>noiseFraction</span><span class=p>,</span> <span class=kt>int</span> <span class=n>extent</span><span class=p>[</span><span class=mi>6</span><span class=p>])</span>
 <span class=p>{</span>
-<span class=hll><span class=kt>void</span> <span class=n>AddShotNoise</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span> <span class=o>&amp;</span><span class=n>inputImage</span><span class=p>,</span>
-</span><span class=hll>                  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span> <span class=o>&amp;</span><span class=n>outputImage</span><span class=p>,</span>
-</span>                  <span class=kt>double</span> <span class=n>noiseAmplitude</span><span class=p>,</span>
-                  <span class=kt>double</span> <span class=n>noiseFraction</span><span class=p>,</span>
-                  <span class=kt>int</span> <span class=n>extent</span><span class=p>[</span><span class=mi>6</span><span class=p>])</span>
-<span class=p>{</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageNoiseSource</span><span class=o>&gt;</span> <span class=n>shotNoiseSource</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageNoiseSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageNoiseSource</span><span class=o>&gt;</span> <span class=n>shotNoiseSource</span><span class=p>;</span>
 </span>  <span class=n>shotNoiseSource</span><span class=o>-&gt;</span><span class=n>SetWholeExtent</span><span class=p>(</span><span class=n>extent</span><span class=p>);</span>
   <span class=n>shotNoiseSource</span><span class=o>-&gt;</span><span class=n>SetMinimum</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
   <span class=n>shotNoiseSource</span><span class=o>-&gt;</span><span class=n>SetMaximum</span><span class=p>(</span><span class=mf>1.0</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageThreshold</span><span class=o>&gt;</span> <span class=n>shotNoiseThresh1</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageThreshold</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageThreshold</span><span class=o>&gt;</span> <span class=n>shotNoiseThresh1</span><span class=p>;</span>
 </span>  <span class=n>shotNoiseThresh1</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>shotNoiseSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>shotNoiseThresh1</span><span class=o>-&gt;</span><span class=n>ThresholdByLower</span><span class=p>(</span><span class=mf>1.0</span> <span class=o>-</span> <span class=n>noiseFraction</span><span class=p>);</span>
   <span class=n>shotNoiseThresh1</span><span class=o>-&gt;</span><span class=n>SetInValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
   <span class=n>shotNoiseThresh1</span><span class=o>-&gt;</span><span class=n>SetOutValue</span><span class=p>(</span><span class=n>noiseAmplitude</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageThreshold</span><span class=o>&gt;</span> <span class=n>shotNoiseThresh2</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageThreshold</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageThreshold</span><span class=o>&gt;</span> <span class=n>shotNoiseThresh2</span><span class=p>;</span>
 </span>  <span class=n>shotNoiseThresh2</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>shotNoiseSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>shotNoiseThresh2</span><span class=o>-&gt;</span><span class=n>ThresholdByLower</span><span class=p>(</span><span class=n>noiseFraction</span><span class=p>);</span>
   <span class=n>shotNoiseThresh2</span><span class=o>-&gt;</span><span class=n>SetInValue</span><span class=p>(</span><span class=mf>1.0</span> <span class=o>-</span> <span class=n>noiseAmplitude</span><span class=p>);</span>
   <span class=n>shotNoiseThresh2</span><span class=o>-&gt;</span><span class=n>SetOutValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMathematics</span><span class=o>&gt;</span> <span class=n>shotNoise</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMathematics</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMathematics</span><span class=o>&gt;</span> <span class=n>shotNoise</span><span class=p>;</span>
 </span>  <span class=n>shotNoise</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>shotNoiseThresh1</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>shotNoise</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>shotNoiseThresh2</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>shotNoise</span><span class=o>-&gt;</span><span class=n>SetOperationToAdd</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMathematics</span><span class=o>&gt;</span> <span class=n>add</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMathematics</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMathematics</span><span class=o>&gt;</span> <span class=n>add</span><span class=p>;</span>
 </span>  <span class=n>add</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>inputImage</span><span class=p>);</span>
   <span class=n>add</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>shotNoise</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>add</span><span class=o>-&gt;</span><span class=n>SetOperationToAdd</span><span class=p>();</span>
   <span class=n>add</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
   <span class=n>outputImage</span><span class=o>-&gt;</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>add</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
 <span class=p>}</span>
-<span class=p>}</span>
+<span class=p>}</span> <span class=c1>// namespace</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span> <span class=s>3.3</span> <span class=s>FATAL_ERROR</span><span class=p>)</span>
 
 <span class=nb>project</span><span class=p>(</span><span class=s>HybridMedianComparison</span><span class=p>)</span>

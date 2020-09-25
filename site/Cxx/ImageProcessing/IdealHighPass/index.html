@@ -82,123 +82,108 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageExtractComponents.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageFFT.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageIdealHighPass.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageMapper3D.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageMapToWindowLevelColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageMapper3D.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageProperty.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageRFFT.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageReader2.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageReader2Factory.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageRFFT.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkInteractorStyleImage.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span>
- <span class=kt>int</span> <span class=nf>main</span> <span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span> <span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
   <span class=c1>// Verify input arguments</span>
-  <span class=k>if</span> <span class=p>(</span> <span class=n>argc</span> <span class=o>&lt;</span> <span class=mi>2</span> <span class=p>)</span>
+  <span class=k>if</span> <span class=p>(</span><span class=n>argc</span> <span class=o>&lt;</span> <span class=mi>2</span><span class=p>)</span>
   <span class=p>{</span>
-    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Usage: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
-              <span class=o>&lt;&lt;</span> <span class=s>&quot; Filename&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Usage: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; Filename e.g. fullhead15.png&quot;</span>
+              <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=k>return</span> <span class=n>EXIT_FAILURE</span><span class=p>;</span>
   <span class=p>}</span>
 
   <span class=c1>// Read the image</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageReader2Factory</span><span class=o>&gt;</span> <span class=n>readerFactory</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageReader2Factory</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageReader2Factory</span><span class=o>&gt;</span> <span class=n>readerFactory</span><span class=p>;</span>
 </span><span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageReader2</span><span class=o>&gt;</span> <span class=n>reader</span><span class=p>;</span>
-</span>  <span class=n>reader</span><span class=p>.</span><span class=n>TakeReference</span><span class=p>(</span>
-    <span class=n>readerFactory</span><span class=o>-&gt;</span><span class=n>CreateImageReader2</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]));</span>
+</span>  <span class=n>reader</span><span class=p>.</span><span class=n>TakeReference</span><span class=p>(</span><span class=n>readerFactory</span><span class=o>-&gt;</span><span class=n>CreateImageReader2</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]));</span>
   <span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
   <span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageFFT</span><span class=o>&gt;</span> <span class=n>fft</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageFFT</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageFFT</span><span class=o>&gt;</span> <span class=n>fft</span><span class=p>;</span>
 </span>  <span class=n>fft</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageIdealHighPass</span><span class=o>&gt;</span> <span class=n>idealHighPass</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageIdealHighPass</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageIdealHighPass</span><span class=o>&gt;</span> <span class=n>idealHighPass</span><span class=p>;</span>
 </span>  <span class=n>idealHighPass</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>fft</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>idealHighPass</span><span class=o>-&gt;</span><span class=n>SetXCutOff</span><span class=p>(</span><span class=mf>0.1</span><span class=p>);</span>
   <span class=n>idealHighPass</span><span class=o>-&gt;</span><span class=n>SetYCutOff</span><span class=p>(</span><span class=mf>0.1</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageRFFT</span><span class=o>&gt;</span> <span class=n>idealRfft</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageRFFT</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageRFFT</span><span class=o>&gt;</span> <span class=n>idealRfft</span><span class=p>;</span>
 </span>  <span class=n>idealRfft</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>idealHighPass</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;</span> <span class=n>idealReal</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;</span> <span class=n>idealReal</span><span class=p>;</span>
 </span>  <span class=n>idealReal</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>idealRfft</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>idealReal</span><span class=o>-&gt;</span><span class=n>SetComponents</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageButterworthHighPass</span><span class=o>&gt;</span> <span class=n>butterworthHighPass</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageButterworthHighPass</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageButterworthHighPass</span><span class=o>&gt;</span> <span class=n>butterworthHighPass</span><span class=p>;</span>
 </span>  <span class=n>butterworthHighPass</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>fft</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>butterworthHighPass</span><span class=o>-&gt;</span><span class=n>SetXCutOff</span><span class=p>(</span><span class=mf>0.1</span><span class=p>);</span>
   <span class=n>butterworthHighPass</span><span class=o>-&gt;</span><span class=n>SetYCutOff</span><span class=p>(</span><span class=mf>0.1</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageRFFT</span><span class=o>&gt;</span> <span class=n>butterworthRfft</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageRFFT</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageRFFT</span><span class=o>&gt;</span> <span class=n>butterworthRfft</span><span class=p>;</span>
 </span>  <span class=n>butterworthRfft</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>butterworthHighPass</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;</span> <span class=n>butterworthReal</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;</span> <span class=n>butterworthReal</span><span class=p>;</span>
 </span>  <span class=n>butterworthReal</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>butterworthRfft</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>butterworthReal</span><span class=o>-&gt;</span><span class=n>SetComponents</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 
   <span class=c1>// Create actors</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMapToWindowLevelColors</span><span class=o>&gt;</span> <span class=n>idealColor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMapToWindowLevelColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMapToWindowLevelColors</span><span class=o>&gt;</span> <span class=n>idealColor</span><span class=p>;</span>
 </span>  <span class=n>idealColor</span><span class=o>-&gt;</span><span class=n>SetWindow</span><span class=p>(</span><span class=mi>500</span><span class=p>);</span>
   <span class=n>idealColor</span><span class=o>-&gt;</span><span class=n>SetLevel</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
   <span class=n>idealColor</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>idealReal</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>idealActor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>idealActor</span><span class=p>;</span>
 </span>  <span class=n>idealActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>idealColor</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>idealActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInterpolationTypeToNearest</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMapToWindowLevelColors</span><span class=o>&gt;</span> <span class=n>butterworthColor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMapToWindowLevelColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMapToWindowLevelColors</span><span class=o>&gt;</span> <span class=n>butterworthColor</span><span class=p>;</span>
 </span>  <span class=n>butterworthColor</span><span class=o>-&gt;</span><span class=n>SetWindow</span><span class=p>(</span><span class=mi>500</span><span class=p>);</span>
   <span class=n>butterworthColor</span><span class=o>-&gt;</span><span class=n>SetLevel</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
   <span class=n>butterworthColor</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>butterworthReal</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>butterworthActor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span>  <span class=n>butterworthActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>butterworthColor</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>butterworthActor</span><span class=p>;</span>
+</span>  <span class=n>butterworthActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span>
+      <span class=n>butterworthColor</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>butterworthActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInterpolationTypeToNearest</span><span class=p>();</span>
 
   <span class=c1>// Setup renderers</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>idealRenderer</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>idealRenderer</span><span class=p>;</span>
 </span>  <span class=n>idealRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>);</span>
   <span class=n>idealRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>idealActor</span><span class=p>);</span>
   <span class=n>idealRenderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
   <span class=n>idealRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>butterworthRenderer</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>butterworthRenderer</span><span class=p>;</span>
 </span>  <span class=n>butterworthRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>);</span>
   <span class=n>butterworthRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>butterworthActor</span><span class=p>);</span>
   <span class=n>butterworthRenderer</span><span class=o>-&gt;</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>idealRenderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>());</span>
-  <span class=n>butterworthRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightSlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>butterworthRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightSlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>300</span><span class=p>);</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;IdealHighPass&quot;</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>idealRenderer</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>butterworthRenderer</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleImage</span><span class=o>&gt;</span> <span class=n>style</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleImage</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleImage</span><span class=o>&gt;</span> <span class=n>style</span><span class=p>;</span>
 </span>
   <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=n>style</span><span class=p>);</span>
 
