@@ -95,6 +95,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageShiftScale.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkMaskPoints.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPointData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkProperty.h&gt;</span><span class=cp></span>
@@ -103,9 +104,11 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span>
+<span class=cp>#include</span> <span class=cpf>&lt;array&gt;</span><span class=cp></span>
+
 <span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span> <span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>namedColors</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>namedColors</span><span class=p>;</span>
 </span>  <span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;Bkg&quot;</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.3</span><span class=p>,</span> <span class=mf>0.6</span><span class=p>);</span>
 
 <span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span> <span class=n>originalImage</span><span class=p>;</span>
@@ -115,14 +118,27 @@ function registerListener(event, func) {
   <span class=kt>double</span> <span class=n>scaleFactor</span> <span class=o>=</span> <span class=mf>1.0</span><span class=p>;</span>
   <span class=k>if</span> <span class=p>(</span><span class=n>argc</span> <span class=o>&lt;</span> <span class=mi>2</span><span class=p>)</span>
   <span class=p>{</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>4</span><span class=o>&gt;</span> <span class=n>drawColor1</span><span class=p>{</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>};</span>
+    <span class=k>auto</span> <span class=n>color1</span> <span class=o>=</span> <span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor4ub</span><span class=p>(</span><span class=s>&quot;Gray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>();</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>4</span><span class=o>&gt;</span> <span class=n>drawColor2</span><span class=p>{</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>};</span>
+    <span class=k>auto</span> <span class=n>color2</span> <span class=o>=</span> <span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor4ub</span><span class=p>(</span><span class=s>&quot;Snow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>();</span>
+    <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>4</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+    <span class=p>{</span>
+      <span class=n>drawColor1</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>color1</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+      <span class=n>drawColor2</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>color2</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+    <span class=p>}</span>
+    <span class=c1>// Set the alpha to 0 (actually alpha doesn&#39;t seem to be used)</span>
+    <span class=n>drawColor1</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+    <span class=n>drawColor2</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+
     <span class=c1>// Create an image</span>
-<span class=hll>    <span class=k>auto</span> <span class=n>imageSource</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCanvasSource2D</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageCanvasSource2D</span><span class=o>&gt;</span> <span class=n>imageSource</span><span class=p>;</span>
 </span>    <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetScalarTypeToDouble</span><span class=p>();</span>
     <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetNumberOfScalarComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
     <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>6</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>6</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
-    <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetDrawColor</span><span class=p>(</span><span class=mi>127</span><span class=p>,</span> <span class=mi>127</span><span class=p>,</span> <span class=mi>127</span><span class=p>);</span> <span class=c1>// Gray</span>
+    <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetDrawColor</span><span class=p>(</span><span class=n>drawColor1</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
     <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>FillBox</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>6</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>6</span><span class=p>);</span>
-    <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetDrawColor</span><span class=p>(</span><span class=mi>255</span><span class=p>,</span> <span class=mi>255</span><span class=p>,</span> <span class=mi>255</span><span class=p>);</span> <span class=c1>// White</span>
+    <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetDrawColor</span><span class=p>(</span><span class=n>drawColor2</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
     <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>FillBox</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>4</span><span class=p>);</span>
     <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
@@ -136,16 +152,16 @@ function registerListener(event, func) {
   <span class=k>else</span>
   <span class=p>{</span>
     <span class=c1>// Read an image</span>
-<span class=hll>    <span class=k>auto</span> <span class=n>readerFactory</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageReader2Factory</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageReader2Factory</span><span class=o>&gt;</span> <span class=n>readerFactory</span><span class=p>;</span>
 </span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageReader2</span><span class=o>&gt;</span> <span class=n>reader</span><span class=p>;</span>
 </span>    <span class=n>reader</span><span class=p>.</span><span class=n>TakeReference</span><span class=p>(</span><span class=n>readerFactory</span><span class=o>-&gt;</span><span class=n>CreateImageReader2</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]));</span>
     <span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
 
     <span class=c1>// Convert to HSV and extract the Value</span>
-<span class=hll>    <span class=k>auto</span> <span class=n>hsvFilter</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageRGBToHSV</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageRGBToHSV</span><span class=o>&gt;</span> <span class=n>hsvFilter</span><span class=p>;</span>
 </span>    <span class=n>hsvFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>    <span class=k>auto</span> <span class=n>extractValue</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;</span> <span class=n>extractValue</span><span class=p>;</span>
 </span>    <span class=n>extractValue</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>hsvFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
     <span class=n>extractValue</span><span class=o>-&gt;</span><span class=n>SetComponents</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
     <span class=n>extractValue</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
@@ -160,13 +176,13 @@ function registerListener(event, func) {
   <span class=p>}</span>
 
   <span class=c1>// Compute the gradient of the Value</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>gradientFilter</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageGradient</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageGradient</span><span class=o>&gt;</span> <span class=n>gradientFilter</span><span class=p>;</span>
 </span>  <span class=n>gradientFilter</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>image</span><span class=p>);</span>
   <span class=n>gradientFilter</span><span class=o>-&gt;</span><span class=n>SetDimensionality</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
   <span class=n>gradientFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
   <span class=c1>// Extract the x component of the gradient</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>extractXFilter</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;</span> <span class=n>extractXFilter</span><span class=p>;</span>
 </span>  <span class=n>extractXFilter</span><span class=o>-&gt;</span><span class=n>SetComponents</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
   <span class=n>extractXFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>gradientFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
@@ -176,18 +192,18 @@ function registerListener(event, func) {
   <span class=n>extractXFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>(</span><span class=n>xRange</span><span class=p>);</span>
 
   <span class=c1>// Gradient could be negative, so take the absolute value</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>imageAbsX</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMathematics</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMathematics</span><span class=o>&gt;</span> <span class=n>imageAbsX</span><span class=p>;</span>
 </span>  <span class=n>imageAbsX</span><span class=o>-&gt;</span><span class=n>SetOperationToAbsoluteValue</span><span class=p>();</span>
   <span class=n>imageAbsX</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>extractXFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
   <span class=c1>// Scale the output (0,255)</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>shiftScaleX</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageShiftScale</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageShiftScale</span><span class=o>&gt;</span> <span class=n>shiftScaleX</span><span class=p>;</span>
 </span>  <span class=n>shiftScaleX</span><span class=o>-&gt;</span><span class=n>SetOutputScalarTypeToUnsignedChar</span><span class=p>();</span>
   <span class=n>shiftScaleX</span><span class=o>-&gt;</span><span class=n>SetScale</span><span class=p>(</span><span class=mi>255</span> <span class=o>/</span> <span class=n>xRange</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
   <span class=n>shiftScaleX</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>imageAbsX</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
   <span class=c1>// Extract the y component of the gradient</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>extractYFilter</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;</span> <span class=n>extractYFilter</span><span class=p>;</span>
 </span>  <span class=n>extractYFilter</span><span class=o>-&gt;</span><span class=n>SetComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
   <span class=n>extractYFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>gradientFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
@@ -196,23 +212,23 @@ function registerListener(event, func) {
   <span class=n>extractYFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>(</span><span class=n>yRange</span><span class=p>);</span>
 
   <span class=c1>// Gradient could be negative, so take the absolute value</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>imageAbsY</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMathematics</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMathematics</span><span class=o>&gt;</span> <span class=n>imageAbsY</span><span class=p>;</span>
 </span>  <span class=n>imageAbsY</span><span class=o>-&gt;</span><span class=n>SetOperationToAbsoluteValue</span><span class=p>();</span>
   <span class=n>imageAbsY</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>extractYFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
   <span class=c1>// Scale the output (0,255)</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>shiftScaleY</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageShiftScale</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageShiftScale</span><span class=o>&gt;</span> <span class=n>shiftScaleY</span><span class=p>;</span>
 </span>  <span class=n>shiftScaleY</span><span class=o>-&gt;</span><span class=n>SetOutputScalarTypeToUnsignedChar</span><span class=p>();</span>
   <span class=n>shiftScaleY</span><span class=o>-&gt;</span><span class=n>SetScale</span><span class=p>(</span><span class=mi>255</span> <span class=o>/</span> <span class=n>yRange</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
   <span class=n>shiftScaleY</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>imageAbsY</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
   <span class=c1>// Create the Glyphs for the gradient</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>arrowSource</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkArrowSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkArrowSource</span><span class=o>&gt;</span> <span class=n>arrowSource</span><span class=p>;</span>
 </span>
   <span class=c1>// The gradient is 2D but Glyph3D needs 3D vectors. Add a 0 z-component</span>
   <span class=c1>// Also, ImageGradient generates a 2-component scalar for the</span>
   <span class=c1>// gradient, but Glyph3D needs normals or vectors</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>zeroes</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>&gt;</span> <span class=n>zeroes</span><span class=p>;</span>
 </span>  <span class=n>zeroes</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
   <span class=n>zeroes</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Zero&quot;</span><span class=p>);</span>
   <span class=n>zeroes</span><span class=o>-&gt;</span><span class=n>SetNumberOfTuples</span><span class=p>(</span><span class=n>gradientFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span>
@@ -225,8 +241,7 @@ function registerListener(event, func) {
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>scalarName</span> <span class=o>=</span>
       <span class=n>gradientFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetName</span><span class=p>();</span>
 
-  <span class=k>auto</span> <span class=n>scalarsToVectors</span> <span class=o>=</span>
-<span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkFieldDataToAttributeDataFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFieldDataToAttributeDataFilter</span><span class=o>&gt;</span> <span class=n>scalarsToVectors</span><span class=p>;</span>
 </span>  <span class=n>scalarsToVectors</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>gradientFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>scalarsToVectors</span><span class=o>-&gt;</span><span class=n>SetInputFieldToPointDataField</span><span class=p>();</span>
   <span class=n>scalarsToVectors</span><span class=o>-&gt;</span><span class=n>SetOutputAttributeDataToPointData</span><span class=p>();</span>
@@ -235,12 +250,12 @@ function registerListener(event, func) {
   <span class=n>scalarsToVectors</span><span class=o>-&gt;</span><span class=n>SetVectorComponent</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=s>&quot;Zero&quot;</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
 
   <span class=c1>// Select a small percentage of the gradients</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>maskPoints</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkMaskPoints</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMaskPoints</span><span class=o>&gt;</span> <span class=n>maskPoints</span><span class=p>;</span>
 </span>  <span class=n>maskPoints</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>scalarsToVectors</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>maskPoints</span><span class=o>-&gt;</span><span class=n>RandomModeOff</span><span class=p>();</span>
   <span class=n>maskPoints</span><span class=o>-&gt;</span><span class=n>SetOnRatio</span><span class=p>(</span><span class=n>onRatio</span><span class=p>);</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>vectorGradientGlyph</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkGlyph3D</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGlyph3D</span><span class=o>&gt;</span> <span class=n>vectorGradientGlyph</span><span class=p>;</span>
 </span>  <span class=n>vectorGradientGlyph</span><span class=o>-&gt;</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>arrowSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>vectorGradientGlyph</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>maskPoints</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>vectorGradientGlyph</span><span class=o>-&gt;</span><span class=n>SetScaleModeToScaleByVector</span><span class=p>();</span>
@@ -255,57 +270,56 @@ function registerListener(event, func) {
   <span class=kt>double</span> <span class=n>yGradientViewport</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.75</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>};</span>
   <span class=kt>double</span> <span class=n>vectorGradientViewport</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=mf>0.75</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>};</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>vectorGradientMapper</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>vectorGradientMapper</span><span class=p>;</span>
 </span>  <span class=n>vectorGradientMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span>
       <span class=n>vectorGradientGlyph</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>vectorGradientMapper</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>vectorGradientActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>vectorGradientActor</span><span class=p>;</span>
 </span>  <span class=n>vectorGradientActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>vectorGradientMapper</span><span class=p>);</span>
   <span class=n>vectorGradientActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
       <span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// Create a renderer, render window, and interactor</span>
-<span class=hll>  <span class=c1>// vtkSmartPointer&lt;vtkCamera&gt; sharedCamera =</span>
-</span><span class=hll>  <span class=c1>//  vtkSmartPointer&lt;vtkCamera&gt;::New();</span>
-</span><span class=hll>  <span class=k>auto</span> <span class=n>originalRenderer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=c1>// vtkNew&lt;vtkCamera&gt; sharedCamera;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>originalRenderer</span><span class=p>;</span>
 </span>  <span class=n>originalRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>originalViewport</span><span class=p>);</span>
   <span class=n>originalRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Bkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>xGradientRenderer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>xGradientRenderer</span><span class=p>;</span>
 </span>  <span class=n>xGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>xGradientViewport</span><span class=p>);</span>
   <span class=n>xGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Bkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>yGradientRenderer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>yGradientRenderer</span><span class=p>;</span>
 </span>  <span class=n>yGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>yGradientViewport</span><span class=p>);</span>
   <span class=n>yGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Bkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>vectorGradientRenderer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>vectorGradientRenderer</span><span class=p>;</span>
 </span>  <span class=n>vectorGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>vectorGradientViewport</span><span class=p>);</span>
   <span class=n>vectorGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span>
       <span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Bkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>1000</span><span class=p>,</span> <span class=mi>250</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>originalRenderer</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>xGradientRenderer</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>yGradientRenderer</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>vectorGradientRenderer</span><span class=p>);</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;Gradient&quot;</span><span class=p>);</span>
 
-  <span class=k>auto</span> <span class=n>renderWindowInteractor</span> <span class=o>=</span>
-<span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span>  <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>originalActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>originalActor</span><span class=p>;</span>
 </span>  <span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>originalImage</span><span class=p>);</span>
   <span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>InterpolateOff</span><span class=p>();</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>xGradientActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>xGradientActor</span><span class=p>;</span>
 </span>  <span class=n>xGradientActor</span><span class=o>-&gt;</span><span class=n>InterpolateOff</span><span class=p>();</span>
 
   <span class=n>xGradientActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>shiftScaleX</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>yGradientActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>yGradientActor</span><span class=p>;</span>
 </span>
   <span class=n>yGradientActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>shiftScaleY</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>yGradientActor</span><span class=o>-&gt;</span><span class=n>InterpolateOff</span><span class=p>();</span>
