@@ -83,22 +83,25 @@ function registerListener(event, func) {
 <span class=c1>//</span>
 <span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageActor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageData.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageMapper3D.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageMapToColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageMapper3D.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageProperty.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkInteractorStyleImage.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkLookupTable.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span>
 <span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
+</span>
   <span class=c1>// Create a &quot;grayscale&quot; 16x16 image, 1-component pixels of type &quot;double&quot;</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span> <span class=n>image</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span>  <span class=kt>int</span> <span class=n>imageExtent</span><span class=p>[</span><span class=mi>6</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span> <span class=p>};</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span> <span class=n>image</span><span class=p>;</span>
+</span>  <span class=kt>int</span> <span class=n>imageExtent</span><span class=p>[</span><span class=mi>6</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=mi>0</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>};</span>
   <span class=n>image</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=n>imageExtent</span><span class=p>);</span>
   <span class=n>image</span><span class=o>-&gt;</span><span class=n>AllocateScalars</span><span class=p>(</span><span class=n>VTK_DOUBLE</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>
 
@@ -115,41 +118,36 @@ function registerListener(event, func) {
   <span class=p>}</span>
 
   <span class=c1>// Map the scalar values in the image to colors with a lookup table:</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>lookupTable</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>lookupTable</span><span class=p>;</span>
 </span>  <span class=n>lookupTable</span><span class=o>-&gt;</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=mi>256</span><span class=p>);</span>
   <span class=n>lookupTable</span><span class=o>-&gt;</span><span class=n>SetRange</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>255.0</span><span class=p>);</span>
   <span class=n>lookupTable</span><span class=o>-&gt;</span><span class=n>Build</span><span class=p>();</span>
 
   <span class=c1>// Pass the original image and the lookup table to a filter to create</span>
   <span class=c1>// a color image:</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMapToColors</span><span class=o>&gt;</span> <span class=n>scalarValuesToColors</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMapToColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMapToColors</span><span class=o>&gt;</span> <span class=n>scalarValuesToColors</span><span class=p>;</span>
 </span>  <span class=n>scalarValuesToColors</span><span class=o>-&gt;</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>lookupTable</span><span class=p>);</span>
   <span class=n>scalarValuesToColors</span><span class=o>-&gt;</span><span class=n>PassAlphaToOutputOn</span><span class=p>();</span>
   <span class=n>scalarValuesToColors</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>image</span><span class=p>);</span>
 
   <span class=c1>// Create an image actor</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>imageActor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>imageActor</span><span class=p>;</span>
 </span>  <span class=n>imageActor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span>
-    <span class=n>scalarValuesToColors</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+      <span class=n>scalarValuesToColors</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>imageActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInterpolationTypeToNearest</span><span class=p>();</span>
 
   <span class=c1>// Visualize</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span><span class=p>;</span>
 </span>  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>imageActor</span><span class=p>);</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
+  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ImageMapToColors&quot;</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleImage</span><span class=o>&gt;</span> <span class=n>style</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleImage</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleImage</span><span class=o>&gt;</span> <span class=n>style</span><span class=p>;</span>
 </span>
   <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=n>style</span><span class=p>);</span>
 
@@ -165,6 +163,7 @@ function registerListener(event, func) {
 <span class=nb>project</span><span class=p>(</span><span class=s>ImageMapToColors</span><span class=p>)</span>
 
 <span class=nb>find_package</span><span class=p>(</span><span class=s>VTK</span> <span class=s>COMPONENTS</span> 
+  <span class=s>vtkCommonColor</span>
   <span class=s>vtkCommonCore</span>
   <span class=s>vtkCommonDataModel</span>
   <span class=s>vtkImagingCore</span>
