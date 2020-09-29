@@ -87,7 +87,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Set the background color.</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>&quot;BkgColor&quot;</span><span class=p>,</span> <span class=p>[</span><span class=mi>60</span><span class=p>,</span> <span class=mi>93</span><span class=p>,</span> <span class=mi>144</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;BkgColor&#39;</span><span class=p>,</span> <span class=p>[</span><span class=mi>60</span><span class=p>,</span> <span class=mi>93</span><span class=p>,</span> <span class=mi>144</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
 
     <span class=c1># Read in an image and compute a luminance value. The image is extracted</span>
 <span class=hll>    <span class=c1># as a set of polygons (vtkImageDataGeometryFilter). We then will</span>
@@ -126,7 +126,7 @@ function registerListener(event, func) {
     <span class=c1># Add the actors to the renderer, set the background and size.</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;BkgColor&quot;</span><span class=p>))</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BkgColor&#39;</span><span class=p>))</span>
     <span class=c1># ren.GetActiveCamera().Azimuth(20)</span>
     <span class=c1># ren.GetActiveCamera().Elevation(30)</span>
     <span class=c1># ren.ResetCameraClippingRange()</span>
@@ -137,6 +137,7 @@ function registerListener(event, func) {
     <span class=n>ren</span><span class=o>.</span><span class=n>ResetCameraClippingRange</span><span class=p>()</span>
 
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>512</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ImageWarp&#39;</span><span class=p>)</span>
 
     <span class=c1># Render the image.</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
