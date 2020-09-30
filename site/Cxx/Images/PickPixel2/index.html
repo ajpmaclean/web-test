@@ -87,6 +87,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageViewer2.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkInteractorStyleImage.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkMath.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPointData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPropPicker.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
@@ -96,6 +98,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTIFFReader.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTextProperty.h&gt;</span><span class=cp></span>
 </span>
+<span class=k>namespace</span> <span class=p>{</span>
+
 <span class=c1>// Template for image value reading</span>
 <span class=k>template</span> <span class=o>&lt;</span><span class=k>typename</span> <span class=n>T</span><span class=o>&gt;</span>
 <span class=hll><span class=kt>void</span> <span class=n>vtkValueMessageTemplate</span><span class=p>(</span><span class=n>vtkImageData</span><span class=o>*</span> <span class=n>image</span><span class=p>,</span> <span class=kt>int</span><span class=o>*</span> <span class=n>position</span><span class=p>,</span>
@@ -248,25 +252,31 @@ function registerListener(event, func) {
 </span><span class=hll>  <span class=n>vtkCornerAnnotation</span><span class=o>*</span> <span class=n>Annotation</span><span class=p>;</span> <span class=c1>// Pointer to the annotation</span>
 </span><span class=p>};</span>
 
-<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span> <span class=n>argv</span><span class=p>[])</span>
+<span class=p>}</span> <span class=c1>// namespace</span>
+
+<span class=kt>int</span> <span class=n>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span> <span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>imageViewer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageViewer2</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
+</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageViewer2</span><span class=o>&gt;</span> <span class=n>imageViewer</span><span class=p>;</span>
 </span>
   <span class=c1>// Verify input arguments</span>
   <span class=k>if</span> <span class=p>(</span><span class=n>argc</span> <span class=o>!=</span> <span class=mi>2</span><span class=p>)</span>
   <span class=p>{</span>
-    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; Required parameters: (tif) Filename&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+              <span class=o>&lt;&lt;</span> <span class=s>&quot; Required parameters: (tif) Filename e.g. ColorCells.tif&quot;</span>
+              <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span>
               <span class=o>&lt;&lt;</span> <span class=s>&quot;missing...&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;A noise image will be created!&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
     <span class=c1>// create a noise image</span>
-<span class=hll>    <span class=k>auto</span> <span class=n>noiseSource</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageNoiseSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageNoiseSource</span><span class=o>&gt;</span> <span class=n>noiseSource</span><span class=p>;</span>
 </span>    <span class=n>noiseSource</span><span class=o>-&gt;</span><span class=n>SetWholeExtent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>512</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>512</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
     <span class=n>noiseSource</span><span class=o>-&gt;</span><span class=n>SetMinimum</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
     <span class=n>noiseSource</span><span class=o>-&gt;</span><span class=n>SetMaximum</span><span class=p>(</span><span class=mf>65535.0</span><span class=p>);</span>
 
     <span class=c1>// cast noise image to unsigned short</span>
-<span class=hll>    <span class=k>auto</span> <span class=n>imageCast</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>imageCast</span><span class=p>;</span>
 </span>    <span class=n>imageCast</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>noiseSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
     <span class=n>imageCast</span><span class=o>-&gt;</span><span class=n>SetOutputScalarTypeToUnsignedShort</span><span class=p>();</span>
     <span class=n>imageCast</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
@@ -280,7 +290,7 @@ function registerListener(event, func) {
     <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>inputFilename</span> <span class=o>=</span> <span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
 
     <span class=c1>// Read the image</span>
-<span class=hll>    <span class=k>auto</span> <span class=n>tiffReader</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTIFFReader</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTIFFReader</span><span class=o>&gt;</span> <span class=n>tiffReader</span><span class=p>;</span>
 </span>    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>tiffReader</span><span class=o>-&gt;</span><span class=n>CanReadFile</span><span class=p>(</span><span class=n>inputFilename</span><span class=p>.</span><span class=n>c_str</span><span class=p>()))</span>
     <span class=p>{</span>
       <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;: Error reading file &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>inputFilename</span>
@@ -294,7 +304,7 @@ function registerListener(event, func) {
   <span class=p>}</span>
 
   <span class=c1>// Picker to pick pixels</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>propPicker</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPropPicker</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPropPicker</span><span class=o>&gt;</span> <span class=n>propPicker</span><span class=p>;</span>
 </span>  <span class=n>propPicker</span><span class=o>-&gt;</span><span class=n>PickFromListOn</span><span class=p>();</span>
 
   <span class=c1>// Give the picker a prop to pick</span>
@@ -305,31 +315,32 @@ function registerListener(event, func) {
   <span class=n>imageActor</span><span class=o>-&gt;</span><span class=n>InterpolateOff</span><span class=p>();</span>
 
   <span class=c1>// Visualize</span>
-  <span class=k>auto</span> <span class=n>renderWindowInteractor</span> <span class=o>=</span>
-<span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span>  <span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>SetupInteractor</span><span class=p>(</span><span class=n>renderWindowInteractor</span><span class=p>);</span>
   <span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>);</span>
+  <span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;PickPixel2&quot;</span><span class=p>);</span>
 
 <span class=hll>  <span class=n>vtkRenderer</span><span class=o>*</span> <span class=n>renderer</span> <span class=o>=</span> <span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>();</span>
 </span>  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GradientBackgroundOn</span><span class=p>();</span>
-  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=mf>0.6</span><span class=p>,</span> <span class=mf>0.6</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>);</span>
-  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground2</span><span class=p>(</span><span class=mf>0.3</span><span class=p>,</span> <span class=mf>0.3</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>);</span>
+  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkSlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightSlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// Annotate the image with window/level and mouse over pixel</span>
   <span class=c1>// information</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>cornerAnnotation</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkCornerAnnotation</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCornerAnnotation</span><span class=o>&gt;</span> <span class=n>cornerAnnotation</span><span class=p>;</span>
 </span>  <span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>SetLinearFontScaleFactor</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
   <span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>SetNonlinearFontScaleFactor</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
   <span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>SetMaximumFontSize</span><span class=p>(</span><span class=mi>20</span><span class=p>);</span>
   <span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=s>&quot;Off Image&quot;</span><span class=p>);</span>
   <span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=s>&quot;&lt;window&gt;</span><span class=se>\n</span><span class=s>&lt;level&gt;&quot;</span><span class=p>);</span>
-  <span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>GetTextProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
+  <span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>GetTextProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightGoldenrodYellow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>cornerAnnotation</span><span class=p>);</span>
 
   <span class=c1>// Callback listens to MouseMoveEvents invoked by the interactor&#39;s style</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>callback</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageInteractionCallback</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageInteractionCallback</span><span class=o>&gt;</span> <span class=n>callback</span><span class=p>;</span>
 </span>  <span class=n>callback</span><span class=o>-&gt;</span><span class=n>SetViewer</span><span class=p>(</span><span class=n>imageViewer</span><span class=p>);</span>
   <span class=n>callback</span><span class=o>-&gt;</span><span class=n>SetAnnotation</span><span class=p>(</span><span class=n>cornerAnnotation</span><span class=p>);</span>
   <span class=n>callback</span><span class=o>-&gt;</span><span class=n>SetPicker</span><span class=p>(</span><span class=n>propPicker</span><span class=p>);</span>
@@ -354,6 +365,7 @@ function registerListener(event, func) {
 <span class=nb>project</span><span class=p>(</span><span class=s>PickPixel2</span><span class=p>)</span>
 
 <span class=nb>find_package</span><span class=p>(</span><span class=s>VTK</span> <span class=s>COMPONENTS</span> 
+  <span class=s>vtkCommonColor</span>
   <span class=s>vtkCommonCore</span>
   <span class=s>vtkCommonDataModel</span>
   <span class=s>vtkIOImage</span>
