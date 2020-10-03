@@ -81,7 +81,7 @@ function registerListener(event, func) {
 <span class=c1># Example of how to use Parallel Coordinates View to plot and compare</span>
 <span class=c1># data set attributes, and then to use selections in the parallel coordinates</span>
 <span class=c1># view to extract and view data points associated with those selections</span>
-<span class=c1># Use the &quot;u&quot; character to toggle between &quot;inspect modes&quot; on the parallel</span>
+<span class=c1># Use the &#39;u&#39; character to toggle between &#39;inspect modes&#39; on the parallel</span>
 <span class=c1># coordinates view (i.e. between selecting data and manipulating axes)</span>
 <span class=c1># Note that no points will show up inside of the 3d box outline until you</span>
 <span class=c1># select some lines/curves in the parallel coordinates view</span>
@@ -90,6 +90,8 @@ function registerListener(event, func) {
 </span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
     <span class=c1># Generate an image data set with multiple attribute arrays to probe and view</span>
 <span class=hll>    <span class=n>rt</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRTAnalyticSource</span><span class=p>()</span>
 </span>    <span class=n>rt</span><span class=o>.</span><span class=n>SetWholeExtent</span><span class=p>(</span><span class=o>-</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=o>-</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=o>-</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>
@@ -118,6 +120,8 @@ function registerListener(event, func) {
     <span class=n>rep</span><span class=o>.</span><span class=n>SetInputArrayToProcess</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=s1>&#39;BrownianVectors&#39;</span><span class=p>)</span>
     <span class=n>rep</span><span class=o>.</span><span class=n>SetUseCurves</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>  <span class=c1># set to 1 to use smooth curves</span>
     <span class=n>rep</span><span class=o>.</span><span class=n>SetLineOpacity</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
+    <span class=n>rep</span><span class=o>.</span><span class=n>SetAxisColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>))</span>
+    <span class=n>rep</span><span class=o>.</span><span class=n>SetLineColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
 
     <span class=c1># Set up the Parallel Coordinates View and hook in representation</span>
 <span class=hll>    <span class=n>view</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParallelCoordinatesView</span><span class=p>()</span>
@@ -144,20 +148,20 @@ function registerListener(event, func) {
     <span class=n>extract</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>annotationLink</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>(</span><span class=mi>2</span><span class=p>))</span>
 
     <span class=k>def</span> <span class=nf>update_render_windows</span><span class=p>(</span><span class=n>obj</span><span class=p>,</span> <span class=n>event</span><span class=p>):</span>
-        <span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>        Handle updating of RenderWindow since it&#39;s not a &quot;View&quot;</span>
+        <span class=sd>&#39;&#39;&#39;</span>
+<span class=sd>        Handle updating of RenderWindow since it&#39;s not a &#39;View&#39;</span>
 <span class=hll><span class=sd>        and so not covered by vtkViewUpdater</span>
 </span>
 <span class=sd>        :param obj:</span>
 <span class=sd>        :param event:</span>
 <span class=sd>        :return:</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        &#39;&#39;&#39;</span>
         <span class=c1># ren.ResetCamera()</span>
         <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
     <span class=c1># Set up callback to update 3d render window when selections are changed in</span>
     <span class=c1># parallel coordinates view</span>
-    <span class=n>annotationLink</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s2>&quot;AnnotationChangedEvent&quot;</span><span class=p>,</span> <span class=n>update_render_windows</span><span class=p>)</span>
+    <span class=n>annotationLink</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;AnnotationChangedEvent&#39;</span><span class=p>,</span> <span class=n>update_render_windows</span><span class=p>)</span>
 
     <span class=k>def</span> <span class=nf>toggle_inspectors</span><span class=p>(</span><span class=n>obj</span><span class=p>,</span> <span class=n>event</span><span class=p>):</span>
 
@@ -167,7 +171,7 @@ function registerListener(event, func) {
             <span class=n>view</span><span class=o>.</span><span class=n>SetInspectMode</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
 
     <span class=c1># Set up callback to toggle between inspect modes (manip axes &amp; select data)</span>
-    <span class=n>view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s2>&quot;UserEvent&quot;</span><span class=p>,</span> <span class=n>toggle_inspectors</span><span class=p>)</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;UserEvent&#39;</span><span class=p>,</span> <span class=n>toggle_inspectors</span><span class=p>)</span>
 
     <span class=c1># 3D outline of image data bounds</span>
 <span class=hll>    <span class=n>outline</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOutlineFilter</span><span class=p>()</span>
@@ -206,8 +210,11 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>outlineActor</span><span class=p>)</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>dataActor</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ParallelCoordinatesExtraction&#39;</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
@@ -215,6 +222,11 @@ function registerListener(event, func) {
 
     <span class=c1># Finalize parallel coordinates view and start interaction event loop</span>
     <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>300</span><span class=p>)</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ParallelCoordinatesExtraction&#39;</span><span class=p>)</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>GradientBackgroundOn</span><span class=p>()</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkBlue&#39;</span><span class=p>))</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>))</span>
+
     <span class=n>view</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
     <span class=n>view</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>

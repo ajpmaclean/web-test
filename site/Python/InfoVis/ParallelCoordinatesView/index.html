@@ -80,7 +80,7 @@ function registerListener(event, func) {
 
 <span class=c1># Example of how to use Parallel Coordinates View to plot and compare</span>
 <span class=c1># data set attributes.</span>
-<span class=c1># Use the &quot;u&quot; character to toggle between &quot;inspect modes&quot; on the parallel</span>
+<span class=c1># Use the &#39;u&#39; character to toggle between &#39;inspect modes&#39; on the parallel</span>
 <span class=c1># coordinates view (i.e. between selecting data and manipulating axes).</span>
 <span class=c1># Lines which are commented out show alternative options.</span>
 
@@ -88,6 +88,8 @@ function registerListener(event, func) {
 </span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
     <span class=c1># Generate an example image data set with multiple attribute arrays to probe</span>
     <span class=c1># and view.</span>
     <span class=c1># This is where you would put your reader instead of this rt-&gt;elev pipeline...</span>
@@ -119,6 +121,8 @@ function registerListener(event, func) {
 
     <span class=n>rep</span><span class=o>.</span><span class=n>SetUseCurves</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>  <span class=c1># set to 1 to use smooth curves</span>
     <span class=n>rep</span><span class=o>.</span><span class=n>SetLineOpacity</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
+    <span class=n>rep</span><span class=o>.</span><span class=n>SetAxisColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>))</span>
+    <span class=n>rep</span><span class=o>.</span><span class=n>SetLineColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
 
     <span class=c1># Set up the Parallel Coordinates View and hook in the Representation</span>
 <span class=hll>    <span class=n>view</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkParallelCoordinatesView</span><span class=p>()</span>
@@ -143,7 +147,7 @@ function registerListener(event, func) {
     <span class=n>view</span><span class=o>.</span><span class=n>SetBrushOperatorToReplace</span><span class=p>()</span>
 
     <span class=k>def</span> <span class=nf>ToggleInspectors</span><span class=p>(</span><span class=n>obj</span><span class=p>,</span> <span class=n>event</span><span class=p>):</span>
-        <span class=c1># Define the callback routine which toggles between &quot;Inspect Modes&quot;</span>
+        <span class=c1># Define the callback routine which toggles between &#39;Inspect Modes&#39;</span>
         <span class=k>if</span> <span class=n>view</span><span class=o>.</span><span class=n>GetInspectMode</span><span class=p>()</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
             <span class=n>view</span><span class=o>.</span><span class=n>SetInspectMode</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
@@ -151,10 +155,14 @@ function registerListener(event, func) {
 
     <span class=c1># Hook up the callback to toggle between inspect modes</span>
     <span class=c1># (manip axes &amp; select data)</span>
-    <span class=n>view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s2>&quot;UserEvent&quot;</span><span class=p>,</span> <span class=n>ToggleInspectors</span><span class=p>)</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;UserEvent&#39;</span><span class=p>,</span> <span class=n>ToggleInspectors</span><span class=p>)</span>
 
     <span class=c1># Set up render window</span>
     <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>300</span><span class=p>)</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ParallelCoordinatesView&#39;</span><span class=p>)</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>GradientBackgroundOn</span><span class=p>()</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkBlue&#39;</span><span class=p>))</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>))</span>
     <span class=n>view</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
     <span class=n>view</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
