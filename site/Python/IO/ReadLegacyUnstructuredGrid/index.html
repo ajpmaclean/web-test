@@ -88,7 +88,7 @@ function registerListener(event, func) {
     <span class=n>filename</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
     <span class=c1># Create the reader for the data.</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;Loading &quot;</span><span class=p>,</span> <span class=n>filename</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Loading &#39;</span><span class=p>,</span> <span class=n>filename</span><span class=p>)</span>
 <span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkUnstructuredGridReader</span><span class=p>()</span>
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filename</span><span class=p>)</span>
     <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
@@ -103,7 +103,7 @@ function registerListener(event, func) {
 <span class=hll>        <span class=n>cell</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGenericCell</span><span class=p>()</span>
 </span>        <span class=n>it</span><span class=o>.</span><span class=n>GetCell</span><span class=p>(</span><span class=n>cell</span><span class=p>)</span>
 <span class=hll>        <span class=n>cellName</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>cell</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>())</span>
-</span>        <span class=nb>print</span><span class=p>(</span><span class=n>cellName</span><span class=p>,</span> <span class=s2>&quot;NumberOfPoints:&quot;</span><span class=p>,</span> <span class=n>cell</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>(),</span> <span class=s2>&quot;CellDimension:&quot;</span><span class=p>,</span> <span class=n>cell</span><span class=o>.</span><span class=n>GetCellDimension</span><span class=p>())</span>
+</span>        <span class=nb>print</span><span class=p>(</span><span class=n>cellName</span><span class=p>,</span> <span class=s1>&#39;NumberOfPoints:&#39;</span><span class=p>,</span> <span class=n>cell</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>(),</span> <span class=s1>&#39;CellDimension:&#39;</span><span class=p>,</span> <span class=n>cell</span><span class=o>.</span><span class=n>GetCellDimension</span><span class=p>())</span>
         <span class=n>legendValues</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>cellName</span><span class=p>)</span>
         <span class=n>it</span><span class=o>.</span><span class=n>GoToNextCell</span><span class=p>()</span>
 
@@ -119,14 +119,14 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>edgeActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>edgeActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>edgeMapper</span><span class=p>)</span>
-    <span class=n>edgeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=o>.</span><span class=mi>6</span><span class=p>)</span>
+    <span class=n>edgeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>0.6</span><span class=p>)</span>
     <span class=n>edgeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
 
     <span class=c1># Glyph the points</span>
 <span class=hll>    <span class=n>sphere</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSphereSource</span><span class=p>()</span>
 </span>    <span class=n>sphere</span><span class=o>.</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=mi>21</span><span class=p>)</span>
     <span class=n>sphere</span><span class=o>.</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=mi>21</span><span class=p>)</span>
-    <span class=n>sphere</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=o>.</span><span class=mi>08</span><span class=p>)</span>
+    <span class=n>sphere</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>0.08</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>pointMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkGlyph3DMapper</span><span class=p>()</span>
 </span>    <span class=n>pointMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -136,8 +136,8 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>pointActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>pointActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>pointMapper</span><span class=p>)</span>
-    <span class=n>pointActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Banana&quot;</span><span class=p>))</span>
-    <span class=n>pointActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=o>.</span><span class=mi>6</span><span class=p>)</span>
+    <span class=n>pointActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Banana&#39;</span><span class=p>))</span>
+    <span class=n>pointActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>0.6</span><span class=p>)</span>
     <span class=n>pointActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularColor</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
     <span class=n>pointActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>100</span><span class=p>)</span>
 
@@ -150,7 +150,7 @@ function registerListener(event, func) {
     <span class=c1># The geometry</span>
 <span class=hll>    <span class=n>geometryShrink</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkShrinkFilter</span><span class=p>()</span>
 </span>    <span class=n>geometryShrink</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>geometryShrink</span><span class=o>.</span><span class=n>SetShrinkFactor</span><span class=p>(</span><span class=o>.</span><span class=mi>8</span><span class=p>)</span>
+    <span class=n>geometryShrink</span><span class=o>.</span><span class=n>SetShrinkFactor</span><span class=p>(</span><span class=mf>0.8</span><span class=p>)</span>
 
     <span class=c1># NOTE: We must copy the originalLut because the CategoricalLegend</span>
     <span class=c1># needs an indexed lookup table, but the geometryMapper uses a</span>
@@ -178,8 +178,8 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>legend</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCategoryLegend</span><span class=p>()</span>
 </span>    <span class=n>legend</span><span class=o>.</span><span class=n>SetScalarsToColors</span><span class=p>(</span><span class=n>categoricalLut</span><span class=p>)</span>
     <span class=n>legend</span><span class=o>.</span><span class=n>SetValues</span><span class=p>(</span><span class=n>legendValues</span><span class=p>)</span>
-    <span class=n>legend</span><span class=o>.</span><span class=n>SetTitle</span><span class=p>(</span><span class=s2>&quot;Cell Type&quot;</span><span class=p>)</span>
-    <span class=n>legend</span><span class=o>.</span><span class=n>GetBrush</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor4ub</span><span class=p>(</span><span class=s2>&quot;Silver&quot;</span><span class=p>))</span>
+    <span class=n>legend</span><span class=o>.</span><span class=n>SetTitle</span><span class=p>(</span><span class=s1>&#39;Cell Type&#39;</span><span class=p>)</span>
+    <span class=n>legend</span><span class=o>.</span><span class=n>GetBrush</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor4ub</span><span class=p>(</span><span class=s1>&#39;Silver&#39;</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>placeLegend</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkContextTransform</span><span class=p>()</span>
 </span>    <span class=n>placeLegend</span><span class=o>.</span><span class=n>AddItem</span><span class=p>(</span><span class=n>legend</span><span class=p>)</span>
@@ -199,7 +199,7 @@ function registerListener(event, func) {
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>labelActor</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>edgeActor</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>pointActor</span><span class=p>)</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;SlateGray&quot;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>aCamera</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCamera</span><span class=p>()</span>
 </span>    <span class=n>aCamera</span><span class=o>.</span><span class=n>Azimuth</span><span class=p>(</span><span class=o>-</span><span class=mf>40.0</span><span class=p>)</span>
@@ -209,6 +209,7 @@ function registerListener(event, func) {
     <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
 
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ReadLegacyUnstructuredGrid&#39;</span><span class=p>)</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
     <span class=n>renderWindowInteractor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>

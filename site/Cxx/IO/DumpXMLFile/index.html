@@ -83,41 +83,44 @@ function registerListener(event, func) {
 <span class=hll><span class=c1>//         XMLFile is a vtk XML file of type .vtu, .vtp, .vts, .vtr,</span>
 </span><span class=c1>//         .vti, .vto</span>
 <span class=c1>//</span>
-<span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLReader.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLUnstructuredGridReader.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLPolyDataReader.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLStructuredGridReader.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLRectilinearGridReader.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLCompositeDataReader.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLStructuredGridReader.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLImageDataReader.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkDataSetReader.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkDataSet.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkUnstructuredGrid.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRectilinearGrid.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageData.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyData.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkStructuredGrid.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPointData.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCellData.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkFieldData.h&gt;</span><span class=cp></span>
+<span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCellData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCellTypes.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkDataSet.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkDataSetReader.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkFieldData.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageData.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPointData.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyData.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRectilinearGrid.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkStructuredGrid.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkUnstructuredGrid.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLCompositeDataReader.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLImageDataReader.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLPolyDataReader.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLReader.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLRectilinearGridReader.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLStructuredGridReader.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkXMLUnstructuredGridReader.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtksys/SystemTools.hxx&gt;</span><span class=cp></span>
 </span>
 <span class=cp>#include</span> <span class=cpf>&lt;map&gt;</span><span class=cp></span>
 
-<span class=hll><span class=k>template</span><span class=o>&lt;</span><span class=k>class</span> <span class=nc>TReader</span><span class=o>&gt;</span> <span class=n>vtkDataSet</span> <span class=o>*</span><span class=n>ReadAnXMLFile</span><span class=p>(</span><span class=k>const</span> <span class=kt>char</span><span class=o>*</span><span class=n>fileName</span><span class=p>)</span>
+<span class=k>namespace</span> <span class=p>{</span>
+
+<span class=hll><span class=k>template</span> <span class=o>&lt;</span><span class=k>class</span> <span class=nc>TReader</span><span class=o>&gt;</span> <span class=n>vtkDataSet</span><span class=o>*</span> <span class=n>ReadAnXMLFile</span><span class=p>(</span><span class=k>const</span> <span class=kt>char</span><span class=o>*</span> <span class=n>fileName</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>TReader</span><span class=o>&gt;</span> <span class=n>reader</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>TReader</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>TReader</span><span class=o>&gt;</span> <span class=n>reader</span><span class=p>;</span>
 </span>  <span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>);</span>
   <span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
   <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Register</span><span class=p>(</span><span class=n>reader</span><span class=p>);</span>
 <span class=hll>  <span class=k>return</span> <span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkDataSet</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
 </span><span class=p>}</span>
 
-<span class=kt>int</span> <span class=n>main</span> <span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>argv</span><span class=p>[])</span>
+<span class=p>}</span> <span class=c1>// namespace</span>
+
+<span class=kt>int</span> <span class=n>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span> <span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
   <span class=k>if</span> <span class=p>(</span><span class=n>argc</span> <span class=o>&lt;</span> <span class=mi>2</span><span class=p>)</span>
   <span class=p>{</span>
@@ -131,31 +134,31 @@ function registerListener(event, func) {
   <span class=p>{</span>
 <span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDataSet</span><span class=o>&gt;</span> <span class=n>dataSet</span><span class=p>;</span>
 </span>    <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>extension</span> <span class=o>=</span>
-<span class=hll>      <span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameLastExtension</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
+<span class=hll>        <span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameLastExtension</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
 </span>    <span class=c1>// Dispatch based on the file extension</span>
     <span class=k>if</span> <span class=p>(</span><span class=n>extension</span> <span class=o>==</span> <span class=s>&quot;.vtu&quot;</span><span class=p>)</span>
     <span class=p>{</span>
-<span class=hll>      <span class=n>dataSet</span> <span class=o>=</span> <span class=n>ReadAnXMLFile</span><span class=o>&lt;</span><span class=n>vtkXMLUnstructuredGridReader</span><span class=o>&gt;</span> <span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
+<span class=hll>      <span class=n>dataSet</span> <span class=o>=</span> <span class=n>ReadAnXMLFile</span><span class=o>&lt;</span><span class=n>vtkXMLUnstructuredGridReader</span><span class=o>&gt;</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
 </span>    <span class=p>}</span>
     <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=n>extension</span> <span class=o>==</span> <span class=s>&quot;.vtp&quot;</span><span class=p>)</span>
     <span class=p>{</span>
-<span class=hll>      <span class=n>dataSet</span> <span class=o>=</span> <span class=n>ReadAnXMLFile</span><span class=o>&lt;</span><span class=n>vtkXMLPolyDataReader</span><span class=o>&gt;</span> <span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
+<span class=hll>      <span class=n>dataSet</span> <span class=o>=</span> <span class=n>ReadAnXMLFile</span><span class=o>&lt;</span><span class=n>vtkXMLPolyDataReader</span><span class=o>&gt;</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
 </span>    <span class=p>}</span>
     <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=n>extension</span> <span class=o>==</span> <span class=s>&quot;.vts&quot;</span><span class=p>)</span>
     <span class=p>{</span>
-<span class=hll>      <span class=n>dataSet</span> <span class=o>=</span> <span class=n>ReadAnXMLFile</span><span class=o>&lt;</span><span class=n>vtkXMLStructuredGridReader</span><span class=o>&gt;</span> <span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
+<span class=hll>      <span class=n>dataSet</span> <span class=o>=</span> <span class=n>ReadAnXMLFile</span><span class=o>&lt;</span><span class=n>vtkXMLStructuredGridReader</span><span class=o>&gt;</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
 </span>    <span class=p>}</span>
     <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=n>extension</span> <span class=o>==</span> <span class=s>&quot;.vtr&quot;</span><span class=p>)</span>
     <span class=p>{</span>
-<span class=hll>      <span class=n>dataSet</span> <span class=o>=</span> <span class=n>ReadAnXMLFile</span><span class=o>&lt;</span><span class=n>vtkXMLRectilinearGridReader</span><span class=o>&gt;</span> <span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
+<span class=hll>      <span class=n>dataSet</span> <span class=o>=</span> <span class=n>ReadAnXMLFile</span><span class=o>&lt;</span><span class=n>vtkXMLRectilinearGridReader</span><span class=o>&gt;</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
 </span>    <span class=p>}</span>
     <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=n>extension</span> <span class=o>==</span> <span class=s>&quot;.vti&quot;</span><span class=p>)</span>
     <span class=p>{</span>
-<span class=hll>      <span class=n>dataSet</span> <span class=o>=</span> <span class=n>ReadAnXMLFile</span><span class=o>&lt;</span><span class=n>vtkXMLImageDataReader</span><span class=o>&gt;</span> <span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
+<span class=hll>      <span class=n>dataSet</span> <span class=o>=</span> <span class=n>ReadAnXMLFile</span><span class=o>&lt;</span><span class=n>vtkXMLImageDataReader</span><span class=o>&gt;</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
 </span>    <span class=p>}</span>
 <span class=hll>    <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=n>extension</span> <span class=o>==</span> <span class=s>&quot;.vtk&quot;</span><span class=p>)</span>
 </span>    <span class=p>{</span>
-<span class=hll>      <span class=n>dataSet</span> <span class=o>=</span> <span class=n>ReadAnXMLFile</span><span class=o>&lt;</span><span class=n>vtkDataSetReader</span><span class=o>&gt;</span> <span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
+<span class=hll>      <span class=n>dataSet</span> <span class=o>=</span> <span class=n>ReadAnXMLFile</span><span class=o>&lt;</span><span class=n>vtkDataSetReader</span><span class=o>&gt;</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]);</span>
 </span>    <span class=p>}</span>
     <span class=k>else</span>
     <span class=p>{</span>
@@ -169,11 +172,11 @@ function registerListener(event, func) {
     <span class=c1>// Generate a report</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;------------------------&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=n>f</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span>
-         <span class=o>&lt;&lt;</span> <span class=s>&quot; contains a &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span>
-         <span class=o>&lt;&lt;</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span>
-         <span class=o>&lt;&lt;</span>  <span class=s>&quot; that has &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>numberOfCells</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; cells&quot;</span>
-         <span class=o>&lt;&lt;</span> <span class=s>&quot; and &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>numberOfPoints</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; points.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-    <span class=k>typedef</span> <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span><span class=kt>int</span><span class=o>&gt;</span> <span class=n>CellContainer</span><span class=p>;</span>
+              <span class=o>&lt;&lt;</span> <span class=s>&quot; contains a &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span>
+              <span class=o>&lt;&lt;</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; that has &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>numberOfCells</span>
+              <span class=o>&lt;&lt;</span> <span class=s>&quot; cells&quot;</span>
+              <span class=o>&lt;&lt;</span> <span class=s>&quot; and &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>numberOfPoints</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; points.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+    <span class=k>typedef</span> <span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>CellContainer</span><span class=p>;</span>
     <span class=n>CellContainer</span> <span class=n>cellMap</span><span class=p>;</span>
     <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>numberOfCells</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
     <span class=p>{</span>
@@ -184,63 +187,67 @@ function registerListener(event, func) {
     <span class=k>while</span> <span class=p>(</span><span class=n>it</span> <span class=o>!=</span> <span class=n>cellMap</span><span class=p>.</span><span class=n>end</span><span class=p>())</span>
     <span class=p>{</span>
       <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;</span><span class=se>\t</span><span class=s>Cell type &quot;</span>
-<span class=hll>           <span class=o>&lt;&lt;</span> <span class=n>vtkCellTypes</span><span class=o>::</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>it</span><span class=o>-&gt;</span><span class=n>first</span><span class=p>)</span>
-</span>           <span class=o>&lt;&lt;</span> <span class=s>&quot; occurs &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>it</span><span class=o>-&gt;</span><span class=n>second</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; times.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=hll>                <span class=o>&lt;&lt;</span> <span class=n>vtkCellTypes</span><span class=o>::</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>it</span><span class=o>-&gt;</span><span class=n>first</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; occurs &quot;</span>
+</span>                <span class=o>&lt;&lt;</span> <span class=n>it</span><span class=o>-&gt;</span><span class=n>second</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; times.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
       <span class=o>++</span><span class=n>it</span><span class=p>;</span>
     <span class=p>}</span>
 
     <span class=c1>// Now check for point data</span>
-<span class=hll>    <span class=n>vtkPointData</span> <span class=o>*</span><span class=n>pd</span> <span class=o>=</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkPointData</span><span class=o>*</span> <span class=n>pd</span> <span class=o>=</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>();</span>
 </span>    <span class=k>if</span> <span class=p>(</span><span class=n>pd</span><span class=p>)</span>
     <span class=p>{</span>
-      <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; contains point data with &quot;</span>
-           <span class=o>&lt;&lt;</span> <span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetNumberOfArrays</span><span class=p>()</span>
-           <span class=o>&lt;&lt;</span> <span class=s>&quot; arrays.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+      <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; contains point data with &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetNumberOfArrays</span><span class=p>()</span>
+                <span class=o>&lt;&lt;</span> <span class=s>&quot; arrays.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
       <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetNumberOfArrays</span><span class=p>();</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
       <span class=p>{</span>
-        <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;</span><span class=se>\t</span><span class=s>Array &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>i</span>
-                  <span class=o>&lt;&lt;</span> <span class=s>&quot; is named &quot;</span>
+        <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;</span><span class=se>\t</span><span class=s>Array &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>i</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; is named &quot;</span>
                   <span class=o>&lt;&lt;</span> <span class=p>(</span><span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetArrayName</span><span class=p>(</span><span class=n>i</span><span class=p>)</span> <span class=o>?</span> <span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetArrayName</span><span class=p>(</span><span class=n>i</span><span class=p>)</span> <span class=o>:</span> <span class=s>&quot;NULL&quot;</span><span class=p>)</span>
-                  <span class=o>&lt;&lt;</span> <span class=s>&quot; has &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; tuples&quot;</span>
-                  <span class=o>&lt;&lt;</span> <span class=s>&quot; with &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetNumberOfComponents</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; components&quot;</span>
+                  <span class=o>&lt;&lt;</span> <span class=s>&quot; has &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>()</span>
+                  <span class=o>&lt;&lt;</span> <span class=s>&quot; tuples&quot;</span>
+                  <span class=o>&lt;&lt;</span> <span class=s>&quot; with &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetNumberOfComponents</span><span class=p>()</span>
+                  <span class=o>&lt;&lt;</span> <span class=s>&quot; components&quot;</span>
                   <span class=o>&lt;&lt;</span> <span class=s>&quot; of type &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>pd</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span>
                   <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
       <span class=p>}</span>
     <span class=p>}</span>
+
     <span class=c1>// Now check for cell data</span>
-<span class=hll>    <span class=n>vtkCellData</span> <span class=o>*</span><span class=n>cd</span> <span class=o>=</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetCellData</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkCellData</span><span class=o>*</span> <span class=n>cd</span> <span class=o>=</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetCellData</span><span class=p>();</span>
 </span>    <span class=k>if</span> <span class=p>(</span><span class=n>cd</span><span class=p>)</span>
     <span class=p>{</span>
-      <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; contains cell data with &quot;</span>
-           <span class=o>&lt;&lt;</span> <span class=n>cd</span><span class=o>-&gt;</span><span class=n>GetNumberOfArrays</span><span class=p>()</span>
-           <span class=o>&lt;&lt;</span> <span class=s>&quot; arrays.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+      <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; contains cell data with &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>cd</span><span class=o>-&gt;</span><span class=n>GetNumberOfArrays</span><span class=p>()</span>
+                <span class=o>&lt;&lt;</span> <span class=s>&quot; arrays.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
       <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>cd</span><span class=o>-&gt;</span><span class=n>GetNumberOfArrays</span><span class=p>();</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
       <span class=p>{</span>
-        <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;</span><span class=se>\t</span><span class=s>Array &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>i</span>
-             <span class=o>&lt;&lt;</span> <span class=s>&quot; is named &quot;</span>
-             <span class=o>&lt;&lt;</span> <span class=p>(</span><span class=n>cd</span><span class=o>-&gt;</span><span class=n>GetArrayName</span><span class=p>(</span><span class=n>i</span><span class=p>)</span> <span class=o>?</span> <span class=n>cd</span><span class=o>-&gt;</span><span class=n>GetArrayName</span><span class=p>(</span><span class=n>i</span><span class=p>)</span> <span class=o>:</span> <span class=s>&quot;NULL&quot;</span><span class=p>)</span>
-             <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+        <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;</span><span class=se>\t</span><span class=s>Array &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>i</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; is named &quot;</span>
+                  <span class=o>&lt;&lt;</span> <span class=p>(</span><span class=n>cd</span><span class=o>-&gt;</span><span class=n>GetArrayName</span><span class=p>(</span><span class=n>i</span><span class=p>)</span> <span class=o>?</span> <span class=n>cd</span><span class=o>-&gt;</span><span class=n>GetArrayName</span><span class=p>(</span><span class=n>i</span><span class=p>)</span> <span class=o>:</span> <span class=s>&quot;NULL&quot;</span><span class=p>)</span>
+                  <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
       <span class=p>}</span>
     <span class=p>}</span>
+
     <span class=c1>// Now check for field data</span>
     <span class=k>if</span> <span class=p>(</span><span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetFieldData</span><span class=p>())</span>
     <span class=p>{</span>
       <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; contains field data with &quot;</span>
-           <span class=o>&lt;&lt;</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfArrays</span><span class=p>()</span>
-           <span class=o>&lt;&lt;</span> <span class=s>&quot; arrays.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+                <span class=o>&lt;&lt;</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfArrays</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; arrays.&quot;</span>
+                <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
       <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfArrays</span><span class=p>();</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
       <span class=p>{</span>
-        <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;</span><span class=se>\t</span><span class=s>Array &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>i</span>
-                  <span class=o>&lt;&lt;</span> <span class=s>&quot; is named &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetName</span><span class=p>()</span>
-                  <span class=o>&lt;&lt;</span> <span class=s>&quot; has &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; tuples&quot;</span>
-                  <span class=o>&lt;&lt;</span> <span class=s>&quot; with &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetNumberOfComponents</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; components&quot;</span>
-                  <span class=o>&lt;&lt;</span> <span class=s>&quot; of type &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span>
-             <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+        <span class=n>std</span><span class=o>::</span><span class=n>cout</span>
+            <span class=o>&lt;&lt;</span> <span class=s>&quot;</span><span class=se>\t</span><span class=s>Array &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>i</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; is named &quot;</span>
+            <span class=o>&lt;&lt;</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetName</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; has &quot;</span>
+            <span class=o>&lt;&lt;</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>()</span>
+            <span class=o>&lt;&lt;</span> <span class=s>&quot; tuples&quot;</span>
+            <span class=o>&lt;&lt;</span> <span class=s>&quot; with &quot;</span>
+            <span class=o>&lt;&lt;</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetNumberOfComponents</span><span class=p>()</span>
+            <span class=o>&lt;&lt;</span> <span class=s>&quot; components&quot;</span>
+            <span class=o>&lt;&lt;</span> <span class=s>&quot; of type &quot;</span>
+            <span class=o>&lt;&lt;</span> <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span>
+            <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
       <span class=p>}</span>
-   <span class=p>}</span>
-    <span class=n>dataSet</span><span class=o>-&gt;</span><span class=n>Delete</span><span class=p>();</span>
+    <span class=p>}</span>
     <span class=n>f</span><span class=o>++</span><span class=p>;</span>
-   <span class=p>}</span>
+  <span class=p>}</span>
   <span class=k>return</span> <span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=p>}</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span> <span class=s>3.3</span> <span class=s>FATAL_ERROR</span><span class=p>)</span>
