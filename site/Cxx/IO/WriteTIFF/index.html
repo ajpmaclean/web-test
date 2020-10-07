@@ -87,10 +87,17 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageActor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageMapper3D.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTIFFReader.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkProperty.h&gt;</span><span class=cp></span>
 </span>
+<span class=cp>#include</span> <span class=cpf>&lt;array&gt;</span><span class=cp></span>
+
 <span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
-  <span class=k>if</span><span class=p>(</span><span class=n>argc</span> <span class=o>!=</span> <span class=mi>2</span><span class=p>)</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
+</span>
+  <span class=k>if</span> <span class=p>(</span><span class=n>argc</span> <span class=o>!=</span> <span class=mi>2</span><span class=p>)</span>
   <span class=p>{</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Required parameters: OutputFilename.tif&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=k>return</span> <span class=n>EXIT_FAILURE</span><span class=p>;</span>
@@ -98,49 +105,56 @@ function registerListener(event, func) {
 
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>filename</span> <span class=o>=</span> <span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCanvasSource2D</span><span class=o>&gt;</span> <span class=n>imageSource</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCanvasSource2D</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+  <span class=c1>// Convert our unsigned char colors to doubles</span>
+  <span class=c1>// Set draw color needs doubles.</span>
+  <span class=k>auto</span> <span class=n>color1</span> <span class=o>=</span> <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4ub</span><span class=p>(</span><span class=s>&quot;SteelBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>();</span>
+  <span class=k>auto</span> <span class=n>color2</span> <span class=o>=</span> <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4ub</span><span class=p>(</span><span class=s>&quot;PaleGoldenrod&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>4</span><span class=o>&gt;</span> <span class=n>sourceColor1</span><span class=p>{</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>};</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>4</span><span class=o>&gt;</span> <span class=n>sourceColor2</span><span class=p>{</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>};</span>
+  <span class=c1>// Leave alpha at zero</span>
+  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>3</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>sourceColor1</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>color1</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+    <span class=n>sourceColor2</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>color2</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+  <span class=p>}</span>
+
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageCanvasSource2D</span><span class=o>&gt;</span> <span class=n>imageSource</span><span class=p>;</span>
 </span>  <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetScalarTypeToUnsignedChar</span><span class=p>();</span>
-  <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=mi>9</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>9</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>);</span>
+  <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
   <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetNumberOfScalarComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
-  <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetDrawColor</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
-  <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>FillBox</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=mi>9</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>9</span><span class=p>);</span>
-  <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetDrawColor</span><span class=p>(</span><span class=mi>255</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
-  <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>FillBox</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span><span class=mi>7</span><span class=p>,</span><span class=mi>5</span><span class=p>,</span><span class=mi>7</span><span class=p>);</span>
+  <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetDrawColor</span><span class=p>(</span><span class=n>sourceColor1</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+  <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>FillBox</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>9</span><span class=p>);</span>
+  <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>SetDrawColor</span><span class=p>(</span><span class=n>sourceColor2</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+  <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>FillBox</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=mi>7</span><span class=p>,</span> <span class=mi>5</span><span class=p>,</span> <span class=mi>7</span><span class=p>);</span>
   <span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTIFFWriter</span><span class=o>&gt;</span> <span class=n>tiffWriter</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTIFFWriter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTIFFWriter</span><span class=o>&gt;</span> <span class=n>tiffWriter</span><span class=p>;</span>
 </span>  <span class=n>tiffWriter</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filename</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
   <span class=n>tiffWriter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>imageSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>tiffWriter</span><span class=o>-&gt;</span><span class=n>Write</span><span class=p>();</span>
 
   <span class=c1>// Read and display for verification</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTIFFReader</span><span class=o>&gt;</span> <span class=n>reader</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTIFFReader</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTIFFReader</span><span class=o>&gt;</span> <span class=n>reader</span><span class=p>;</span>
 </span>  <span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filename</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
   <span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>actor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span> <span class=n>actor</span><span class=p>;</span>
 </span>  <span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetMapper</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
   <span class=c1>// Setup renderer</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span><span class=p>;</span>
 </span>  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
+  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkSlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
 
   <span class=c1>// Setup render window</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;WriteTIFF&quot;</span><span class=p>);</span>
 
   <span class=c1>// Setup render window interactor</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleImage</span><span class=o>&gt;</span> <span class=n>style</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleImage</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleImage</span><span class=o>&gt;</span> <span class=n>style</span><span class=p>;</span>
 </span>
   <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=n>style</span><span class=p>);</span>
 
@@ -150,6 +164,7 @@ function registerListener(event, func) {
   <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
 
   <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
+
   <span class=k>return</span> <span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=p>}</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span> <span class=s>3.3</span> <span class=s>FATAL_ERROR</span><span class=p>)</span>
@@ -157,6 +172,7 @@ function registerListener(event, func) {
 <span class=nb>project</span><span class=p>(</span><span class=s>WriteTIFF</span><span class=p>)</span>
 
 <span class=nb>find_package</span><span class=p>(</span><span class=s>VTK</span> <span class=s>COMPONENTS</span> 
+  <span class=s>vtkCommonColor</span>
   <span class=s>vtkCommonCore</span>
   <span class=s>vtkCommonDataModel</span>
   <span class=s>vtkIOImage</span>
