@@ -108,8 +108,8 @@ function registerListener(event, func) {
 
 
 <span class=p>}</span>
-</code></pre></div> <h3 id=implementation-section>Implementation Section<a class=headerlink href=#implementation-section title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=k>namespace</span>
-<span class=p>{</span>
+</code></pre></div> <h3 id=implementation-section>Implementation Section<a class=headerlink href=#implementation-section title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=k>namespace</span> <span class=p>{</span>
+
 <span class=kt>void</span> <span class=n>WriteImage</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=k>const</span><span class=o>&amp;</span> <span class=n>fileName</span><span class=p>,</span> <span class=n>vtkRenderWindow</span><span class=o>*</span> <span class=n>renWin</span><span class=p>,</span> <span class=kt>bool</span> <span class=n>rgba</span><span class=p>)</span>
 <span class=p>{</span>
   <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>fileName</span><span class=p>.</span><span class=n>empty</span><span class=p>())</span>
@@ -158,8 +158,7 @@ function registerListener(event, func) {
     <span class=p>{</span>
       <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPNGWriter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
     <span class=p>}</span>
-    <span class=k>auto</span> <span class=n>window_to_image_filter</span> <span class=o>=</span>
-        <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkWindowToImageFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkWindowToImageFilter</span><span class=o>&gt;</span> <span class=n>window_to_image_filter</span><span class=p>;</span>
     <span class=n>window_to_image_filter</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
     <span class=n>window_to_image_filter</span><span class=o>-&gt;</span><span class=n>SetScale</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span> <span class=c1>// image quality</span>
     <span class=k>if</span> <span class=p>(</span><span class=n>rgba</span><span class=p>)</span>
@@ -185,6 +184,7 @@ function registerListener(event, func) {
 
   <span class=k>return</span><span class=p>;</span>
 <span class=p>}</span>
+
 <span class=p>}</span> <span class=c1>// namespace</span>
 </code></pre></div> <h3 id=usage>Usage<a class=headerlink href=#usage title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code>  <span class=n>WriteImage</span><span class=p>(</span><span class=n>f</span><span class=p>,</span> <span class=n>renWin</span><span class=p>,</span> <span class=nb>false</span><span class=p>);</span>
 </code></pre></div> </article> </div> </div> </main> <footer class=md-footer> <div class=md-footer-nav> <nav class="md-footer-nav__inner md-grid"> <a href=../ViewportBorders/ title=ViewportBorders class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel=prev> <div class="md-flex__cell md-flex__cell--shrink"> <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i> </div> <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"> <span class=md-flex__ellipsis> <span class=md-footer-nav__direction> Previous </span> ViewportBorders </span> </div> </a> <a href=../../StructuredGrid/BlankPoint/ title=BlankPoint class="md-flex md-footer-nav__link md-footer-nav__link--next" rel=next> <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"> <span class=md-flex__ellipsis> <span class=md-footer-nav__direction> Next </span> BlankPoint </span> </div> <div class="md-flex__cell md-flex__cell--shrink"> <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i> </div> </a> </nav> </div> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-footer-copyright> <div class=md-footer-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> powered by <a href=https://www.mkdocs.org target=_blank rel=noopener>MkDocs</a> and <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs</a> </div> </div> </div> </footer> </div> <script src=../../../assets/javascripts/application.c33a9706.js></script> <script>app.initialize({version:"1.1",url:{base:"../../.."}})</script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

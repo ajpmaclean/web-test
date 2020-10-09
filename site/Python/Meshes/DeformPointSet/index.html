@@ -83,7 +83,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Set the background color.</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>&quot;bkg&quot;</span><span class=p>,</span> <span class=p>[</span><span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.3</span><span class=p>,</span> <span class=mf>0.4</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>])</span>
+    <span class=c1># colors.SetColor(&#39;bkg&#39;, [0.2, 0.3, 0.4, 1.0])</span>
 
     <span class=c1># Create a sphere to deform</span>
 <span class=hll>    <span class=n>sphere</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSphereSource</span><span class=p>()</span>
@@ -150,7 +150,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>meshActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>meshActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>meshMapper</span><span class=p>)</span>
     <span class=n>meshActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetRepresentationToWireframe</span><span class=p>()</span>
-    <span class=n>meshActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Black&quot;</span><span class=p>))</span>
+    <span class=n>meshActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>deform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDeformPointSet</span><span class=p>()</span>
 </span>    <span class=n>deform</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>ele</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
@@ -179,9 +179,10 @@ function registerListener(event, func) {
 
     <span class=n>renderer</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>1</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;bkg&quot;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkSlateGray&#39;</span><span class=p>))</span>
 
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=p>,</span><span class=mi>300</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;DeformPointSet&#39;</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>

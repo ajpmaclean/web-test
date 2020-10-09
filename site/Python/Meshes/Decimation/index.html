@@ -91,7 +91,8 @@ function registerListener(event, func) {
 </span><span class=s1>    &#39;&#39;&#39;</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Optional input filename e.g Torso.vtp.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;reduction&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=nb>type</span> <span class=o>=</span> <span class=nb>float</span><span class=p>,</span> <span class=n>default</span><span class=o>=.</span><span class=mi>9</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Sets the decimation target reduction, (default is 0.9).&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;reduction&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>float</span><span class=p>,</span> <span class=n>default</span><span class=o>=.</span><span class=mi>9</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Sets the decimation target reduction, (default is 0.9).&#39;</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>reduction</span>
 
@@ -104,13 +105,18 @@ function registerListener(event, func) {
 </span>    <span class=n>backFaceColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;gold&quot;</span><span class=p>)</span>
     <span class=n>inputActorColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;flesh&quot;</span><span class=p>)</span>
     <span class=n>decimatedActorColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;flesh&quot;</span><span class=p>)</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;leftBkg&#39;</span><span class=p>,</span> <span class=p>[</span><span class=mf>0.6</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.4</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>])</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;rightBkg&#39;</span><span class=p>,</span> <span class=p>[</span><span class=mf>0.4</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.6</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>])</span>
+    <span class=c1># colors.SetColor(&#39;leftBkg&#39;, [0.6, 0.5, 0.4, 1.0])</span>
+    <span class=c1># colors.SetColor(&#39;rightBkg&#39;, [0.4, 0.5, 0.6, 1.0])</span>
 
     <span class=k>if</span> <span class=n>filePath</span> <span class=ow>and</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>isfile</span><span class=p>(</span><span class=n>filePath</span><span class=p>):</span>
-        <span class=n>inputPolyData</span> <span class=o>=</span> <span class=n>ReadPolyData</span><span class=p>(</span><span class=n>filePath</span><span class=p>)</span>
-        <span class=k>if</span> <span class=ow>not</span> <span class=n>inputPolyData</span><span class=p>:</span>
+        <span class=n>readerPD</span> <span class=o>=</span> <span class=n>ReadPolyData</span><span class=p>(</span><span class=n>filePath</span><span class=p>)</span>
+        <span class=k>if</span> <span class=ow>not</span> <span class=n>readerPD</span><span class=p>:</span>
             <span class=n>inputPolyData</span> <span class=o>=</span> <span class=n>GetSpherePD</span><span class=p>()</span>
+        <span class=k>else</span><span class=p>:</span>
+<span class=hll>            <span class=n>triangles</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTriangleFilter</span><span class=p>()</span>
+</span>            <span class=n>triangles</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>readerPD</span><span class=p>)</span>
+            <span class=n>triangles</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+            <span class=n>inputPolyData</span> <span class=o>=</span> <span class=n>triangles</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>inputPolyData</span> <span class=o>=</span> <span class=n>GetSpherePD</span><span class=p>()</span>
 
@@ -130,7 +136,8 @@ function registerListener(event, func) {
     <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;After decimation&quot;</span><span class=p>)</span>
     <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;There are </span><span class=si>{</span><span class=n>decimated</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>()</span><span class=si>}</span><span class=s2> points.&quot;</span><span class=p>)</span>
     <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;There are </span><span class=si>{</span><span class=n>decimated</span><span class=o>.</span><span class=n>GetNumberOfPolys</span><span class=p>()</span><span class=si>}</span><span class=s2> polygons.&quot;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;Reduction: </span><span class=si>{</span><span class=p>(</span><span class=n>inputPolyData</span><span class=o>.</span><span class=n>GetNumberOfPolys</span><span class=p>()</span> <span class=o>-</span> <span class=n>decimated</span><span class=o>.</span><span class=n>GetNumberOfPolys</span><span class=p>())</span> <span class=o>/</span> <span class=n>inputPolyData</span><span class=o>.</span><span class=n>GetNumberOfPolys</span><span class=p>()</span><span class=si>}</span><span class=s2>&quot;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span>
+        <span class=sa>f</span><span class=s2>&quot;Reduction: </span><span class=si>{</span><span class=p>(</span><span class=n>inputPolyData</span><span class=o>.</span><span class=n>GetNumberOfPolys</span><span class=p>()</span> <span class=o>-</span> <span class=n>decimated</span><span class=o>.</span><span class=n>GetNumberOfPolys</span><span class=p>())</span> <span class=o>/</span> <span class=n>inputPolyData</span><span class=o>.</span><span class=n>GetNumberOfPolys</span><span class=p>()</span><span class=si>}</span><span class=s2>&quot;</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>inputMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>inputMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>inputPolyData</span><span class=p>)</span>
@@ -170,12 +177,14 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>leftRenderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>leftRenderer</span><span class=p>)</span>
     <span class=n>leftRenderer</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>leftViewport</span><span class=p>)</span>
-    <span class=n>leftRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>((</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;leftBkg&#39;</span><span class=p>)))</span>
+    <span class=c1># leftRenderer.SetBackground((colors.GetColor3d(&#39;leftBkg&#39;)))</span>
+    <span class=n>leftRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>((</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Peru&#39;</span><span class=p>)))</span>
 
 <span class=hll>    <span class=n>rightRenderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>rightRenderer</span><span class=p>)</span>
     <span class=n>rightRenderer</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>rightViewport</span><span class=p>)</span>
-    <span class=n>rightRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>((</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;rightBkg&#39;</span><span class=p>)))</span>
+    <span class=c1># rightRenderer.SetBackground((colors.GetColor3d(&#39;rightBkg&#39;)))</span>
+    <span class=n>rightRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>((</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;CornflowerBlue&#39;</span><span class=p>)))</span>
 
     <span class=c1># Add the sphere to the left and the cube to the right</span>
     <span class=n>leftRenderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>inputActor</span><span class=p>)</span>
@@ -184,9 +193,9 @@ function registerListener(event, func) {
     <span class=c1># Shared camera</span>
     <span class=c1># Shared camera looking down the -y axis</span>
 <span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCamera</span><span class=p>()</span>
-</span>    <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
-    <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
-    <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span>    <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>Elevation</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
 
@@ -212,7 +221,7 @@ function registerListener(event, func) {
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
     <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.vtp&quot;</span><span class=p>:</span>
-<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkXMLpoly_dataReader</span><span class=p>()</span>
+<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkXMLPolyDataReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
