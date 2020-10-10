@@ -188,6 +188,7 @@ function registerListener(event, func) {
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;ForestGreen&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
+  <span class=c1>// z-axis points upwards and y-axis is lower right edge</span>
   <span class=k>auto</span> <span class=n>camera</span> <span class=o>=</span> <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>();</span>
   <span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=o>-</span><span class=mf>13.3586</span><span class=p>,</span> <span class=mf>20.7305</span><span class=p>,</span> <span class=mf>22.5147</span><span class=p>);</span>
   <span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>4.5</span><span class=p>,</span> <span class=mf>4.5</span><span class=p>,</span> <span class=mf>4.5</span><span class=p>);</span>
