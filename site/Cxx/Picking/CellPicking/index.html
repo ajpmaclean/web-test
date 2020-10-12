@@ -85,6 +85,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkIdTypeArray.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkInteractorStyleTrackballCamera.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkObjectFactory.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPlaneSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPoints.h&gt;</span><span class=cp></span>
@@ -101,6 +102,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTriangleFilter.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkUnstructuredGrid.h&gt;</span><span class=cp></span>
 </span>
+<span class=k>namespace</span> <span class=p>{</span>
+
 <span class=c1>// Catch mouse events</span>
 <span class=hll><span class=k>class</span> <span class=nc>MouseInteractorStyle</span> <span class=o>:</span> <span class=k>public</span> <span class=n>vtkInteractorStyleTrackballCamera</span>
 </span><span class=p>{</span>
@@ -115,14 +118,12 @@ function registerListener(event, func) {
 
   <span class=k>virtual</span> <span class=kt>void</span> <span class=n>OnLeftButtonDown</span><span class=p>()</span> <span class=k>override</span>
   <span class=p>{</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span> <span class=o>=</span>
-</span><span class=hll>        <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
     <span class=c1>// Get the location of the click (in window coordinates)</span>
     <span class=kt>int</span><span class=o>*</span> <span class=n>pos</span> <span class=o>=</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetEventPosition</span><span class=p>();</span>
 
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkCellPicker</span><span class=o>&gt;</span> <span class=n>picker</span> <span class=o>=</span>
-</span><span class=hll>        <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkCellPicker</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCellPicker</span><span class=o>&gt;</span> <span class=n>picker</span><span class=p>;</span>
 </span>    <span class=n>picker</span><span class=o>-&gt;</span><span class=n>SetTolerance</span><span class=p>(</span><span class=mf>0.0005</span><span class=p>);</span>
 
     <span class=c1>// Pick from this location.</span>
@@ -137,30 +138,25 @@ function registerListener(event, func) {
       <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Pick position is: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>worldPosition</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; &quot;</span>
                 <span class=o>&lt;&lt;</span> <span class=n>worldPosition</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>worldPosition</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
 
-<span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkIdTypeArray</span><span class=o>&gt;</span> <span class=n>ids</span> <span class=o>=</span>
-</span><span class=hll>          <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkIdTypeArray</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>      <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdTypeArray</span><span class=o>&gt;</span> <span class=n>ids</span><span class=p>;</span>
 </span>      <span class=n>ids</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
       <span class=n>ids</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>picker</span><span class=o>-&gt;</span><span class=n>GetCellId</span><span class=p>());</span>
 
-<span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSelectionNode</span><span class=o>&gt;</span> <span class=n>selectionNode</span> <span class=o>=</span>
-</span><span class=hll>          <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSelectionNode</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>      <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSelectionNode</span><span class=o>&gt;</span> <span class=n>selectionNode</span><span class=p>;</span>
 </span><span class=hll>      <span class=n>selectionNode</span><span class=o>-&gt;</span><span class=n>SetFieldType</span><span class=p>(</span><span class=n>vtkSelectionNode</span><span class=o>::</span><span class=n>CELL</span><span class=p>);</span>
 </span><span class=hll>      <span class=n>selectionNode</span><span class=o>-&gt;</span><span class=n>SetContentType</span><span class=p>(</span><span class=n>vtkSelectionNode</span><span class=o>::</span><span class=n>INDICES</span><span class=p>);</span>
 </span>      <span class=n>selectionNode</span><span class=o>-&gt;</span><span class=n>SetSelectionList</span><span class=p>(</span><span class=n>ids</span><span class=p>);</span>
 
-<span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSelection</span><span class=o>&gt;</span> <span class=n>selection</span> <span class=o>=</span>
-</span><span class=hll>          <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSelection</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>      <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSelection</span><span class=o>&gt;</span> <span class=n>selection</span><span class=p>;</span>
 </span>      <span class=n>selection</span><span class=o>-&gt;</span><span class=n>AddNode</span><span class=p>(</span><span class=n>selectionNode</span><span class=p>);</span>
 
-<span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkExtractSelection</span><span class=o>&gt;</span> <span class=n>extractSelection</span> <span class=o>=</span>
-</span><span class=hll>          <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkExtractSelection</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>      <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkExtractSelection</span><span class=o>&gt;</span> <span class=n>extractSelection</span><span class=p>;</span>
 </span>      <span class=n>extractSelection</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>Data</span><span class=p>);</span>
       <span class=n>extractSelection</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>selection</span><span class=p>);</span>
       <span class=n>extractSelection</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
       <span class=c1>// In selection</span>
-<span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGrid</span><span class=o>&gt;</span> <span class=n>selected</span> <span class=o>=</span>
-</span><span class=hll>          <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGrid</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>      <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGrid</span><span class=o>&gt;</span> <span class=n>selected</span><span class=p>;</span>
 </span>      <span class=n>selected</span><span class=o>-&gt;</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>extractSelection</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
 
       <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;There are &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>selected</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>()</span>
@@ -191,41 +187,37 @@ function registerListener(event, func) {
 
 <span class=hll><span class=n>vtkStandardNewMacro</span><span class=p>(</span><span class=n>MouseInteractorStyle</span><span class=p>);</span>
 </span>
-<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=p>}</span> <span class=c1>// namespace</span>
+
+<span class=kt>int</span> <span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPlaneSource</span><span class=o>&gt;</span> <span class=n>planeSource</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPlaneSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPlaneSource</span><span class=o>&gt;</span> <span class=n>planeSource</span><span class=p>;</span>
 </span>  <span class=n>planeSource</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTriangleFilter</span><span class=o>&gt;</span> <span class=n>triangleFilter</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTriangleFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTriangleFilter</span><span class=o>&gt;</span> <span class=n>triangleFilter</span><span class=p>;</span>
 </span>  <span class=n>triangleFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>planeSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>triangleFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapper</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapper</span><span class=p>;</span>
 </span>  <span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>triangleFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>actor</span><span class=p>;</span>
 </span>  <span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Green&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
   <span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;CellPicking&quot;</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span>  <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
   <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
 
   <span class=c1>// Set the custom stype to use for interaction.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>MouseInteractorStyle</span><span class=o>&gt;</span> <span class=n>style</span> <span class=o>=</span>
-</span><span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>MouseInteractorStyle</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>MouseInteractorStyle</span><span class=o>&gt;</span> <span class=n>style</span><span class=p>;</span>
 </span>  <span class=n>style</span><span class=o>-&gt;</span><span class=n>SetDefaultRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
   <span class=n>style</span><span class=o>-&gt;</span><span class=n>Data</span> <span class=o>=</span> <span class=n>triangleFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 
