@@ -83,6 +83,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkIdList.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkIdTypeArray.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkProperty.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
@@ -90,7 +91,6 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSelection.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSelectionNode.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSphereSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTriangleFilter.h&gt;</span><span class=cp></span>
 </span>
@@ -99,17 +99,17 @@ function registerListener(event, func) {
 <span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
   <span class=c1>// Create a sphere</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>sphereSource</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span> <span class=n>sphereSource</span><span class=p>;</span>
 </span>  <span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>triangleFilter</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTriangleFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTriangleFilter</span><span class=o>&gt;</span> <span class=n>triangleFilter</span><span class=p>;</span>
 </span>  <span class=n>triangleFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>triangleFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
   <span class=c1>// Find all cells connected to point 0</span>
 <span class=hll>  <span class=n>vtkIdType</span> <span class=n>cellId</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
 </span>
-<span class=hll>  <span class=k>auto</span> <span class=n>cellPointIds</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;</span> <span class=n>cellPointIds</span><span class=p>;</span>
 </span>  <span class=n>triangleFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetCellPoints</span><span class=p>(</span><span class=n>cellId</span><span class=p>,</span> <span class=n>cellPointIds</span><span class=p>);</span>
 
   <span class=c1>// neighbor cells may be listed multiple times</span>
@@ -125,11 +125,11 @@ function registerListener(event, func) {
 
 <span class=hll>  <span class=k>for</span> <span class=p>(</span><span class=n>vtkIdType</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>cellPointIds</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>();</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
 </span>  <span class=p>{</span>
-<span class=hll>    <span class=k>auto</span> <span class=n>idList</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;</span> <span class=n>idList</span><span class=p>;</span>
 </span>    <span class=n>idList</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=n>cellPointIds</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=n>i</span><span class=p>));</span>
 
     <span class=c1>// get the neighbors of the cell</span>
-<span class=hll>    <span class=k>auto</span> <span class=n>neighborCellIds</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;</span> <span class=n>neighborCellIds</span><span class=p>;</span>
 </span>
     <span class=n>triangleFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetCellNeighbors</span><span class=p>(</span><span class=n>cellId</span><span class=p>,</span> <span class=n>idList</span><span class=p>,</span>
                                                   <span class=n>neighborCellIds</span><span class=p>);</span>
@@ -148,38 +148,38 @@ function registerListener(event, func) {
   <span class=p>}</span>
   <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
-<span class=hll>  <span class=k>auto</span> <span class=n>sphereMapper</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;</span> <span class=n>sphereMapper</span><span class=p>;</span>
 </span>  <span class=n>sphereMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>sphereMapper</span><span class=o>-&gt;</span><span class=n>SetResolveCoincidentTopologyToPolygonOffset</span><span class=p>();</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>sphereActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>sphereActor</span><span class=p>;</span>
 </span>  <span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>sphereMapper</span><span class=p>);</span>
   <span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetEdgeColor</span><span class=p>(</span>
       <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Lamp_Black&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
   <span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>EdgeVisibilityOn</span><span class=p>();</span>
   <span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>mainCellMapper</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;</span> <span class=n>mainCellMapper</span><span class=p>;</span>
 </span>
-<span class=hll>  <span class=k>auto</span> <span class=n>neighborCellsMapper</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;</span> <span class=n>neighborCellsMapper</span><span class=p>;</span>
 </span>
   <span class=c1>// Create a dataset with the cell of interest</span>
   <span class=p>{</span>
-<span class=hll>    <span class=k>auto</span> <span class=n>ids</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkIdTypeArray</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdTypeArray</span><span class=o>&gt;</span> <span class=n>ids</span><span class=p>;</span>
 </span>    <span class=n>ids</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
     <span class=n>ids</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>cellId</span><span class=p>);</span>
 
-<span class=hll>    <span class=k>auto</span> <span class=n>selectionNode</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSelectionNode</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSelectionNode</span><span class=o>&gt;</span> <span class=n>selectionNode</span><span class=p>;</span>
 </span><span class=hll>    <span class=n>selectionNode</span><span class=o>-&gt;</span><span class=n>SetFieldType</span><span class=p>(</span><span class=n>vtkSelectionNode</span><span class=o>::</span><span class=n>CELL</span><span class=p>);</span>
 </span><span class=hll>    <span class=n>selectionNode</span><span class=o>-&gt;</span><span class=n>SetContentType</span><span class=p>(</span><span class=n>vtkSelectionNode</span><span class=o>::</span><span class=n>INDICES</span><span class=p>);</span>
 </span>    <span class=n>selectionNode</span><span class=o>-&gt;</span><span class=n>SetSelectionList</span><span class=p>(</span><span class=n>ids</span><span class=p>);</span>
 
-<span class=hll>    <span class=k>auto</span> <span class=n>selection</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSelection</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSelection</span><span class=o>&gt;</span> <span class=n>selection</span><span class=p>;</span>
 </span>    <span class=n>selection</span><span class=o>-&gt;</span><span class=n>AddNode</span><span class=p>(</span><span class=n>selectionNode</span><span class=p>);</span>
 
-<span class=hll>    <span class=k>auto</span> <span class=n>extractSelection</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkExtractSelection</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkExtractSelection</span><span class=o>&gt;</span> <span class=n>extractSelection</span><span class=p>;</span>
 </span>    <span class=n>extractSelection</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
     <span class=n>extractSelection</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>selection</span><span class=p>);</span>
     <span class=n>extractSelection</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
@@ -187,29 +187,29 @@ function registerListener(event, func) {
     <span class=n>mainCellMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>extractSelection</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=p>}</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>mainCellActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>mainCellActor</span><span class=p>;</span>
 </span>  <span class=n>mainCellActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mainCellMapper</span><span class=p>);</span>
   <span class=n>mainCellActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
       <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// Create a dataset with the neighbor cells</span>
   <span class=p>{</span>
-<span class=hll>    <span class=k>auto</span> <span class=n>ids</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkIdTypeArray</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdTypeArray</span><span class=o>&gt;</span> <span class=n>ids</span><span class=p>;</span>
 </span>    <span class=n>ids</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
     <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>it1</span> <span class=o>=</span> <span class=n>neighbors</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span> <span class=n>it1</span> <span class=o>!=</span> <span class=n>neighbors</span><span class=p>.</span><span class=n>end</span><span class=p>();</span> <span class=o>++</span><span class=n>it1</span><span class=p>)</span>
     <span class=p>{</span>
       <span class=n>ids</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=o>*</span><span class=n>it1</span><span class=p>);</span>
     <span class=p>}</span>
 
-<span class=hll>    <span class=k>auto</span> <span class=n>selectionNode</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSelectionNode</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSelectionNode</span><span class=o>&gt;</span> <span class=n>selectionNode</span><span class=p>;</span>
 </span><span class=hll>    <span class=n>selectionNode</span><span class=o>-&gt;</span><span class=n>SetFieldType</span><span class=p>(</span><span class=n>vtkSelectionNode</span><span class=o>::</span><span class=n>CELL</span><span class=p>);</span>
 </span><span class=hll>    <span class=n>selectionNode</span><span class=o>-&gt;</span><span class=n>SetContentType</span><span class=p>(</span><span class=n>vtkSelectionNode</span><span class=o>::</span><span class=n>INDICES</span><span class=p>);</span>
 </span>    <span class=n>selectionNode</span><span class=o>-&gt;</span><span class=n>SetSelectionList</span><span class=p>(</span><span class=n>ids</span><span class=p>);</span>
 
-<span class=hll>    <span class=k>auto</span> <span class=n>selection</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSelection</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSelection</span><span class=o>&gt;</span> <span class=n>selection</span><span class=p>;</span>
 </span>    <span class=n>selection</span><span class=o>-&gt;</span><span class=n>AddNode</span><span class=p>(</span><span class=n>selectionNode</span><span class=p>);</span>
 
-<span class=hll>    <span class=k>auto</span> <span class=n>extractSelection</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkExtractSelection</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkExtractSelection</span><span class=o>&gt;</span> <span class=n>extractSelection</span><span class=p>;</span>
 </span>    <span class=n>extractSelection</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
     <span class=n>extractSelection</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>selection</span><span class=p>);</span>
     <span class=n>extractSelection</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
@@ -217,24 +217,25 @@ function registerListener(event, func) {
     <span class=n>neighborCellsMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>extractSelection</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=p>}</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>neighborCellsActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>neighborCellsActor</span><span class=p>;</span>
 </span>  <span class=n>neighborCellsActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>neighborCellsMapper</span><span class=p>);</span>
   <span class=n>neighborCellsActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
       <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Mint&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// Create a renderer, render window, and interactor</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=k>auto</span> <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>renderWindowInteractor</span> <span class=o>=</span>
-<span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;CellPointNeighbors&quot;</span><span class=p>);</span>
+
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span>  <span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
   <span class=c1>// Add the actors to the scene</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>);</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>mainCellActor</span><span class=p>);</span>
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>neighborCellsActor</span><span class=p>);</span>
-  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Slate_grey&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// Render and interact</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>);</span>
