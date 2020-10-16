@@ -115,6 +115,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCurvatures.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkLookupTable.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkParametricFunctionSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkParametricRandomHills.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataAlgorithm.h&gt;</span><span class=cp></span>
@@ -135,10 +136,10 @@ function registerListener(event, func) {
 
 <span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span> <span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>  <span class=c1>// We are going to handle two different sources.</span>
   <span class=c1>// The first source is a superquadric source.</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>torus</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSuperquadricSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSuperquadricSource</span><span class=o>&gt;</span> <span class=n>torus</span><span class=p>;</span>
 </span>  <span class=n>torus</span><span class=o>-&gt;</span><span class=n>SetCenter</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
   <span class=n>torus</span><span class=o>-&gt;</span><span class=n>SetScale</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>);</span>
   <span class=n>torus</span><span class=o>-&gt;</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=mi>64</span><span class=p>);</span>
@@ -149,28 +150,28 @@ function registerListener(event, func) {
   <span class=n>torus</span><span class=o>-&gt;</span><span class=n>SetToroidal</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 
   <span class=c1>// Rotate the torus towards the observer (around the x-axis)</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>torusT</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span> <span class=n>torusT</span><span class=p>;</span>
 </span>  <span class=n>torusT</span><span class=o>-&gt;</span><span class=n>RotateX</span><span class=p>(</span><span class=mi>55</span><span class=p>);</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>torusTF</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformFilter</span><span class=o>&gt;</span> <span class=n>torusTF</span><span class=p>;</span>
 </span>  <span class=n>torusTF</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>torus</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>torusTF</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>torusT</span><span class=p>);</span>
 
   <span class=c1>// The quadric is made of strips, so pass it through a triangle filter as</span>
   <span class=c1>// the curvature filter only operates on polys</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>tri</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTriangleFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTriangleFilter</span><span class=o>&gt;</span> <span class=n>tri</span><span class=p>;</span>
 </span>  <span class=n>tri</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>torusTF</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
   <span class=c1>// The quadric has nasty discontinuities from the way the edges are generated</span>
   <span class=c1>// so let&#39;s pass it though a CleanPolyDataFilter and merge any points which</span>
   <span class=c1>// are coincident, or very close</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>cleaner</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkCleanPolyData</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCleanPolyData</span><span class=o>&gt;</span> <span class=n>cleaner</span><span class=p>;</span>
 </span>  <span class=n>cleaner</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tri</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>cleaner</span><span class=o>-&gt;</span><span class=n>SetTolerance</span><span class=p>(</span><span class=mf>0.005</span><span class=p>);</span>
 
   <span class=c1>// The next source will be a parametric function</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>rh</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkParametricRandomHills</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=k>auto</span> <span class=n>rhFnSrc</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkParametricFunctionSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkParametricRandomHills</span><span class=o>&gt;</span> <span class=n>rh</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkParametricFunctionSource</span><span class=o>&gt;</span> <span class=n>rhFnSrc</span><span class=p>;</span>
 </span>  <span class=n>rhFnSrc</span><span class=o>-&gt;</span><span class=n>SetParametricFunction</span><span class=p>(</span><span class=n>rh</span><span class=p>);</span>
 
   <span class=c1>// Now we have the sources, lets put them into a vector</span>
@@ -181,7 +182,7 @@ function registerListener(event, func) {
   <span class=n>sources</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>rhFnSrc</span><span class=p>);</span>
 
   <span class=c1>// Colour transfer function.</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkColorTransferFunction</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkColorTransferFunction</span><span class=o>&gt;</span> <span class=n>ctf</span><span class=p>;</span>
 </span>  <span class=n>ctf</span><span class=o>-&gt;</span><span class=n>SetColorSpaceToDiverging</span><span class=p>();</span>
   <span class=n>ctf</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;MidnightBlue&quot;</span><span class=p>).</span><span class=n>GetRed</span><span class=p>(),</span>
                    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;MidnightBlue&quot;</span><span class=p>).</span><span class=n>GetGreen</span><span class=p>(),</span>
@@ -194,7 +195,7 @@ function registerListener(event, func) {
 <span class=hll>  <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;&gt;</span> <span class=n>luts</span><span class=p>;</span>
 </span>  <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>idx</span> <span class=o>&lt;</span> <span class=n>sources</span><span class=p>.</span><span class=n>size</span><span class=p>();</span> <span class=o>++</span><span class=n>idx</span><span class=p>)</span>
   <span class=p>{</span>
-<span class=hll>    <span class=k>auto</span> <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span> <span class=n>lut</span><span class=p>;</span>
 </span>    <span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetNumberOfColors</span><span class=p>(</span><span class=mi>256</span><span class=p>);</span>
     <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>lut</span><span class=o>-&gt;</span><span class=n>GetNumberOfColors</span><span class=p>();</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
     <span class=p>{</span>
@@ -251,7 +252,7 @@ function registerListener(event, func) {
 </span>  <span class=p>}</span>
 
   <span class=c1>// Create a common text property.</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>textProperty</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTextProperty</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextProperty</span><span class=o>&gt;</span> <span class=n>textProperty</span><span class=p>;</span>
 </span>  <span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>24</span><span class=p>);</span>
   <span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetJustificationToCentered</span><span class=p>();</span>
 
@@ -283,9 +284,10 @@ function registerListener(event, func) {
   <span class=k>auto</span> <span class=n>rendererSize</span> <span class=o>=</span> <span class=mi>512</span><span class=p>;</span>
   <span class=k>auto</span> <span class=n>gridDimensions</span> <span class=o>=</span> <span class=mi>2</span><span class=p>;</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=n>rendererSize</span> <span class=o>*</span> <span class=n>gridDimensions</span><span class=p>,</span>
                         <span class=n>rendererSize</span> <span class=o>*</span> <span class=n>gridDimensions</span><span class=p>);</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;CurvaturesDemo&quot;</span><span class=p>);</span>
 
   <span class=c1>// Add and position the renders to the render window.</span>
   <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=n>row</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>row</span> <span class=o>&lt;</span> <span class=n>gridDimensions</span><span class=p>;</span> <span class=o>++</span><span class=n>row</span><span class=p>)</span>
@@ -307,7 +309,7 @@ function registerListener(event, func) {
     <span class=p>}</span>
   <span class=p>}</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>interactor</span><span class=p>;</span>
 </span>  <span class=n>interactor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>

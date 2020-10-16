@@ -93,46 +93,6 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span>
 
 
-<span class=k>def</span> <span class=nf>ReadPolyData</span><span class=p>(</span><span class=n>file_name</span><span class=p>):</span>
-    <span class=kn>import</span> <span class=nn>os</span>
-    <span class=n>path</span><span class=p>,</span> <span class=n>extension</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>splitext</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
-    <span class=n>extension</span> <span class=o>=</span> <span class=n>extension</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=k>if</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.ply&quot;</span><span class=p>:</span>
-<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPLYReader</span><span class=p>()</span>
-</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
-        <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.vtp&quot;</span><span class=p>:</span>
-<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkXMLpoly_dataReader</span><span class=p>()</span>
-</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
-        <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.obj&quot;</span><span class=p>:</span>
-<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOBJReader</span><span class=p>()</span>
-</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
-        <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.stl&quot;</span><span class=p>:</span>
-<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSTLReader</span><span class=p>()</span>
-</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
-        <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-<span class=hll>    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.vtk&quot;</span><span class=p>:</span>
-</span><span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkpoly_dataReader</span><span class=p>()</span>
-</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
-        <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.g&quot;</span><span class=p>:</span>
-<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkBYUReader</span><span class=p>()</span>
-</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetGeometryFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
-        <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>else</span><span class=p>:</span>
-        <span class=c1># Return a None if the extension is unknown.</span>
-        <span class=n>poly_data</span> <span class=o>=</span> <span class=kc>None</span>
-    <span class=k>return</span> <span class=n>poly_data</span>
-
-
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
     <span class=n>fn</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
     <span class=n>polyData</span> <span class=o>=</span> <span class=n>ReadPolyData</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
@@ -149,6 +109,46 @@ function registerListener(event, func) {
         <span class=nb>print</span><span class=p>(</span><span class=n>fn</span><span class=p>,</span> <span class=s1>&#39;: Surface is not closed&#39;</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=nb>print</span><span class=p>(</span><span class=n>fn</span><span class=p>,</span> <span class=s1>&#39;: Surface is closed&#39;</span><span class=p>)</span>
+
+
+<span class=k>def</span> <span class=nf>ReadPolyData</span><span class=p>(</span><span class=n>file_name</span><span class=p>):</span>
+    <span class=kn>import</span> <span class=nn>os</span>
+    <span class=n>path</span><span class=p>,</span> <span class=n>extension</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>splitext</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
+    <span class=n>extension</span> <span class=o>=</span> <span class=n>extension</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
+    <span class=k>if</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.ply&#39;</span><span class=p>:</span>
+<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPLYReader</span><span class=p>()</span>
+</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
+        <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>:</span>
+<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkXMLPolyDataReader</span><span class=p>()</span>
+</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
+        <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.obj&#39;</span><span class=p>:</span>
+<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOBJReader</span><span class=p>()</span>
+</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
+        <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.stl&#39;</span><span class=p>:</span>
+<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSTLReader</span><span class=p>()</span>
+</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
+        <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
+<span class=hll>    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>:</span>
+</span><span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataReader</span><span class=p>()</span>
+</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
+        <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.g&#39;</span><span class=p>:</span>
+<span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkBYUReader</span><span class=p>()</span>
+</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetGeometryFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
+        <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
+    <span class=k>else</span><span class=p>:</span>
+        <span class=c1># Return a None if the extension is unknown.</span>
+        <span class=n>poly_data</span> <span class=o>=</span> <span class=kc>None</span>
+    <span class=k>return</span> <span class=n>poly_data</span>
 
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>

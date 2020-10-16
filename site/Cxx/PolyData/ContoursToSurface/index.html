@@ -80,22 +80,27 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkAppendPolyData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCellArray.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkMath.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkProperty.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTransform.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkTransformPolyDataFilter.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkVoxelContoursToSurfaceFilter.h&gt;</span><span class=cp></span>
 </span>
-<span class=kt>void</span> <span class=nf>CreateCircle</span><span class=p>(</span><span class=k>const</span> <span class=kt>double</span><span class=o>&amp;</span> <span class=n>z</span><span class=p>,</span> <span class=k>const</span> <span class=kt>double</span><span class=o>&amp;</span> <span class=n>radius</span><span class=p>,</span> <span class=k>const</span> <span class=kt>int</span><span class=o>&amp;</span> <span class=n>resolution</span><span class=p>,</span>
+<span class=k>namespace</span> <span class=p>{</span>
+<span class=kt>void</span> <span class=n>CreateCircle</span><span class=p>(</span><span class=k>const</span> <span class=kt>double</span><span class=o>&amp;</span> <span class=n>z</span><span class=p>,</span> <span class=k>const</span> <span class=kt>double</span><span class=o>&amp;</span> <span class=n>radius</span><span class=p>,</span> <span class=k>const</span> <span class=kt>int</span><span class=o>&amp;</span> <span class=n>resolution</span><span class=p>,</span>
 <span class=hll>                  <span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>polyData</span><span class=p>);</span>
-</span>
-<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+</span><span class=p>}</span>
+
+<span class=kt>int</span> <span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
+</span>
   <span class=c1>// Create the data: a series of discs representing the intersections of x-y</span>
   <span class=c1>// planes through a unit sphere centered at 0, 0, 0</span>
   <span class=c1>//</span>
@@ -110,7 +115,7 @@ function registerListener(event, func) {
 
   <span class=c1>// Append all the discs into one polydata</span>
   <span class=c1>//</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>appendFilter</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkAppendPolyData</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkAppendPolyData</span><span class=o>&gt;</span> <span class=n>appendFilter</span><span class=p>;</span>
 </span>
   <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;=</span> <span class=n>numDivisions</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
   <span class=p>{</span>
@@ -118,7 +123,7 @@ function registerListener(event, func) {
     <span class=kt>double</span> <span class=n>u</span> <span class=o>=</span> <span class=n>i</span> <span class=o>/</span> <span class=kt>double</span><span class=p>(</span><span class=n>numDivisions</span><span class=p>);</span>
     <span class=n>z</span> <span class=o>=</span> <span class=p>(</span><span class=mf>1.</span> <span class=o>-</span> <span class=n>u</span><span class=p>)</span> <span class=o>*</span> <span class=n>zmin</span> <span class=o>+</span> <span class=n>u</span> <span class=o>*</span> <span class=n>zmax</span><span class=p>;</span>
     <span class=k>auto</span> <span class=n>radius</span> <span class=o>=</span> <span class=n>sqrt</span><span class=p>(</span><span class=n>sphereRadius</span> <span class=o>*</span> <span class=n>sphereRadius</span> <span class=o>-</span> <span class=n>z</span> <span class=o>*</span> <span class=n>z</span><span class=p>);</span>
-<span class=hll>    <span class=k>auto</span> <span class=n>circle</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>circle</span><span class=p>;</span>
 </span>    <span class=n>CreateCircle</span><span class=p>(</span><span class=n>z</span><span class=p>,</span> <span class=n>radius</span><span class=p>,</span> <span class=n>resolution</span><span class=p>,</span> <span class=n>circle</span><span class=p>);</span>
     <span class=n>appendFilter</span><span class=o>-&gt;</span><span class=n>AddInputData</span><span class=p>(</span><span class=n>circle</span><span class=p>);</span>
   <span class=p>}</span>
@@ -142,8 +147,8 @@ function registerListener(event, func) {
   <span class=kt>double</span> <span class=n>spacing</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>=</span> <span class=p>{(</span><span class=n>bounds</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>/</span> <span class=mi>40</span><span class=p>,</span>
                        <span class=p>(</span><span class=n>bounds</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>-</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span> <span class=o>/</span> <span class=mi>40</span><span class=p>,</span> <span class=n>deltaz</span><span class=p>};</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>poly</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=k>auto</span> <span class=n>points</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span> <span class=n>poly</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span> <span class=n>points</span><span class=p>;</span>
 </span><span class=hll>  <span class=n>vtkPoints</span><span class=o>*</span> <span class=n>contourPoints</span> <span class=o>=</span> <span class=n>contours</span><span class=o>-&gt;</span><span class=n>GetPoints</span><span class=p>();</span>
 </span>  <span class=kt>int</span> <span class=n>numPoints</span> <span class=o>=</span> <span class=n>contourPoints</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>();</span>
   <span class=n>points</span><span class=o>-&gt;</span><span class=n>SetNumberOfPoints</span><span class=p>(</span><span class=n>numPoints</span><span class=p>);</span>
@@ -161,8 +166,7 @@ function registerListener(event, func) {
 
   <span class=c1>// Create the contour to surface filter</span>
   <span class=c1>//</span>
-  <span class=k>auto</span> <span class=n>contoursToSurface</span> <span class=o>=</span>
-<span class=hll>      <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkVoxelContoursToSurfaceFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkVoxelContoursToSurfaceFilter</span><span class=o>&gt;</span> <span class=n>contoursToSurface</span><span class=p>;</span>
 </span>  <span class=n>contoursToSurface</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>poly</span><span class=p>);</span>
   <span class=n>contoursToSurface</span><span class=o>-&gt;</span><span class=n>SetSpacing</span><span class=p>(</span><span class=n>spacing</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>spacing</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>spacing</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
   <span class=n>contoursToSurface</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
@@ -176,9 +180,9 @@ function registerListener(event, func) {
   <span class=kt>double</span> <span class=n>center</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
   <span class=n>contours</span><span class=o>-&gt;</span><span class=n>GetCenter</span><span class=p>(</span><span class=n>center</span><span class=p>);</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>transformFilter</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span> <span class=n>transformFilter</span><span class=p>;</span>
 </span>  <span class=n>transformFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>contoursToSurface</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span> <span class=n>transform</span><span class=p>;</span>
 </span>  <span class=n>transformFilter</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>);</span>
   <span class=n>transform</span><span class=o>-&gt;</span><span class=n>Translate</span><span class=p>(</span><span class=o>-</span><span class=n>scaleCenter</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=o>-</span><span class=n>scaleCenter</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=o>-</span><span class=n>scaleCenter</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
   <span class=n>transform</span><span class=o>-&gt;</span><span class=n>Scale</span><span class=p>((</span><span class=n>bounds</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>/</span> <span class=p>(</span><span class=n>scaleBounds</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>scaleBounds</span><span class=p>[</span><span class=mi>0</span><span class=p>]),</span>
@@ -188,49 +192,54 @@ function registerListener(event, func) {
 
   <span class=c1>// Visualize the contours</span>
   <span class=c1>//</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>contoursMapper</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>contoursMapper</span><span class=p>;</span>
 </span>  <span class=n>contoursMapper</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>contours</span><span class=p>);</span>
   <span class=n>contoursMapper</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>contoursActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>contoursActor</span><span class=p>;</span>
 </span>  <span class=n>contoursActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>contoursMapper</span><span class=p>);</span>
   <span class=n>contoursActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetRepresentationToWireframe</span><span class=p>();</span>
   <span class=n>contoursActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>ShadingOff</span><span class=p>();</span>
+  <span class=n>contoursActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;MistyRose&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// Visualize the surface</span>
   <span class=c1>//</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>surfaceMapper</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>surfaceMapper</span><span class=p>;</span>
 </span>  <span class=n>surfaceMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>transformFilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>surfaceMapper</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>surfaceActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>surfaceActor</span><span class=p>;</span>
 </span>  <span class=n>surfaceActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>surfaceMapper</span><span class=p>);</span>
   <span class=n>surfaceActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetRepresentationToWireframe</span><span class=p>();</span>
   <span class=n>surfaceActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>ShadingOff</span><span class=p>();</span>
+  <span class=n>surfaceActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;MistyRose&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// Create two renderers side by side to show the contours and the surface</span>
   <span class=c1>// separately</span>
   <span class=c1>//</span>
-  <span class=c1>// Press &#39;t&#39; for trackball interaction</span>
-  <span class=c1>// Press &#39;r&#39; to reset the camera</span>
-  <span class=c1>// Press &#39;w&#39; for wireframe representation</span>
-  <span class=c1>// Press &#39;s&#39; for surface representation</span>
-  <span class=c1>//</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>renderer1</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Press &#39;t&#39; for trackball interaction&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Press &#39;r&#39; to reset the camera&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Press &#39;w&#39; for wireframe representation&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Press &#39;s&#39; for surface representation&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer1</span><span class=p>;</span>
 </span>  <span class=n>renderer1</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=mf>0.</span><span class=p>,</span> <span class=mf>0.</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>1.</span><span class=p>);</span>
-  <span class=n>renderer1</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.8</span><span class=p>);</span>
+  <span class=n>renderer1</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;CadetBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>renderer2</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer2</span><span class=p>;</span>
 </span>  <span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.</span><span class=p>,</span> <span class=mf>1.</span><span class=p>,</span> <span class=mf>1.</span><span class=p>);</span>
-  <span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>);</span>
+  <span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BurlyWood&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>800</span><span class=p>,</span> <span class=mi>400</span><span class=p>);</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ContoursToSurface&quot;</span><span class=p>);</span>
 
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer1</span><span class=p>);</span>
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer2</span><span class=p>);</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>interactor</span><span class=p>;</span>
 </span>  <span class=n>interactor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
   <span class=n>renderer1</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>surfaceActor</span><span class=p>);</span>
@@ -242,11 +251,12 @@ function registerListener(event, func) {
   <span class=k>return</span> <span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=kt>void</span> <span class=nf>CreateCircle</span><span class=p>(</span><span class=k>const</span> <span class=kt>double</span><span class=o>&amp;</span> <span class=n>z</span><span class=p>,</span> <span class=k>const</span> <span class=kt>double</span><span class=o>&amp;</span> <span class=n>radius</span><span class=p>,</span> <span class=k>const</span> <span class=kt>int</span><span class=o>&amp;</span> <span class=n>resolution</span><span class=p>,</span>
+<span class=k>namespace</span> <span class=p>{</span>
+<span class=kt>void</span> <span class=n>CreateCircle</span><span class=p>(</span><span class=k>const</span> <span class=kt>double</span><span class=o>&amp;</span> <span class=n>z</span><span class=p>,</span> <span class=k>const</span> <span class=kt>double</span><span class=o>&amp;</span> <span class=n>radius</span><span class=p>,</span> <span class=k>const</span> <span class=kt>int</span><span class=o>&amp;</span> <span class=n>resolution</span><span class=p>,</span>
 <span class=hll>                  <span class=n>vtkPolyData</span><span class=o>*</span> <span class=n>polyData</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>points</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=k>auto</span> <span class=n>cells</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkCellArray</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span> <span class=n>points</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCellArray</span><span class=o>&gt;</span> <span class=n>cells</span><span class=p>;</span>
 </span>
   <span class=n>points</span><span class=o>-&gt;</span><span class=n>SetNumberOfPoints</span><span class=p>(</span><span class=n>resolution</span><span class=p>);</span>
   <span class=n>cells</span><span class=o>-&gt;</span><span class=n>Allocate</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>resolution</span><span class=p>);</span>
@@ -265,11 +275,13 @@ function registerListener(event, func) {
   <span class=n>polyData</span><span class=o>-&gt;</span><span class=n>SetPolys</span><span class=p>(</span><span class=n>cells</span><span class=p>);</span>
   <span class=n>polyData</span><span class=o>-&gt;</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>points</span><span class=p>);</span>
 <span class=p>}</span>
+<span class=p>}</span> <span class=c1>// namespace</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span> <span class=s>3.3</span> <span class=s>FATAL_ERROR</span><span class=p>)</span>
 
 <span class=nb>project</span><span class=p>(</span><span class=s>ContoursToSurface</span><span class=p>)</span>
 
 <span class=nb>find_package</span><span class=p>(</span><span class=s>VTK</span> <span class=s>COMPONENTS</span> 
+  <span class=s>vtkCommonColor</span>
   <span class=s>vtkCommonCore</span>
   <span class=s>vtkCommonDataModel</span>
   <span class=s>vtkCommonTransforms</span>

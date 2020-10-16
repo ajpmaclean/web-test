@@ -137,18 +137,18 @@ function registerListener(event, func) {
 </span>    <span class=c1># Outside points have a 0 value in ALL points of a cell</span>
     <span class=n>outsideId</span> <span class=o>=</span> <span class=n>threshold</span><span class=o>.</span><span class=n>AddBandpassIntervalSet</span><span class=p>(</span>
         <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span>
-<span class=hll>        <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataObject</span><span class=o>.</span><span class=n>FIELD_ASSOCIATION_POINTS</span><span class=p>,</span> <span class=s2>&quot;SelectedPoints&quot;</span><span class=p>,</span>
+<span class=hll>        <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataObject</span><span class=o>.</span><span class=n>FIELD_ASSOCIATION_POINTS</span><span class=p>,</span> <span class=s1>&#39;SelectedPoints&#39;</span><span class=p>,</span>
 </span>        <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
     <span class=c1># Inside points have a 1 value in ALL points of a cell</span>
     <span class=n>insideId</span> <span class=o>=</span> <span class=n>threshold</span><span class=o>.</span><span class=n>AddBandpassIntervalSet</span><span class=p>(</span>
         <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span>
-<span class=hll>        <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataObject</span><span class=o>.</span><span class=n>FIELD_ASSOCIATION_POINTS</span><span class=p>,</span> <span class=s2>&quot;SelectedPoints&quot;</span><span class=p>,</span>
+<span class=hll>        <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataObject</span><span class=o>.</span><span class=n>FIELD_ASSOCIATION_POINTS</span><span class=p>,</span> <span class=s1>&#39;SelectedPoints&#39;</span><span class=p>,</span>
 </span>        <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
     <span class=c1># Border points have a 0 or a 1 in at least one point of a cell</span>
     <span class=n>borderId</span> <span class=o>=</span> <span class=n>threshold</span><span class=o>.</span><span class=n>AddIntervalSet</span><span class=p>(</span>
         <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span>
 <span class=hll>        <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMultiThreshold</span><span class=o>.</span><span class=n>OPEN</span><span class=p>,</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkMultiThreshold</span><span class=o>.</span><span class=n>OPEN</span><span class=p>,</span>
-</span><span class=hll>        <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataObject</span><span class=o>.</span><span class=n>FIELD_ASSOCIATION_POINTS</span><span class=p>,</span> <span class=s2>&quot;SelectedPoints&quot;</span><span class=p>,</span>
+</span><span class=hll>        <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataObject</span><span class=o>.</span><span class=n>FIELD_ASSOCIATION_POINTS</span><span class=p>,</span> <span class=s1>&#39;SelectedPoints&#39;</span><span class=p>,</span>
 </span>        <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
     <span class=n>threshold</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>select</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -161,11 +161,11 @@ function registerListener(event, func) {
 
     <span class=c1># Visualize</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
-</span>    <span class=n>outsideColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Crimson&quot;</span><span class=p>)</span>
-    <span class=n>insideColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Banana&quot;</span><span class=p>)</span>
-    <span class=n>borderColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Mint&quot;</span><span class=p>)</span>
-    <span class=n>surfaceColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Peacock&quot;</span><span class=p>)</span>
-    <span class=n>backgroundColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Silver&quot;</span><span class=p>)</span>
+</span>    <span class=n>outsideColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Crimson&#39;</span><span class=p>)</span>
+    <span class=n>insideColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Banana&#39;</span><span class=p>)</span>
+    <span class=n>borderColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Mint&#39;</span><span class=p>)</span>
+    <span class=n>surfaceColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Peacock&#39;</span><span class=p>)</span>
+    <span class=n>backgroundColor</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Silver&#39;</span><span class=p>)</span>
 
     <span class=c1># Outside</span>
 <span class=hll>    <span class=n>outsideMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetMapper</span><span class=p>()</span>
@@ -242,32 +242,32 @@ function registerListener(event, func) {
     <span class=kn>import</span> <span class=nn>os</span>
     <span class=n>path</span><span class=p>,</span> <span class=n>extension</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>splitext</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
     <span class=n>extension</span> <span class=o>=</span> <span class=n>extension</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=k>if</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.ply&quot;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.ply&#39;</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPLYReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.vtp&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkXMLPolyDataReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.obj&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.obj&#39;</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOBJReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.stl&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.stl&#39;</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkSTLReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-<span class=hll>    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.vtk&quot;</span><span class=p>:</span>
+<span class=hll>    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>:</span>
 </span><span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.g&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s1>&#39;.g&#39;</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkBYUReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetGeometryFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
