@@ -93,19 +93,19 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSphereSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkUnstructuredGrid.h&gt;</span><span class=cp></span>
 </span>
-<span class=cp>#include</span> <span class=cpf>&lt;array&gt;</span><span class=cp></span>
+<span class=c1>//#include &lt;array&gt;</span>
 
 <span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
-  <span class=c1>//std::array&lt;double, 4&gt; bkgL = {{0.6, 0.5, 0.4, 1.0}};</span>
-  <span class=c1>//std::array&lt;double, 4&gt; bkgC = {{0.3, 0.1, 0.4, 1.0}};</span>
-  <span class=c1>//std::array&lt;double, 4&gt; bkgR = {{0.4, 0.5, 0.6, 1.0}};</span>
-  <span class=c1>//colors-&gt;SetColor(&quot;leftBkg&quot;, bkgL.data());</span>
-  <span class=c1>//colors-&gt;SetColor(&quot;centreBkg&quot;, bkgC.data());</span>
-  <span class=c1>//colors-&gt;SetColor(&quot;rightBkg&quot;, bkgR.data());</span>
+  <span class=c1>// std::array&lt;double, 4&gt; bkgL = {{0.6, 0.5, 0.4, 1.0}};</span>
+  <span class=c1>// std::array&lt;double, 4&gt; bkgC = {{0.3, 0.1, 0.4, 1.0}};</span>
+  <span class=c1>// std::array&lt;double, 4&gt; bkgR = {{0.4, 0.5, 0.6, 1.0}};</span>
+  <span class=c1>// colors-&gt;SetColor(&quot;leftBkg&quot;, bkgL.data());</span>
+  <span class=c1>// colors-&gt;SetColor(&quot;centreBkg&quot;, bkgC.data());</span>
+  <span class=c1>// colors-&gt;SetColor(&quot;rightBkg&quot;, bkgR.data());</span>
 
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span> <span class=n>sphereSource</span><span class=p>;</span>
 </span>  <span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
@@ -191,6 +191,7 @@ function registerListener(event, func) {
   <span class=c1>// There will be one render window</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>900</span><span class=p>,</span> <span class=mi>300</span><span class=p>);</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ExtractSelectionCells&quot;</span><span class=p>);</span>
 
   <span class=c1>// And one interactor</span>
 <span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>interactor</span><span class=p>;</span>

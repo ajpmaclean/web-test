@@ -95,8 +95,8 @@ function registerListener(event, func) {
 <span class=k>constexpr</span> <span class=kt>int</span> <span class=n>NUM_ITEMS</span> <span class=o>=</span> <span class=mi>5</span><span class=p>;</span>
 <span class=k>constexpr</span> <span class=kt>int</span> <span class=n>data</span><span class=p>[]</span> <span class=o>=</span> <span class=p>{</span><span class=mi>77938</span><span class=p>,</span> <span class=mi>9109</span><span class=p>,</span> <span class=mi>2070</span><span class=p>,</span> <span class=mi>12806</span><span class=p>,</span> <span class=mi>19514</span><span class=p>};</span>
 <span class=c1>// constexpr int data[] = {200,200,200,200,200};</span>
-<span class=k>constexpr</span> <span class=kt>char</span><span class=o>*</span> <span class=n>labels</span><span class=p>[]</span> <span class=o>=</span> <span class=p>{</span><span class=s>&quot;Books&quot;</span><span class=p>,</span> <span class=s>&quot;New and Popular&quot;</span><span class=p>,</span> <span class=s>&quot;Periodical&quot;</span><span class=p>,</span>
-                            <span class=s>&quot;Audiobook&quot;</span><span class=p>,</span> <span class=s>&quot;Video&quot;</span><span class=p>};</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>labels</span><span class=p>[]</span> <span class=o>=</span> <span class=p>{</span><span class=s>&quot;Books&quot;</span><span class=p>,</span> <span class=s>&quot;New and Popular&quot;</span><span class=p>,</span> <span class=s>&quot;Periodical&quot;</span><span class=p>,</span> <span class=s>&quot;Audiobook&quot;</span><span class=p>,</span>
+                        <span class=s>&quot;Video&quot;</span><span class=p>};</span>
 <span class=p>}</span> <span class=c1>// namespace</span>
 
 <span class=kt>int</span> <span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span><span class=p>[])</span>

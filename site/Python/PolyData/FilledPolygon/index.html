@@ -121,14 +121,17 @@ function registerListener(event, func) {
 </span>    <span class=c1># cutMapper.SetInput(FeatureEdges.GetOutput())</span>
     <span class=n>cutMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>cutPoly</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>cutActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
-</span>    <span class=n>cutActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Yellow&#39;</span><span class=p>))</span>
-    <span class=n>cutActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetEdgeColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LimeGreen&#39;</span><span class=p>))</span>
+<span class=hll>    <span class=n>backface</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkProperty</span><span class=p>()</span>
+</span>    <span class=n>backface</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>))</span>
 
+<span class=hll>    <span class=n>cutActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+</span>    <span class=n>cutActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>cutMapper</span><span class=p>)</span>
+    <span class=n>cutActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Yellow&#39;</span><span class=p>))</span>
+    <span class=n>cutActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetEdgeColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Red&#39;</span><span class=p>))</span>
     <span class=n>cutActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
     <span class=n>cutActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
     <span class=c1># cutActor.GetProperty().SetOpacity(0.7)</span>
-    <span class=n>cutActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>cutMapper</span><span class=p>)</span>
+    <span class=n>cutActor</span><span class=o>.</span><span class=n>SetBackfaceProperty</span><span class=p>(</span><span class=n>backface</span><span class=p>)</span>
 
     <span class=c1># create renderers and add actors of plane and cube</span>
 <span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
@@ -137,12 +140,23 @@ function registerListener(event, func) {
     <span class=c1># Add renderer to renderwindow and render</span>
 <span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
-    <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>400</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;FilledPolygon&#39;</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkSlateGray&#39;</span><span class=p>))</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>223</span><span class=p>,</span> <span class=o>-</span><span class=mi>122</span><span class=p>,</span> <span class=o>-</span><span class=mi>91</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+
+    <span class=n>camera</span> <span class=o>=</span> <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span>
+    <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>151.519511</span><span class=p>,</span> <span class=mf>12.795117</span><span class=p>,</span> <span class=o>-</span><span class=mf>223.586044</span><span class=p>)</span>
+    <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>12.518283</span><span class=p>,</span> <span class=mf>1.963242</span><span class=p>,</span> <span class=mf>7.618042</span><span class=p>)</span>
+    <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mf>0.740690</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.523767</span><span class=p>,</span> <span class=mf>0.420769</span><span class=p>)</span>
+    <span class=n>camera</span><span class=o>.</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>269.988889</span><span class=p>)</span>
+    <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>175.347580</span><span class=p>,</span> <span class=mf>366.490816</span><span class=p>)</span>
+    <span class=n>camera</span><span class=o>.</span><span class=n>Zoom</span><span class=p>(</span><span class=mf>1.5</span><span class=p>)</span>
+
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
