@@ -85,7 +85,9 @@ function registerListener(event, func) {
     <span class=c1># create a rendering window and renderer</span>
 <span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
-</span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
+</span>    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Outline&#39;</span><span class=p>)</span>
+
+    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
 
     <span class=c1># create a renderwindowinteractor</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -103,6 +105,7 @@ function registerListener(event, func) {
     <span class=c1># actor</span>
 <span class=hll>    <span class=n>actor1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor1</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
+    <span class=n>actor1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
 
     <span class=c1># outline</span>
 <span class=hll>    <span class=n>outline</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOutlineFilter</span><span class=p>()</span>
@@ -112,6 +115,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>actor2</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor2</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper2</span><span class=p>)</span>
+    <span class=n>actor2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>))</span>
 
     <span class=c1># assign actor to the renderer</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor1</span><span class=p>)</span>
