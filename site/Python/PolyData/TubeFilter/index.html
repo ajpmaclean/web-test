@@ -90,15 +90,10 @@ function registerListener(event, func) {
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-    <span class=c1># Change Color Name to Use your own Color for Actor</span>
-    <span class=n>ActorColor</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Red&quot;</span><span class=p>);</span>
-    <span class=c1># Change Color Name to Use your own Color for Renderer Background</span>
-    <span class=n>BgColor</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Gray&quot;</span><span class=p>);</span>
-
     <span class=c1># Create a line</span>
-<span class=hll>    <span class=n>lineSource</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLineSource</span><span class=p>();</span>
-</span>    <span class=n>lineSource</span><span class=o>.</span><span class=n>SetPoint1</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
-    <span class=n>lineSource</span><span class=o>.</span><span class=n>SetPoint2</span><span class=p>(</span><span class=o>.</span><span class=mi>0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
+<span class=hll>    <span class=n>lineSource</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkLineSource</span><span class=p>()</span>
+</span>    <span class=n>lineSource</span><span class=o>.</span><span class=n>SetPoint1</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
+    <span class=n>lineSource</span><span class=o>.</span><span class=n>SetPoint2</span><span class=p>(</span><span class=o>.</span><span class=mi>0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
 
     <span class=c1># Setup actor and mapper</span>
 <span class=hll>    <span class=n>lineMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
@@ -106,10 +101,10 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>lineActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>lineActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>lineMapper</span><span class=p>)</span>
-    <span class=n>lineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>ActorColor</span><span class=p>)</span>
+    <span class=n>lineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Red&#39;</span><span class=p>))</span>
 
     <span class=c1># Create tube filter</span>
-<span class=hll>    <span class=n>tubeFilter</span><span class=o>=</span><span class=n>vtk</span><span class=o>.</span><span class=n>vtkTubeFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>tubeFilter</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTubeFilter</span><span class=p>()</span>
 </span>    <span class=n>tubeFilter</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>lineSource</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>tubeFilter</span><span class=o>.</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>0.025</span><span class=p>)</span>
     <span class=n>tubeFilter</span><span class=o>.</span><span class=n>SetNumberOfSides</span><span class=p>(</span><span class=mi>50</span><span class=p>)</span>
@@ -119,25 +114,26 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>tubeMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>tubeMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tubeFilter</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>tubeActor</span><span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>tubeActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>tubeActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>tubeMapper</span><span class=p>)</span>
     <span class=c1># Make the tube have some transparency.</span>
-    <span class=n>tubeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>0.5</span><span class=p>);</span>
+    <span class=n>tubeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
 
     <span class=c1># Setup render window, renderer, and interactor</span>
 <span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
-</span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s2>&quot;TubeLine&quot;</span><span class=p>)</span>
+</span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;TubeFilter&#39;</span><span class=p>)</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
+
 <span class=hll>    <span class=n>renderWindowInteractor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>renderWindowInteractor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>)</span>
-    <span class=c1>#Visualise the arrow</span>
+    <span class=c1># Visualise the arrow</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>lineActor</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>tubeActor</span><span class=p>)</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>BgColor</span><span class=p>)</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkSlateGray&#39;</span><span class=p>))</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
 
-    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=p>,</span><span class=mi>300</span><span class=p>)</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=p>,</span> <span class=mi>300</span><span class=p>)</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>renderWindowInteractor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 

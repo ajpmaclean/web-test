@@ -146,6 +146,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;WarpVector&#39;</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>renderWindowInteractor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>renderWindowInteractor</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>)</span>

@@ -82,59 +82,55 @@ function registerListener(event, func) {
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-    <span class=c1># create two cones, rotate one of them.</span>
-
-    <span class=c1># create a rendering window and renderer</span>
+    <span class=c1># Create a rendering window and renderer</span>
 <span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
-    <span class=n>WIDTH</span> <span class=o>=</span> <span class=mi>640</span>
-    <span class=n>HEIGHT</span> <span class=o>=</span> <span class=mi>480</span>
-    <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=n>WIDTH</span><span class=p>,</span> <span class=n>HEIGHT</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;RotationAroundLine&#39;</span><span class=p>)</span>
 
-    <span class=c1># create a renderwindowinteractor</span>
+    <span class=c1># Create a renderwindowinteractor</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
-    <span class=c1># create cone</span>
-<span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkConeSource</span><span class=p>()</span>
-</span>    <span class=n>source</span><span class=o>.</span><span class=n>SetResolution</span><span class=p>(</span><span class=mi>60</span><span class=p>)</span>
-    <span class=n>source</span><span class=o>.</span><span class=n>SetCenter</span><span class=p>(</span><span class=o>-</span><span class=mi>2</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
-
-    <span class=c1># create a transform that rotates the cone</span>
+    <span class=c1># Create arrow</span>
+<span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkArrowSource</span><span class=p>()</span>
+</span>
+    <span class=c1># Create a transform that rotates the arrow 45° around the z-axis</span>
 <span class=hll>    <span class=n>transform</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransform</span><span class=p>()</span>
-</span>    <span class=n>transform</span><span class=o>.</span><span class=n>RotateWXYZ</span><span class=p>(</span><span class=mi>45</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+</span>    <span class=n>transform</span><span class=o>.</span><span class=n>RotateWXYZ</span><span class=p>(</span><span class=mi>45</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
 <span class=hll>    <span class=n>transformFilter</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
 </span>    <span class=n>transformFilter</span><span class=o>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>)</span>
     <span class=n>transformFilter</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>transformFilter</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-    <span class=c1># mapper for original cone</span>
+    <span class=c1># Mapper for the original arrow</span>
 <span class=hll>    <span class=n>coneMapper1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>coneMapper1</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-    <span class=c1># another mapper for the rotated cone</span>
+    <span class=c1># Another mapper for the rotated arrow</span>
 <span class=hll>    <span class=n>coneMapper2</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>coneMapper2</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>transformFilter</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-    <span class=c1># actor for original cone</span>
+    <span class=c1># Actor for original arrow</span>
 <span class=hll>    <span class=n>actor1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor1</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>coneMapper1</span><span class=p>)</span>
 
-    <span class=c1># actor for rotated cone</span>
+    <span class=c1># Actor for rotated arrow</span>
 <span class=hll>    <span class=n>actor2</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor2</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>coneMapper2</span><span class=p>)</span>
 
-    <span class=c1># color the original cone red</span>
-    <span class=n>actor1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Red&#39;</span><span class=p>))</span>
-    <span class=c1># color rotated cone blue</span>
-    <span class=n>actor2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Blue&#39;</span><span class=p>))</span>
+    <span class=c1># Color the original arrow</span>
+    <span class=n>actor1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightCoral&#39;</span><span class=p>))</span>
+    <span class=c1># Color rotated arrow</span>
+    <span class=n>actor2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;PaleTurquoise&#39;</span><span class=p>))</span>
 
-    <span class=c1># assign actor to the renderer</span>
+    <span class=c1># Assign actor to the renderer</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor1</span><span class=p>)</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor2</span><span class=p>)</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>));</span>
 
-    <span class=c1># enable user interface interactor</span>
+    <span class=c1># Enable the user interface interactor</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>

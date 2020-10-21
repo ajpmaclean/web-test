@@ -82,12 +82,12 @@ function registerListener(event, func) {
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-    <span class=c1># create a rendering window and renderer</span>
+    <span class=c1># Create a rendering window and renderer</span>
 <span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
 
-    <span class=c1># create a renderwindowinteractor</span>
+    <span class=c1># Create a renderwindowinteractor</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
@@ -124,27 +124,32 @@ function registerListener(event, func) {
     <span class=n>ruledSurfaceFilter</span><span class=o>.</span><span class=n>SetResolution</span><span class=p>(</span><span class=mi>21</span><span class=p>,</span> <span class=mi>21</span><span class=p>)</span>
     <span class=n>ruledSurfaceFilter</span><span class=o>.</span><span class=n>SetRuledModeToResample</span><span class=p>()</span>
 
-    <span class=c1># Create the mapper with the ruledSufaceFilter as input</span>
+    <span class=c1># Create the mapper with the ruledSurfaceFilter as input</span>
 <span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>ruledSurfaceFilter</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-    <span class=c1># create the actor with the mapper</span>
+    <span class=c1># Create the actor with the mapper</span>
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Gold&quot;</span><span class=p>))</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Banana&quot;</span><span class=p>))</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>0.6</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
 
-    <span class=c1># add the actor to the display</span>
+    <span class=c1># Add the actor to the display</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;MidnightBlue&quot;</span><span class=p>))</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;SteelBlue&quot;</span><span class=p>))</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;RuledSurfaceFilter&#39;</span><span class=p>)</span>
 
-    <span class=c1># enable user interface interactor</span>
+    <span class=c1># Enable user interface interactor</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>3.7</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.5</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.5</span><span class=p>)</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>)</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=o>-</span><span class=mf>0.3</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.0</span><span class=p>)</span>
+    <span class=c1># ren.GetActiveCamera().SetPosition(3.7, -0.5, -0.5)</span>
+    <span class=c1># ren.GetActiveCamera().SetFocalPoint(0.5, 0.5, 0.5)</span>
+    <span class=c1># ren.GetActiveCamera().SetViewUp(-0.3, 0.1, -1.0)</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>60</span><span class=p>)</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Elevation</span><span class=p>(</span><span class=mi>60</span><span class=p>)</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
+
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
