@@ -91,7 +91,6 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkQtTableView.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSphereSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkVersion.h&gt;</span><span class=cp></span>
 </span>
@@ -117,30 +116,30 @@ function registerListener(event, func) {
 </span><span class=cp>#endif</span>
 
   <span class=c1>// Sphere</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>sphereSource</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span> <span class=n>sphereSource</span><span class=p>;</span>
 </span>  <span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>sphereMapper</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>sphereMapper</span><span class=p>;</span>
 </span>  <span class=n>sphereMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>sphereActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>sphereActor</span><span class=p>;</span>
 </span>  <span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>sphereMapper</span><span class=p>);</span>
   <span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// Cube</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>cubeSource</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkCubeSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCubeSource</span><span class=o>&gt;</span> <span class=n>cubeSource</span><span class=p>;</span>
 </span>  <span class=n>cubeSource</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>cubeMapper</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>cubeMapper</span><span class=p>;</span>
 </span>  <span class=n>cubeMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cubeSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>cubeActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>cubeActor</span><span class=p>;</span>
 </span>  <span class=n>cubeActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>cubeMapper</span><span class=p>);</span>
   <span class=n>cubeActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
       <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s>&quot;MediumSeaGreen&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// VTK Renderer</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>leftRenderer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>leftRenderer</span><span class=p>;</span>
 </span>  <span class=n>leftRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>);</span>
   <span class=n>leftRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightSteelBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=hll>  <span class=k>auto</span> <span class=n>rightRenderer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>rightRenderer</span><span class=p>;</span>
 </span>
   <span class=c1>// Add Actor to renderer</span>
   <span class=n>rightRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>cubeActor</span><span class=p>);</span>
