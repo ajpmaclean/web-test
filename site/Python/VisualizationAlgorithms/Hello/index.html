@@ -86,18 +86,18 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-    <span class=c1># Create lines which serve as the &quot;seed&quot; geometry. The lines spell the</span>
-    <span class=c1># word &quot;hello&quot;.</span>
+    <span class=c1># Create lines which serve as the &#39;seed&#39; geometry. The lines spell the</span>
+    <span class=c1># word &#39;hello&#39;.</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=n>reader</span><span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataReader</span><span class=p>()</span>
+<span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataReader</span><span class=p>()</span>
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>lineMapper</span><span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>lineMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>lineMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-<span class=hll>    <span class=n>lineActor</span><span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>lineActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>lineActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>lineMapper</span><span class=p>)</span>
-    <span class=n>lineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Tomato&quot;</span><span class=p>))</span>
+    <span class=n>lineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>))</span>
     <span class=n>lineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mf>3.0</span><span class=p>)</span>
 
 <span class=hll>    <span class=c1># Create implicit model with vtkImplicitModeller. This computes a scalar</span>
@@ -105,47 +105,48 @@ function registerListener(event, func) {
     <span class=c1># filter then extracts the geometry at the distance value 0.25 from the</span>
     <span class=c1># generating geometry.</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=n>imp</span><span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImplicitModeller</span><span class=p>()</span>
+<span class=hll>    <span class=n>imp</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkImplicitModeller</span><span class=p>()</span>
 </span>    <span class=n>imp</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>imp</span><span class=o>.</span><span class=n>SetSampleDimensions</span><span class=p>(</span><span class=mi>110</span><span class=p>,</span> <span class=mi>40</span><span class=p>,</span> <span class=mi>20</span><span class=p>)</span>
     <span class=n>imp</span><span class=o>.</span><span class=n>SetMaximumDistance</span><span class=p>(</span><span class=mf>0.25</span><span class=p>)</span>
     <span class=n>imp</span><span class=o>.</span><span class=n>SetModelBounds</span><span class=p>(</span><span class=o>-</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>10.0</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>3.0</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>contour</span><span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkContourFilter</span><span class=p>()</span>
+<span class=hll>    <span class=n>contour</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkContourFilter</span><span class=p>()</span>
 </span>    <span class=n>contour</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>imp</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>contour</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>0.25</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>impMapper</span><span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
+<span class=hll>    <span class=n>impMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>impMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>contour</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>impMapper</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>impActor</span><span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
+<span class=hll>    <span class=n>impActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>impActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>impMapper</span><span class=p>)</span>
-    <span class=n>impActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Peacock&quot;</span><span class=p>))</span>
+    <span class=n>impActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Peacock&#39;</span><span class=p>))</span>
     <span class=n>impActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
 
     <span class=c1># Create the usual graphics stuff.</span>
     <span class=c1># Create the RenderWindow, Renderer and Interactor.</span>
     <span class=c1>#</span>
-<span class=hll>    <span class=n>ren1</span><span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
+<span class=hll>    <span class=n>ren1</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>renWin</span><span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
+<span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren1</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Hello&#39;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>iren</span><span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
+<span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
     <span class=c1># Add the actors to the renderer, set the background and size</span>
     <span class=c1>#</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>lineActor</span><span class=p>)</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>impActor</span><span class=p>)</span>
-    <span class=n>ren1</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Wheat&quot;</span><span class=p>))</span>
+    <span class=n>ren1</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Wheat&#39;</span><span class=p>))</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>camera</span><span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCamera</span><span class=p>()</span>
-</span>    <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>4.5</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span>  <span class=mi>0</span><span class=p>)</span>
+<span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCamera</span><span class=p>()</span>
+</span>    <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>4.5</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>4.5</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>6.73257</span><span class=p>)</span>
-    <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span>  <span class=mi>1</span><span class=p>,</span>  <span class=mi>0</span><span class=p>)</span>
+    <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
     <span class=n>ren1</span><span class=o>.</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>camera</span><span class=p>)</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>

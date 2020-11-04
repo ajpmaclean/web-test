@@ -92,9 +92,9 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkImageViewer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkMetaImageReader.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span>
 <span class=cp>#include</span> <span class=cpf>&lt;iomanip&gt;</span><span class=cp></span>
 <span class=cp>#include</span> <span class=cpf>&lt;iostream&gt;</span><span class=cp></span>
@@ -114,54 +114,47 @@ function registerListener(event, func) {
 
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>fileName</span> <span class=o>=</span> <span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
   <span class=c1>// Read the CT data of the human head.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkMetaImageReader</span><span class=o>&gt;</span> <span class=n>reader</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkMetaImageReader</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMetaImageReader</span><span class=o>&gt;</span> <span class=n>reader</span><span class=p>;</span>
 </span>  <span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
   <span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>cast</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageCast</span><span class=o>&gt;</span> <span class=n>cast</span><span class=p>;</span>
 </span>  <span class=n>cast</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>cast</span><span class=o>-&gt;</span><span class=n>SetOutputScalarTypeToFloat</span><span class=p>();</span>
 
   <span class=c1>// Magnify the image.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMagnify</span><span class=o>&gt;</span> <span class=n>magnify</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageMagnify</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMagnify</span><span class=o>&gt;</span> <span class=n>magnify</span><span class=p>;</span>
 </span>  <span class=n>magnify</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cast</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>magnify</span><span class=o>-&gt;</span><span class=n>SetMagnificationFactors</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>
   <span class=n>magnify</span><span class=o>-&gt;</span><span class=n>InterpolateOn</span><span class=p>();</span>
 
   <span class=c1>// Smooth the data.</span>
   <span class=c1>// Remove high frequency artifacts due to linear interpolation.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageGaussianSmooth</span><span class=o>&gt;</span> <span class=n>smooth</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageGaussianSmooth</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageGaussianSmooth</span><span class=o>&gt;</span> <span class=n>smooth</span><span class=p>;</span>
 </span>  <span class=n>smooth</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>magnify</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>smooth</span><span class=o>-&gt;</span><span class=n>SetDimensionality</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
   <span class=n>smooth</span><span class=o>-&gt;</span><span class=n>SetStandardDeviations</span><span class=p>(</span><span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
   <span class=n>smooth</span><span class=o>-&gt;</span><span class=n>SetRadiusFactors</span><span class=p>(</span><span class=mf>2.01</span><span class=p>,</span> <span class=mf>2.01</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
 
   <span class=c1>// Compute the 2D gradient.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageGradient</span><span class=o>&gt;</span> <span class=n>gradient</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageGradient</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageGradient</span><span class=o>&gt;</span> <span class=n>gradient</span><span class=p>;</span>
 </span>  <span class=n>gradient</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>smooth</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>gradient</span><span class=o>-&gt;</span><span class=n>SetDimensionality</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
 
   <span class=c1>// Convert the data to polar coordinates.</span>
   <span class=c1>// The image magnitude is mapped into saturation value,</span>
   <span class=c1>//  whilst the gradient direction is mapped into hue value.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageEuclideanToPolar</span><span class=o>&gt;</span> <span class=n>polar</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageEuclideanToPolar</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageEuclideanToPolar</span><span class=o>&gt;</span> <span class=n>polar</span><span class=p>;</span>
 </span>  <span class=n>polar</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>gradient</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>polar</span><span class=o>-&gt;</span><span class=n>SetThetaMaximum</span><span class=p>(</span><span class=mf>255.0</span><span class=p>);</span>
 
   <span class=c1>// Add a third component to the data.</span>
   <span class=c1>// This is needed since the gradient filter only generates two components,</span>
   <span class=c1>//  and we need three components to represent color.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageConstantPad</span><span class=o>&gt;</span> <span class=n>pad</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageConstantPad</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageConstantPad</span><span class=o>&gt;</span> <span class=n>pad</span><span class=p>;</span>
 </span>  <span class=n>pad</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>polar</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>pad</span><span class=o>-&gt;</span><span class=n>SetOutputNumberOfScalarComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
   <span class=n>pad</span><span class=o>-&gt;</span><span class=n>SetConstant</span><span class=p>(</span><span class=mf>200.0</span><span class=p>);</span>
@@ -169,14 +162,12 @@ function registerListener(event, func) {
   <span class=c1>// At this point we have Hue, Value, Saturation.</span>
   <span class=c1>// Permute components so saturation will be constant.</span>
   <span class=c1>// Re-arrange components into HSV order.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;</span> <span class=n>permute</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageExtractComponents</span><span class=o>&gt;</span> <span class=n>permute</span><span class=p>;</span>
 </span>  <span class=n>permute</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>pad</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>permute</span><span class=o>-&gt;</span><span class=n>SetComponents</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>
 
   <span class=c1>// Convert back into RGB values.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageHSVToRGB</span><span class=o>&gt;</span> <span class=n>rgb</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageHSVToRGB</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageHSVToRGB</span><span class=o>&gt;</span> <span class=n>rgb</span><span class=p>;</span>
 </span>  <span class=n>rgb</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>permute</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>rgb</span><span class=o>-&gt;</span><span class=n>SetMaximum</span><span class=p>(</span><span class=mf>255.0</span><span class=p>);</span>
 
@@ -185,18 +176,17 @@ function registerListener(event, func) {
 </span>  <span class=c1>// around</span>
 <span class=hll>  <span class=c1>// vtkActor2D, vtkImageMapper, vtkRenderer, and vtkRenderWindow.</span>
 </span>  <span class=c1>// So all that needs to be supplied is the interactor.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageViewer</span><span class=o>&gt;</span> <span class=n>viewer</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageViewer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageViewer</span><span class=o>&gt;</span> <span class=n>viewer</span><span class=p>;</span>
 </span>  <span class=n>viewer</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>rgb</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>viewer</span><span class=o>-&gt;</span><span class=n>SetZSlice</span><span class=p>(</span><span class=mi>22</span><span class=p>);</span>
   <span class=n>viewer</span><span class=o>-&gt;</span><span class=n>SetColorWindow</span><span class=p>(</span><span class=mf>255.0</span><span class=p>);</span>
   <span class=n>viewer</span><span class=o>-&gt;</span><span class=n>SetColorLevel</span><span class=p>(</span><span class=mf>127.0</span><span class=p>);</span>
   <span class=n>viewer</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>512</span><span class=p>);</span>
   <span class=n>viewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Silver&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>viewer</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ImageGradient&quot;</span><span class=p>);</span>
 
   <span class=c1>// Create the RenderWindowInteractor.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>iren</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>iren</span><span class=p>;</span>
 </span>  <span class=n>viewer</span><span class=o>-&gt;</span><span class=n>SetupInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>);</span>
   <span class=n>viewer</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 

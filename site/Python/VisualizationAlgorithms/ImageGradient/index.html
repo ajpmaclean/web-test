@@ -151,7 +151,8 @@ function registerListener(event, func) {
     <span class=n>viewer</span><span class=o>.</span><span class=n>SetColorWindow</span><span class=p>(</span><span class=mf>255.0</span><span class=p>)</span>
     <span class=n>viewer</span><span class=o>.</span><span class=n>SetColorLevel</span><span class=p>(</span><span class=mf>127.0</span><span class=p>)</span>
     <span class=n>viewer</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>512</span><span class=p>)</span>
-    <span class=n>viewer</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Silver&quot;</span><span class=p>))</span>
+    <span class=n>viewer</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Silver&#39;</span><span class=p>))</span>
+    <span class=n>viewer</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ImageGradient&#39;</span><span class=p>)</span>
 
     <span class=c1># Create the RenderWindowInteractor.</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>

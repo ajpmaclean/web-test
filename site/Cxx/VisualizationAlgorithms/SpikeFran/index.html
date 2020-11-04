@@ -82,6 +82,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkGlyph3D.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkMaskPoints.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataNormals.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataReader.h&gt;</span><span class=cp></span>
@@ -100,7 +101,7 @@ function registerListener(event, func) {
 <span class=c1>// (i.e., the polygon normals surrounding each point are averaged). We flip</span>
 <span class=c1>// the normals because we want them to point out from Fran&#39;s face.</span>
 <span class=c1>//</span>
-<span class=kt>int</span> <span class=nf>main</span> <span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span> <span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
   <span class=k>if</span> <span class=p>(</span><span class=n>argc</span> <span class=o>&lt;</span> <span class=mi>2</span><span class=p>)</span>
   <span class=p>{</span>
@@ -108,96 +109,84 @@ function registerListener(event, func) {
 </span>    <span class=k>return</span> <span class=n>EXIT_FAILURE</span><span class=p>;</span>
   <span class=p>}</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataReader</span><span class=o>&gt;</span> <span class=n>fran</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataReader</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataReader</span><span class=o>&gt;</span> <span class=n>fran</span><span class=p>;</span>
 </span>  <span class=n>fran</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataNormals</span><span class=o>&gt;</span> <span class=n>normals</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataNormals</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataNormals</span><span class=o>&gt;</span> <span class=n>normals</span><span class=p>;</span>
 </span>  <span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>fran</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>normals</span><span class=o>-&gt;</span><span class=n>FlipNormalsOn</span><span class=p>();</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>franMapper</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>franMapper</span><span class=p>;</span>
 </span>  <span class=n>franMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>franActor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>franActor</span><span class=p>;</span>
 </span>  <span class=n>franActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>franMapper</span><span class=p>);</span>
   <span class=n>franActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Flesh&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=c1>// We subsample the dataset because we want to glyph just a subset of</span>
-<span class=c1>// the points. Otherwise the display is cluttered and cannot be easily</span>
-<span class=c1>// read. The RandomModeOn and SetOnRatio combine to random select one out</span>
-<span class=c1>// of every 10 points in the dataset.</span>
-<span class=c1>//</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkMaskPoints</span><span class=o>&gt;</span> <span class=n>ptMask</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkMaskPoints</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+  <span class=c1>// We subsample the dataset because we want to glyph just a subset of</span>
+  <span class=c1>// the points. Otherwise the display is cluttered and cannot be easily</span>
+  <span class=c1>// read. The RandomModeOn and SetOnRatio combine to random select one out</span>
+  <span class=c1>// of every 10 points in the dataset.</span>
+  <span class=c1>//</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMaskPoints</span><span class=o>&gt;</span> <span class=n>ptMask</span><span class=p>;</span>
 </span>  <span class=n>ptMask</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>ptMask</span><span class=o>-&gt;</span><span class=n>SetOnRatio</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span>
   <span class=n>ptMask</span><span class=o>-&gt;</span><span class=n>RandomModeOn</span><span class=p>();</span>
 
-<span class=c1>// In this case we are using a cone as a glyph. We transform the cone so</span>
-<span class=c1>// its base is at 0,0,0. This is the point where glyph rotation occurs.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkConeSource</span><span class=o>&gt;</span> <span class=n>cone</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkConeSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+  <span class=c1>// In this case we are using a cone as a glyph. We transform the cone so</span>
+  <span class=c1>// its base is at 0,0,0. This is the point where glyph rotation occurs.</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkConeSource</span><span class=o>&gt;</span> <span class=n>cone</span><span class=p>;</span>
 </span>  <span class=n>cone</span><span class=o>-&gt;</span><span class=n>SetResolution</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span> <span class=n>transform</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span> <span class=n>transform</span><span class=p>;</span>
 </span>  <span class=n>transform</span><span class=o>-&gt;</span><span class=n>Translate</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span> <span class=n>transformF</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransformPolyDataFilter</span><span class=o>&gt;</span> <span class=n>transformF</span><span class=p>;</span>
 </span>  <span class=n>transformF</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cone</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>transformF</span><span class=o>-&gt;</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>transform</span><span class=p>);</span>
 
-<span class=hll><span class=c1>// vtkGlyph3D takes two inputs: the input point set (SetInputConnection)</span>
-</span><span class=hll><span class=c1>// which can be any vtkDataSet; and the glyph (SetSourceConnection) which</span>
-</span><span class=hll><span class=c1>// must be a vtkPolyData.  We are interested in orienting the glyphs by the</span>
-</span><span class=c1>// surface normals that we previously generated.</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkGlyph3D</span><span class=o>&gt;</span> <span class=n>glyph</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkGlyph3D</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=c1>// vtkGlyph3D takes two inputs: the input point set (SetInputConnection)</span>
+</span><span class=hll>  <span class=c1>// which can be any vtkDataSet; and the glyph (SetSourceConnection) which</span>
+</span><span class=hll>  <span class=c1>// must be a vtkPolyData.  We are interested in orienting the glyphs by the</span>
+</span>  <span class=c1>// surface normals that we previously generated.</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGlyph3D</span><span class=o>&gt;</span> <span class=n>glyph</span><span class=p>;</span>
 </span>  <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>ptMask</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>transformF</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>SetVectorModeToUseNormal</span><span class=p>();</span>
   <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>SetScaleModeToScaleByVector</span><span class=p>();</span>
   <span class=n>glyph</span><span class=o>-&gt;</span><span class=n>SetScaleFactor</span><span class=p>(</span><span class=mf>0.004</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>spikeMapper</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>spikeMapper</span><span class=p>;</span>
 </span>  <span class=n>spikeMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>glyph</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>spikeActor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>spikeActor</span><span class=p>;</span>
 </span>  <span class=n>spikeActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>spikeMapper</span><span class=p>);</span>
-  <span class=n>spikeActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Emerald_Green&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+  <span class=n>spikeActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Emerald_Green&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=c1>// Create the RenderWindow, Renderer and both Actors</span>
-<span class=c1>//</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>ren1</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renWin</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+  <span class=c1>// Create the RenderWindow, Renderer and both Actors</span>
+  <span class=c1>//</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>ren1</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renWin</span><span class=p>;</span>
 </span>  <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren1</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>iren</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>iren</span><span class=p>;</span>
 </span>  <span class=n>iren</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
 
-<span class=c1>// Add the actors to the renderer, set the background and size</span>
-<span class=c1>//</span>
+  <span class=c1>// Add the actors to the renderer, set the background and size</span>
+  <span class=c1>//</span>
   <span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>franActor</span><span class=p>);</span>
   <span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>spikeActor</span><span class=p>);</span>
 
   <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>);</span>
+  <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;SpikeFran&quot;</span><span class=p>);</span>
+
   <span class=n>ren1</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=c1>// render the image</span>
-<span class=c1>//</span>
+  <span class=c1>// render the image</span>
+  <span class=c1>//</span>
   <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
   <span class=n>ren1</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Zoom</span><span class=p>(</span><span class=mf>1.4</span><span class=p>);</span>
@@ -213,6 +202,7 @@ function registerListener(event, func) {
 
 <span class=nb>find_package</span><span class=p>(</span><span class=s>VTK</span> <span class=s>COMPONENTS</span> 
   <span class=s>vtkCommonColor</span>
+  <span class=s>vtkCommonCore</span>
   <span class=s>vtkCommonTransforms</span>
   <span class=s>vtkFiltersCore</span>
   <span class=s>vtkFiltersGeneral</span>

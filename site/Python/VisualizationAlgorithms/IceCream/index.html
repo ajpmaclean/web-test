@@ -147,7 +147,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>coneActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>coneActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>coneMapper</span><span class=p>)</span>
-    <span class=n>coneActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;chocolate&quot;</span><span class=p>))</span>
+    <span class=n>coneActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Chocolate&#39;</span><span class=p>))</span>
 
     <span class=c1># The same here for the ice cream.</span>
     <span class=c1>#</span>
@@ -167,7 +167,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>creamActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>creamActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>creamMapper</span><span class=p>)</span>
-    <span class=n>creamActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;mint&quot;</span><span class=p>))</span>
+    <span class=n>creamActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Mint&#39;</span><span class=p>))</span>
     <span class=n>creamActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=o>.</span><span class=mi>6</span><span class=p>)</span>
     <span class=n>creamActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>50</span><span class=p>)</span>
 
@@ -185,8 +185,10 @@ function registerListener(event, func) {
     <span class=c1>#</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>coneActor</span><span class=p>)</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>creamActor</span><span class=p>)</span>
-    <span class=n>ren1</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;SlateGray&quot;</span><span class=p>))</span>
+    <span class=n>ren1</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;IceCream&#39;</span><span class=p>)</span>
+
     <span class=n>ren1</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Roll</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Dolly</span><span class=p>(</span><span class=mf>1.25</span><span class=p>)</span>

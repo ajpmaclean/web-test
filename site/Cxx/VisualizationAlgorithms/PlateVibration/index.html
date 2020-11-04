@@ -84,6 +84,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkDataSetMapper.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkLookupTable.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkOutlineFilter.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
@@ -94,7 +95,6 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkVectorDot.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkWarpVector.h&gt;</span><span class=cp></span>
 </span>
@@ -114,71 +114,63 @@ function registerListener(event, func) {
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Usage: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; filename&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=hll>    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;where: filename is the file plate.vtk.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 </span>    <span class=n>std</span><span class=o>::</span><span class=n>cout</span>
-      <span class=o>&lt;&lt;</span> <span class=s>&quot;Produces figure 6-14(a) Beam displacement from the VTK Textbook.&quot;</span>
-      <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+        <span class=o>&lt;&lt;</span> <span class=s>&quot;Produces figure 6-14(a) Beam displacement from the VTK Textbook.&quot;</span>
+        <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=k>return</span> <span class=n>EXIT_FAILURE</span><span class=p>;</span>
   <span class=p>}</span>
 
   <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>fileName</span> <span class=o>=</span> <span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>
   <span class=c1>// Set the background color and plate color.</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span> <span class=kt>char</span> <span class=p>,</span> <span class=mi>4</span><span class=o>&gt;</span> <span class=n>bar</span><span class=p>{{</span><span class=mi>255</span><span class=p>,</span> <span class=mi>160</span><span class=p>,</span> <span class=mi>140</span><span class=p>}};</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;PlateColor&quot;</span><span class=p>,</span> <span class=n>bar</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
-  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span> <span class=kt>char</span> <span class=p>,</span> <span class=mi>4</span><span class=o>&gt;</span> <span class=n>bkg</span><span class=p>{{</span><span class=mi>65</span><span class=p>,</span> <span class=mi>99</span><span class=p>,</span> <span class=mi>149</span><span class=p>}};</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;BkgColor&quot;</span><span class=p>,</span> <span class=n>bkg</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span> <span class=kt>char</span><span class=p>,</span> <span class=mi>4</span><span class=o>&gt;</span> <span class=n>bar</span><span class=p>{{</span><span class=mi>255</span><span class=p>,</span> <span class=mi>160</span><span class=p>,</span> <span class=mi>140</span><span class=p>}};</span>
+  <span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;PlateColor&quot;</span><span class=p>,</span> <span class=n>bar</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span> <span class=kt>char</span><span class=p>,</span> <span class=mi>4</span><span class=o>&gt;</span> <span class=n>bkg</span><span class=p>{{</span><span class=mi>65</span><span class=p>,</span> <span class=mi>99</span><span class=p>,</span> <span class=mi>149</span><span class=p>}};</span>
+  <span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;BkgColor&quot;</span><span class=p>,</span> <span class=n>bkg</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
 
 <span class=hll>  <span class=c1>// Read a vtk file</span>
 </span>  <span class=c1>//</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataReader</span><span class=o>&gt;</span> <span class=n>plate</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataReader</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataReader</span><span class=o>&gt;</span> <span class=n>plate</span><span class=p>;</span>
 </span>  <span class=n>plate</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
   <span class=n>plate</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
   <span class=kt>double</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>6</span><span class=p>];</span>
   <span class=n>plate</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetBounds</span><span class=p>(</span><span class=n>bounds</span><span class=p>);</span>
   <span class=n>plate</span><span class=o>-&gt;</span><span class=n>SetVectorsName</span><span class=p>(</span><span class=s>&quot;mode2&quot;</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataNormals</span><span class=o>&gt;</span> <span class=n>normals</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataNormals</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataNormals</span><span class=o>&gt;</span> <span class=n>normals</span><span class=p>;</span>
 </span>  <span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>plate</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkWarpVector</span><span class=o>&gt;</span> <span class=n>warp</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkWarpVector</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkWarpVector</span><span class=o>&gt;</span> <span class=n>warp</span><span class=p>;</span>
 </span>  <span class=n>warp</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>warp</span><span class=o>-&gt;</span><span class=n>SetScaleFactor</span><span class=p>(</span><span class=mf>0.5</span><span class=p>);</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkVectorDot</span><span class=o>&gt;</span> <span class=n>color</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkVectorDot</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkVectorDot</span><span class=o>&gt;</span> <span class=n>color</span><span class=p>;</span>
 </span>  <span class=n>color</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>warp</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;</span> <span class=n>plateMapper</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;</span> <span class=n>plateMapper</span><span class=p>;</span>
 </span>  <span class=n>plateMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>warp</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>plateActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>plateActor</span><span class=p>;</span>
 </span>  <span class=n>plateActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>plateMapper</span><span class=p>);</span>
   <span class=n>plateActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;PlateColor&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;PlateColor&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
   <span class=n>plateActor</span><span class=o>-&gt;</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mi>90</span><span class=p>);</span>
 
   <span class=c1>// Create the outline.</span>
   <span class=c1>//</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkOutlineFilter</span><span class=o>&gt;</span> <span class=n>outline</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkOutlineFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOutlineFilter</span><span class=o>&gt;</span> <span class=n>outline</span><span class=p>;</span>
 </span>  <span class=n>outline</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>plate</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>spikeMapper</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>spikeMapper</span><span class=p>;</span>
 </span>  <span class=n>spikeMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>outline</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>outlineActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>outlineActor</span><span class=p>;</span>
 </span>  <span class=n>outlineActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>spikeMapper</span><span class=p>);</span>
   <span class=n>outlineActor</span><span class=o>-&gt;</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mi>90</span><span class=p>);</span>
   <span class=n>outlineActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;White&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// Create the RenderWindow, Renderer and both Actors</span>
   <span class=c1>//</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renWin</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>ren</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renWin</span><span class=p>;</span>
 </span>  <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>iren</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>iren</span><span class=p>;</span>
 </span>  <span class=n>iren</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
 
   <span class=c1>// Add the actors to the renderer, set the background and size</span>
@@ -186,6 +178,7 @@ function registerListener(event, func) {
   <span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>plateActor</span><span class=p>);</span>
   <span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>outlineActor</span><span class=p>);</span>
   <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>500</span><span class=p>,</span> <span class=mi>500</span><span class=p>);</span>
+  <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;PlateVibration&quot;</span><span class=p>);</span>
 
   <span class=c1>// Render the image.</span>
   <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>

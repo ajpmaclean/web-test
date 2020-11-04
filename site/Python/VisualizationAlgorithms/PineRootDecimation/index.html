@@ -85,11 +85,11 @@ function registerListener(event, func) {
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
     <span class=k>def</span> <span class=nf>NumberOfTriangles</span><span class=p>(</span><span class=n>pd</span><span class=p>):</span>
-        <span class=sd>&quot;&quot;&quot;</span>
+        <span class=sd>&#39;&#39;&#39;</span>
 <span class=sd>        Count the number of triangles.</span>
 <span class=hll><span class=sd>        :param pd: vtkPolyData.</span>
 </span><span class=sd>        :return: The number of triangles.</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        &#39;&#39;&#39;</span>
         <span class=n>cells</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>GetPolys</span><span class=p>()</span>
         <span class=n>numOfTriangles</span> <span class=o>=</span> <span class=mi>0</span>
 <span class=hll>        <span class=n>idList</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkIdList</span><span class=p>()</span>
@@ -109,8 +109,8 @@ function registerListener(event, func) {
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>)</span>
     <span class=n>reader</span><span class=o>.</span><span class=n>FlipNormalsOff</span><span class=p>()</span>
     <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;Before Decimation.&quot;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;There are: &quot;</span><span class=p>,</span> <span class=n>NumberOfTriangles</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()),</span> <span class=s2>&quot;triangles&quot;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Before Decimation.&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are: &#39;</span><span class=p>,</span> <span class=n>NumberOfTriangles</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()),</span> <span class=s1>&#39;triangles&#39;</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>deci</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDecimatePro</span><span class=p>()</span>
 </span>    <span class=n>deci</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -122,22 +122,22 @@ function registerListener(event, func) {
     <span class=n>deci</span><span class=o>.</span><span class=n>AccumulateErrorOn</span><span class=p>()</span>
     <span class=c1># deci.SplittingOff()</span>
     <span class=n>deci</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;After Decimation.&quot;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;There are: &quot;</span><span class=p>,</span> <span class=n>NumberOfTriangles</span><span class=p>(</span><span class=n>deci</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()),</span> <span class=s2>&quot;triangles&quot;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;After Decimation.&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are: &#39;</span><span class=p>,</span> <span class=n>NumberOfTriangles</span><span class=p>(</span><span class=n>deci</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()),</span> <span class=s1>&#39;triangles&#39;</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>connect</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkConnectivityFilter</span><span class=p>()</span>
 </span>    <span class=n>connect</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>deci</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>connect</span><span class=o>.</span><span class=n>SetExtractionModeToLargestRegion</span><span class=p>()</span>
     <span class=n>connect</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;After Connectivity.&quot;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;There are: &quot;</span><span class=p>,</span> <span class=n>NumberOfTriangles</span><span class=p>(</span><span class=n>connect</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()),</span> <span class=s2>&quot;triangles&quot;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;After Connectivity.&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are: &#39;</span><span class=p>,</span> <span class=n>NumberOfTriangles</span><span class=p>(</span><span class=n>connect</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()),</span> <span class=s1>&#39;triangles&#39;</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>isoMapper</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>isoMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>connect</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>isoMapper</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>isoActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>isoActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>isoMapper</span><span class=p>)</span>
-    <span class=n>isoActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;raw_sienna&quot;</span><span class=p>))</span>
+    <span class=n>isoActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;raw_sienna&#39;</span><span class=p>))</span>
 
     <span class=c1>#  Get an outline of the data set for context.</span>
 <span class=hll>    <span class=n>outline</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOutlineFilter</span><span class=p>()</span>
@@ -146,7 +146,7 @@ function registerListener(event, func) {
 </span>    <span class=n>outlineMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>outline</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 <span class=hll>    <span class=n>outlineActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>outlineActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>outlineMapper</span><span class=p>)</span>
-    <span class=n>outlineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Black&quot;</span><span class=p>))</span>
+    <span class=n>outlineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
 
     <span class=c1>#  Create the Renderer, RenderWindow and RenderWindowInteractor.</span>
 <span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
@@ -161,7 +161,9 @@ function registerListener(event, func) {
     <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
     <span class=c1># renWin.SetSize(750, 750)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>512</span><span class=p>)</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;SlateGray&quot;</span><span class=p>))</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;PineRootDecimation&#39;</span><span class=p>)</span>
+
+    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
 
     <span class=c1># render the image</span>
 

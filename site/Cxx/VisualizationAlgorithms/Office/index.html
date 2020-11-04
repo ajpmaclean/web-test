@@ -80,6 +80,7 @@ function registerListener(event, func) {
 </code></pre></div> <div class="admonition info"> <p class=admonition-title>Info</p> <p>See <a href=../../../VTKBook/09Chapter9/#Figure%209-47>Figure 9-47</a> in <a href=../../../VTKBook/09Chapter9>Chapter 9</a> in the <a href=../../../VTKBook/01Chapter1/ >VTK Textbook</a>.</p> </div> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Python/VisualizationAlgorithms/Office>Python</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a question about this example, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>Office.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkActor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCamera.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNamedColors.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPointData.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPointSource.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
@@ -102,23 +103,23 @@ function registerListener(event, func) {
   <span class=p>{</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Usage: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; filename [center]&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span>
-<span class=hll>      <span class=o>&lt;&lt;</span> <span class=s>&quot;Demonstrate the use of vtkPointSource to generate streamlines.&quot;</span>
-</span>      <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=hll>        <span class=o>&lt;&lt;</span> <span class=s>&quot;Demonstrate the use of vtkPointSource to generate streamlines.&quot;</span>
+</span>        <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Where: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=hll>    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;       filename: office.binary.vtk&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 </span>    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;       center: An optional parameter choosing the center for &quot;</span>
                  <span class=s>&quot;the seeds.&quot;</span>
               <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span>
-      <span class=o>&lt;&lt;</span> <span class=s>&quot;               0 - Corresponds to Fig 9-47(a) in the VTK textbook.&quot;</span>
-      <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+        <span class=o>&lt;&lt;</span> <span class=s>&quot;               0 - Corresponds to Fig 9-47(a) in the VTK textbook.&quot;</span>
+        <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;               1 - A slight shift to the left.&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;               2 - A slight shift to the upper left. (from &quot;</span>
                  <span class=s>&quot;the Original code).&quot;</span>
               <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span>
-      <span class=o>&lt;&lt;</span> <span class=s>&quot;               3 - The default, a slight shift to the upper left.&quot;</span>
-      <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+        <span class=o>&lt;&lt;</span> <span class=s>&quot;               3 - The default, a slight shift to the upper left.&quot;</span>
+        <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
     <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;                   Roughly corresponds to Fig 9-47(b) in the &quot;</span>
                  <span class=s>&quot;VTK textbook.&quot;</span>
               <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
@@ -132,13 +133,12 @@ function registerListener(event, func) {
   <span class=p>}</span>
   <span class=c1>// These are the centers for the streamline seed.</span>
   <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>3</span><span class=o>&gt;&gt;</span> <span class=n>seedCenters</span><span class=p>{</span>
-    <span class=p>{</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>2.1</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>},</span> <span class=p>{</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>2.1</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>},</span> <span class=p>{</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>2.7</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>},</span> <span class=p>{</span><span class=mf>0.08</span><span class=p>,</span> <span class=mf>2.7</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>}};</span>
+      <span class=p>{</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>2.1</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>},</span> <span class=p>{</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>2.1</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>},</span> <span class=p>{</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>2.7</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>},</span> <span class=p>{</span><span class=mf>0.08</span><span class=p>,</span> <span class=mf>2.7</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>}};</span>
   <span class=n>center</span> <span class=o>=</span> <span class=p>(</span><span class=n>center</span> <span class=o>&lt;</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>seedCenters</span><span class=p>.</span><span class=n>size</span><span class=p>()))</span>
-             <span class=o>?</span> <span class=nl>center</span>
-             <span class=p>:</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>seedCenters</span><span class=p>.</span><span class=n>size</span><span class=p>())</span> <span class=o>-</span> <span class=mi>1</span><span class=p>;</span>
+      <span class=o>?</span> <span class=nl>center</span>
+      <span class=p>:</span> <span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>seedCenters</span><span class=p>.</span><span class=n>size</span><span class=p>())</span> <span class=o>-</span> <span class=mi>1</span><span class=p>;</span>
 
-  <span class=k>auto</span> <span class=n>colors</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span> <span class=n>colors</span><span class=p>;</span>
 </span>  <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>3</span><span class=o>&gt;</span> <span class=n>tableTopColor</span> <span class=o>=</span> <span class=p>{</span><span class=mf>0.59</span><span class=p>,</span> <span class=mf>0.427</span><span class=p>,</span> <span class=mf>0.392</span><span class=p>};</span>
   <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>3</span><span class=o>&gt;</span> <span class=n>filingCabinetColor</span> <span class=o>=</span> <span class=p>{</span><span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.6</span><span class=p>};</span>
   <span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span> <span class=mi>3</span><span class=o>&gt;</span> <span class=n>bookShelfColor</span> <span class=o>=</span> <span class=p>{</span><span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.6</span><span class=p>};</span>
@@ -150,297 +150,239 @@ function registerListener(event, func) {
 
   <span class=c1>// We read a data file that represents a CFD analysis of airflow in an office</span>
   <span class=c1>// (with ventilation and a burning cigarette).</span>
-  <span class=k>auto</span> <span class=n>reader</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridReader</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridReader</span><span class=o>&gt;</span> <span class=n>reader</span><span class=p>;</span>
 </span>  <span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
 
   <span class=c1>// Create the scene.</span>
   <span class=c1>// We generate a whole bunch of planes which correspond to</span>
   <span class=c1>// the geometry in the analysis; tables, bookshelves and so on.</span>
-  <span class=k>auto</span> <span class=n>table1</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>table1</span><span class=p>;</span>
 </span>  <span class=n>table1</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>table1</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>11</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>7</span><span class=p>,</span> <span class=mi>9</span><span class=p>,</span> <span class=mi>8</span><span class=p>,</span> <span class=mi>8</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapTable1</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapTable1</span><span class=p>;</span>
 </span>  <span class=n>mapTable1</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>table1</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapTable1</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
 
-  <span class=k>auto</span> <span class=n>table1Actor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>table1Actor</span><span class=p>;</span>
 </span>  <span class=n>table1Actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapTable1</span><span class=p>);</span>
   <span class=n>table1Actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;TableTop&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;TableTop&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>table2</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>table2</span><span class=p>;</span>
 </span>  <span class=n>table2</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>table2</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>11</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>12</span><span class=p>,</span> <span class=mi>8</span><span class=p>,</span> <span class=mi>8</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapTable2</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapTable2</span><span class=p>;</span>
 </span>  <span class=n>mapTable2</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>table2</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapTable2</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>table2Actor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>table2Actor</span><span class=p>;</span>
 </span>  <span class=n>table2Actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapTable2</span><span class=p>);</span>
   <span class=n>table2Actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;TableTop&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;TableTop&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>FilingCabinet1</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>FilingCabinet1</span><span class=p>;</span>
 </span>  <span class=n>FilingCabinet1</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>FilingCabinet1</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>15</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>7</span><span class=p>,</span> <span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>8</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapFilingCabinet1</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapFilingCabinet1</span><span class=p>;</span>
 </span>  <span class=n>mapFilingCabinet1</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>FilingCabinet1</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapFilingCabinet1</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>FilingCabinet1Actor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>FilingCabinet1Actor</span><span class=p>;</span>
 </span>  <span class=n>FilingCabinet1Actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapFilingCabinet1</span><span class=p>);</span>
   <span class=n>FilingCabinet1Actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;FilingCabinet&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;FilingCabinet&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>FilingCabinet2</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>FilingCabinet2</span><span class=p>;</span>
 </span>  <span class=n>FilingCabinet2</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>FilingCabinet2</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>15</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>12</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>8</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapFilingCabinet2</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapFilingCabinet2</span><span class=p>;</span>
 </span>  <span class=n>mapFilingCabinet2</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>FilingCabinet2</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapFilingCabinet2</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>FilingCabinet2Actor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>FilingCabinet2Actor</span><span class=p>;</span>
 </span>  <span class=n>FilingCabinet2Actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapFilingCabinet2</span><span class=p>);</span>
   <span class=n>FilingCabinet2Actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;FilingCabinet&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;FilingCabinet&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>bookshelf1Top</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>bookshelf1Top</span><span class=p>;</span>
 </span>  <span class=n>bookshelf1Top</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>bookshelf1Top</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>13</span><span class=p>,</span> <span class=mi>13</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>11</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapBookshelf1Top</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapBookshelf1Top</span><span class=p>;</span>
 </span>
   <span class=n>mapBookshelf1Top</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>bookshelf1Top</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapBookshelf1Top</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>bookshelf1TopActor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>bookshelf1TopActor</span><span class=p>;</span>
 </span>  <span class=n>bookshelf1TopActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf1Top</span><span class=p>);</span>
   <span class=n>bookshelf1TopActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>bookshelf1Bottom</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>bookshelf1Bottom</span><span class=p>;</span>
 </span>  <span class=n>bookshelf1Bottom</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>bookshelf1Bottom</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>20</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>11</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapBookshelf1Bottom</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapBookshelf1Bottom</span><span class=p>;</span>
 </span>  <span class=n>mapBookshelf1Bottom</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>bookshelf1Bottom</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapBookshelf1Bottom</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>bookshelf1BottomActor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>bookshelf1BottomActor</span><span class=p>;</span>
 </span>  <span class=n>bookshelf1BottomActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf1Bottom</span><span class=p>);</span>
   <span class=n>bookshelf1BottomActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>bookshelf1Front</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>bookshelf1Front</span><span class=p>;</span>
 </span>  <span class=n>bookshelf1Front</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>bookshelf1Front</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>13</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>11</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapBookshelf1Front</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapBookshelf1Front</span><span class=p>;</span>
 </span>  <span class=n>mapBookshelf1Front</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>bookshelf1Front</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapBookshelf1Front</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>bookshelf1FrontActor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>bookshelf1FrontActor</span><span class=p>;</span>
 </span>  <span class=n>bookshelf1FrontActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf1Front</span><span class=p>);</span>
   <span class=n>bookshelf1FrontActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>bookshelf1Back</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>bookshelf1Back</span><span class=p>;</span>
 </span>  <span class=n>bookshelf1Back</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>bookshelf1Back</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>13</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>11</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapBookshelf1Back</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapBookshelf1Back</span><span class=p>;</span>
 </span>  <span class=n>mapBookshelf1Back</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>bookshelf1Back</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapBookshelf1Back</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>bookshelf1BackActor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>bookshelf1BackActor</span><span class=p>;</span>
 </span>  <span class=n>bookshelf1BackActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf1Back</span><span class=p>);</span>
   <span class=n>bookshelf1BackActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>bookshelf1LHS</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>bookshelf1LHS</span><span class=p>;</span>
 </span>  <span class=n>bookshelf1LHS</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>bookshelf1LHS</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>13</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapBookshelf1LHS</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapBookshelf1LHS</span><span class=p>;</span>
 </span>  <span class=n>mapBookshelf1LHS</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>bookshelf1LHS</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapBookshelf1LHS</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>bookshelf1LHSActor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>bookshelf1LHSActor</span><span class=p>;</span>
 </span>  <span class=n>bookshelf1LHSActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf1LHS</span><span class=p>);</span>
   <span class=n>bookshelf1LHSActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>bookshelf1RHS</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>bookshelf1RHS</span><span class=p>;</span>
 </span>  <span class=n>bookshelf1RHS</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>bookshelf1RHS</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>13</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>11</span><span class=p>,</span> <span class=mi>11</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapBookshelf1RHS</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapBookshelf1RHS</span><span class=p>;</span>
 </span>  <span class=n>mapBookshelf1RHS</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>bookshelf1RHS</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapBookshelf1RHS</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>bookshelf1RHSActor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>bookshelf1RHSActor</span><span class=p>;</span>
 </span>  <span class=n>bookshelf1RHSActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf1RHS</span><span class=p>);</span>
   <span class=n>bookshelf1RHSActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>bookshelf2Top</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>bookshelf2Top</span><span class=p>;</span>
 </span>  <span class=n>bookshelf2Top</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>bookshelf2Top</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>13</span><span class=p>,</span> <span class=mi>13</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>19</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>11</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapBookshelf2Top</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapBookshelf2Top</span><span class=p>;</span>
 </span>  <span class=n>mapBookshelf2Top</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>bookshelf2Top</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapBookshelf2Top</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>bookshelf2TopActor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>bookshelf2TopActor</span><span class=p>;</span>
 </span>  <span class=n>bookshelf2TopActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf2Top</span><span class=p>);</span>
   <span class=n>bookshelf2TopActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>bookshelf2Bottom</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>bookshelf2Bottom</span><span class=p>;</span>
 </span>  <span class=n>bookshelf2Bottom</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>bookshelf2Bottom</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>20</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>19</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>11</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapBookshelf2Bottom</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapBookshelf2Bottom</span><span class=p>;</span>
 </span>  <span class=n>mapBookshelf2Bottom</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>bookshelf2Bottom</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapBookshelf2Bottom</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>bookshelf2BottomActor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>bookshelf2BottomActor</span><span class=p>;</span>
 </span>  <span class=n>bookshelf2BottomActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf2Bottom</span><span class=p>);</span>
   <span class=n>bookshelf2BottomActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>bookshelf2Front</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>bookshelf2Front</span><span class=p>;</span>
 </span>  <span class=n>bookshelf2Front</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>bookshelf2Front</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>13</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>11</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapBookshelf2Front</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapBookshelf2Front</span><span class=p>;</span>
 </span>  <span class=n>mapBookshelf2Front</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>bookshelf2Front</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapBookshelf2Front</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>bookshelf2FrontActor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>bookshelf2FrontActor</span><span class=p>;</span>
 </span>
   <span class=n>bookshelf2FrontActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf2Front</span><span class=p>);</span>
   <span class=n>bookshelf2FrontActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>bookshelf2Back</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>bookshelf2Back</span><span class=p>;</span>
 </span>  <span class=n>bookshelf2Back</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>bookshelf2Back</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>13</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>19</span><span class=p>,</span> <span class=mi>19</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>11</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapBookshelf2Back</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapBookshelf2Back</span><span class=p>;</span>
 </span>  <span class=n>mapBookshelf2Back</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>bookshelf2Back</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapBookshelf2Back</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>bookshelf2BackActor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>bookshelf2BackActor</span><span class=p>;</span>
 </span>  <span class=n>bookshelf2BackActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf2Back</span><span class=p>);</span>
   <span class=n>bookshelf2BackActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>bookshelf2LHS</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>bookshelf2LHS</span><span class=p>;</span>
 </span>
   <span class=n>bookshelf2LHS</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>bookshelf2LHS</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>13</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>19</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapBookshelf2LHS</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapBookshelf2LHS</span><span class=p>;</span>
 </span>  <span class=n>mapBookshelf2LHS</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>bookshelf2LHS</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapBookshelf2LHS</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>bookshelf2LHSActor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>bookshelf2LHSActor</span><span class=p>;</span>
 </span>  <span class=n>bookshelf2LHSActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf2LHS</span><span class=p>);</span>
   <span class=n>bookshelf2LHSActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>bookshelf2RHS</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>bookshelf2RHS</span><span class=p>;</span>
 </span>  <span class=n>bookshelf2RHS</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>bookshelf2RHS</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>13</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>15</span><span class=p>,</span> <span class=mi>19</span><span class=p>,</span> <span class=mi>11</span><span class=p>,</span> <span class=mi>11</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapBookshelf2RHS</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapBookshelf2RHS</span><span class=p>;</span>
 </span>  <span class=n>mapBookshelf2RHS</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>bookshelf2RHS</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapBookshelf2RHS</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>bookshelf2RHSActor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>bookshelf2RHSActor</span><span class=p>;</span>
 </span>  <span class=n>bookshelf2RHSActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf2RHS</span><span class=p>);</span>
   <span class=n>bookshelf2RHSActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BookShelf&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>window</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>window</span><span class=p>;</span>
 </span>  <span class=n>window</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>window</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>20</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>6</span><span class=p>,</span> <span class=mi>13</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>13</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapWindow</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapWindow</span><span class=p>;</span>
 </span>
   <span class=n>mapWindow</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>window</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapWindow</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>windowActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>windowActor</span><span class=p>;</span>
 </span>  <span class=n>windowActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapWindow</span><span class=p>);</span>
   <span class=n>windowActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Window&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>outlet</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>outlet</span><span class=p>;</span>
 </span>  <span class=n>outlet</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>outlet</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>9</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>14</span><span class=p>,</span> <span class=mi>16</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapOutlet</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapOutlet</span><span class=p>;</span>
 </span>  <span class=n>mapOutlet</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>outlet</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapOutlet</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>outletActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>outletActor</span><span class=p>;</span>
 </span>  <span class=n>outletActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapOutlet</span><span class=p>);</span>
   <span class=n>outletActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;lamp_black&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;lamp_black&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>inlet</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridGeometryFilter</span><span class=o>&gt;</span> <span class=n>inlet</span><span class=p>;</span>
 </span>  <span class=n>inlet</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>inlet</span><span class=o>-&gt;</span><span class=n>SetExtent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>9</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>6</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>mapInlet</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapInlet</span><span class=p>;</span>
 </span>  <span class=n>mapInlet</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>inlet</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapInlet</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>inletActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>inletActor</span><span class=p>;</span>
 </span>  <span class=n>inletActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapInlet</span><span class=p>);</span>
   <span class=n>inletActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-    <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;lamp_black&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+      <span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;lamp_black&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-  <span class=k>auto</span> <span class=n>outline</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredGridOutlineFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredGridOutlineFilter</span><span class=o>&gt;</span> <span class=n>outline</span><span class=p>;</span>
 </span>  <span class=n>outline</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-  <span class=k>auto</span> <span class=n>mapOutline</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapOutline</span><span class=p>;</span>
 </span>  <span class=n>mapOutline</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>outline</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>outlineActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>outlineActor</span><span class=p>;</span>
 </span>  <span class=n>outlineActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapOutline</span><span class=p>);</span>
   <span class=n>outlineActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Black&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// Create the source for the streamtubes.</span>
-  <span class=k>auto</span> <span class=n>seeds</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPointSource</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPointSource</span><span class=o>&gt;</span> <span class=n>seeds</span><span class=p>;</span>
 </span>  <span class=n>seeds</span><span class=o>-&gt;</span><span class=n>SetRadius</span><span class=p>(</span><span class=mf>0.075</span><span class=p>);</span>
   <span class=n>seeds</span><span class=o>-&gt;</span><span class=n>SetCenter</span><span class=p>(</span><span class=n>seedCenters</span><span class=p>[</span><span class=n>center</span><span class=p>].</span><span class=n>data</span><span class=p>());</span>
   <span class=n>seeds</span><span class=o>-&gt;</span><span class=n>SetNumberOfPoints</span><span class=p>(</span><span class=mi>25</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>streamers</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStreamTracer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStreamTracer</span><span class=o>&gt;</span> <span class=n>streamers</span><span class=p>;</span>
 </span>  <span class=n>streamers</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>streamers</span><span class=o>-&gt;</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>seeds</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>streamers</span><span class=o>-&gt;</span><span class=n>SetMaximumPropagation</span><span class=p>(</span><span class=mi>500</span><span class=p>);</span>
@@ -449,21 +391,18 @@ function registerListener(event, func) {
   <span class=n>streamers</span><span class=o>-&gt;</span><span class=n>SetInitialIntegrationStep</span><span class=p>(</span><span class=mf>0.2</span><span class=p>);</span>
   <span class=n>streamers</span><span class=o>-&gt;</span><span class=n>SetIntegratorType</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
   <span class=n>streamers</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
-  <span class=k>auto</span> <span class=n>mapStreamers</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapStreamers</span><span class=p>;</span>
 </span>  <span class=n>mapStreamers</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>streamers</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapStreamers</span><span class=o>-&gt;</span><span class=n>SetScalarRange</span><span class=p>(</span>
-    <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>());</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>streamersActor</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+      <span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>());</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>streamersActor</span><span class=p>;</span>
 </span>  <span class=n>streamersActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapStreamers</span><span class=p>);</span>
 
   <span class=c1>// Now create the usual graphics stuff.</span>
-<span class=hll>  <span class=k>auto</span> <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>renderer</span><span class=p>;</span>
+</span><span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renderWindow</span><span class=p>;</span>
 </span>  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-  <span class=k>auto</span> <span class=n>interactor</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>interactor</span><span class=p>;</span>
 </span>  <span class=n>interactor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>table1Actor</span><span class=p>);</span>
@@ -491,8 +430,7 @@ function registerListener(event, func) {
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
   <span class=c1>// Here we specify a particular view.</span>
-  <span class=k>auto</span> <span class=n>aCamera</span> <span class=o>=</span>
-<span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkCamera</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCamera</span><span class=o>&gt;</span> <span class=n>aCamera</span><span class=p>;</span>
 </span>  <span class=n>aCamera</span><span class=o>-&gt;</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>0.726079</span><span class=p>,</span> <span class=mf>36.3039</span><span class=p>);</span>
   <span class=n>aCamera</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>2.43584</span><span class=p>,</span> <span class=mf>2.15046</span><span class=p>,</span> <span class=mf>1.11104</span><span class=p>);</span>
   <span class=n>aCamera</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=o>-</span><span class=mf>4.76183</span><span class=p>,</span> <span class=o>-</span><span class=mf>10.4426</span><span class=p>,</span> <span class=mf>3.17203</span><span class=p>);</span>
@@ -503,6 +441,8 @@ function registerListener(event, func) {
   <span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>aCamera</span><span class=p>);</span>
 
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>400</span><span class=p>);</span>
+  <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;Office&quot;</span><span class=p>);</span>
+
   <span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
   <span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
 
@@ -514,6 +454,7 @@ function registerListener(event, func) {
 
 <span class=nb>find_package</span><span class=p>(</span><span class=s>VTK</span> <span class=s>COMPONENTS</span> 
   <span class=s>vtkCommonColor</span>
+  <span class=s>vtkCommonCore</span>
   <span class=s>vtkCommonDataModel</span>
   <span class=s>vtkFiltersCore</span>
   <span class=s>vtkFiltersFlowPaths</span>

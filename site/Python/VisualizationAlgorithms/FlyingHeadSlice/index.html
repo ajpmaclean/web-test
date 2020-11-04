@@ -126,7 +126,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>isoActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>isoActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>isoMapper</span><span class=p>)</span>
-    <span class=n>isoActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Wheat&quot;</span><span class=p>))</span>
+    <span class=n>isoActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Wheat&#39;</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>outline</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkOutlineFilter</span><span class=p>()</span>
 </span>    <span class=n>outline</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>extractVOI</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -140,7 +140,7 @@ function registerListener(event, func) {
     <span class=c1># Add the actors to the renderer, set the background and size.</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>outlineActor</span><span class=p>)</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>isoActor</span><span class=p>)</span>
-    <span class=n>ren1</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;SlateGray&quot;</span><span class=p>))</span>
+    <span class=n>ren1</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Dolly</span><span class=p>(</span><span class=mf>1.5</span><span class=p>)</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>ResetCameraClippingRange</span><span class=p>()</span>
