@@ -93,7 +93,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>sphereActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>sphereActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>sphereMapper</span><span class=p>)</span>
-    <span class=n>sphereActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Chocolate&quot;</span><span class=p>))</span>
+    <span class=n>sphereActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
 
     <span class=c1># Regular Polygon</span>
 <span class=hll>    <span class=n>regularPolygonSource</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRegularPolygonSource</span><span class=p>()</span>
@@ -105,12 +105,13 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>regularPolygonActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>regularPolygonActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>regularPolygonMapper</span><span class=p>)</span>
-    <span class=n>regularPolygonActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;BurlyWood&quot;</span><span class=p>))</span>
+    <span class=n>regularPolygonActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Cornsilk&#39;</span><span class=p>))</span>
 
     <span class=c1># A renderer and render window</span>
 <span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderer</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;BalloonWidget&#39;</span><span class=p>)</span>
 
     <span class=c1># An interactor</span>
 <span class=hll>    <span class=n>renderWindowInteractor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -123,13 +124,13 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>balloonWidget</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkBalloonWidget</span><span class=p>()</span>
 </span>    <span class=n>balloonWidget</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>renderWindowInteractor</span><span class=p>)</span>
     <span class=n>balloonWidget</span><span class=o>.</span><span class=n>SetRepresentation</span><span class=p>(</span><span class=n>balloonRep</span><span class=p>)</span>
-    <span class=n>balloonWidget</span><span class=o>.</span><span class=n>AddBalloon</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>,</span> <span class=s2>&quot;This is a sphere&quot;</span><span class=p>)</span>
-    <span class=n>balloonWidget</span><span class=o>.</span><span class=n>AddBalloon</span><span class=p>(</span><span class=n>regularPolygonActor</span><span class=p>,</span> <span class=s2>&quot;This is a regular polygon&quot;</span><span class=p>)</span>
+    <span class=n>balloonWidget</span><span class=o>.</span><span class=n>AddBalloon</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>,</span> <span class=s1>&#39;This is a sphere&#39;</span><span class=p>)</span>
+    <span class=n>balloonWidget</span><span class=o>.</span><span class=n>AddBalloon</span><span class=p>(</span><span class=n>regularPolygonActor</span><span class=p>,</span> <span class=s1>&#39;This is a regular polygon&#39;</span><span class=p>)</span>
 
     <span class=c1># Add the actors to the scene</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>regularPolygonActor</span><span class=p>)</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Wheat&quot;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
 
     <span class=c1># Render an image (lights and cameras are created automatically)</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>

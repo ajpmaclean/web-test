@@ -83,123 +83,112 @@ function registerListener(event, func) {
 <span class=cm>*/</span>
 
 <span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkActor.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkCamera.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkColorTransferFunction.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkContourFilter.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkDataSetTriangleFilter.h&gt;</span><span class=cp></span>
+</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkNew.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPiecewiseFunction.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkPolyDataMapper.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindow.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderWindowInteractor.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkRenderer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSLCReader.h&gt;</span><span class=cp></span>
-</span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkSmartPointer.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkStructuredPointsReader.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkThreshold.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkUnstructuredGridVolumeRayCastMapper.h&gt;</span><span class=cp></span>
 </span><span class=hll><span class=cp>#include</span> <span class=cpf>&lt;vtkVolumeProperty.h&gt;</span><span class=cp></span>
 </span>
-<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>*</span> <span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
   <span class=k>if</span> <span class=p>(</span><span class=n>argc</span> <span class=o>&lt;</span> <span class=mi>3</span><span class=p>)</span>
-    <span class=p>{</span>
-<span class=hll>    <span class=n>std</span><span class=o>::</span><span class=n>cerr</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Usage: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&quot; file.vtk file.slc&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+  <span class=p>{</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>cerr</span> <span class=o>&lt;&lt;</span> <span class=s>&quot;Usage: &quot;</span> <span class=o>&lt;&lt;</span> <span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+<span class=hll>              <span class=o>&lt;&lt;</span> <span class=s>&quot; file.vtk file.slc e.g. ironProt.vtk neghip.slc&quot;</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 </span>    <span class=k>return</span> <span class=n>EXIT_FAILURE</span><span class=p>;</span>
-    <span class=p>}</span>
+  <span class=p>}</span>
 
   <span class=c1>// Create the reader for the data</span>
   <span class=c1>// This is the data the will be volume rendered</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredPointsReader</span><span class=o>&gt;</span> <span class=n>reader</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkStructuredPointsReader</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStructuredPointsReader</span><span class=o>&gt;</span> <span class=n>reader</span><span class=p>;</span>
 </span>  <span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
 
   <span class=c1>// create a reader for the other data that will</span>
   <span class=c1>// be contoured and displayed as a polygonal mesh</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSLCReader</span><span class=o>&gt;</span> <span class=n>reader2</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkSLCReader</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSLCReader</span><span class=o>&gt;</span> <span class=n>reader2</span><span class=p>;</span>
 </span>  <span class=n>reader2</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>2</span><span class=p>]);</span>
 
 <span class=hll>  <span class=c1>// convert from vtkImageData to vtkUnstructuredGrid, remove</span>
 </span>  <span class=c1>// any cells where all values are below 80</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkThreshold</span><span class=o>&gt;</span> <span class=n>thresh</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkThreshold</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThreshold</span><span class=o>&gt;</span> <span class=n>thresh</span><span class=p>;</span>
 </span>  <span class=n>thresh</span><span class=o>-&gt;</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mi>80</span><span class=p>);</span>
   <span class=n>thresh</span><span class=o>-&gt;</span><span class=n>AllScalarsOff</span><span class=p>();</span>
   <span class=n>thresh</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDataSetTriangleFilter</span><span class=o>&gt;</span> <span class=n>trifilter</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkDataSetTriangleFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetTriangleFilter</span><span class=o>&gt;</span> <span class=n>trifilter</span><span class=p>;</span>
 </span>  <span class=n>trifilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>thresh</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
   <span class=c1>// Create transfer mapping scalar value to opacity</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPiecewiseFunction</span><span class=o>&gt;</span> <span class=n>opacityTransferFunction</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPiecewiseFunction</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span>  <span class=n>opacityTransferFunction</span><span class=o>-&gt;</span><span class=n>AddPoint</span><span class=p>(</span><span class=mi>80</span><span class=p>,</span>  <span class=mf>0.0</span><span class=p>);</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPiecewiseFunction</span><span class=o>&gt;</span> <span class=n>opacityTransferFunction</span><span class=p>;</span>
+</span>  <span class=n>opacityTransferFunction</span><span class=o>-&gt;</span><span class=n>AddPoint</span><span class=p>(</span><span class=mi>80</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
   <span class=n>opacityTransferFunction</span><span class=o>-&gt;</span><span class=n>AddPoint</span><span class=p>(</span><span class=mi>120</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>);</span>
   <span class=n>opacityTransferFunction</span><span class=o>-&gt;</span><span class=n>AddPoint</span><span class=p>(</span><span class=mi>255</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>);</span>
 
   <span class=c1>// Create transfer mapping scalar value to color</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkColorTransferFunction</span><span class=o>&gt;</span> <span class=n>colorTransferFunction</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkColorTransferFunction</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span>  <span class=n>colorTransferFunction</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span> <span class=mf>80.0</span><span class=p>,</span><span class=mf>0.0</span><span class=p>,</span><span class=mf>0.0</span><span class=p>,</span><span class=mf>0.0</span><span class=p>);</span>
-  <span class=n>colorTransferFunction</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>120.0</span><span class=p>,</span><span class=mf>0.0</span><span class=p>,</span><span class=mf>0.0</span><span class=p>,</span><span class=mf>1.0</span><span class=p>);</span>
-  <span class=n>colorTransferFunction</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>160.0</span><span class=p>,</span><span class=mf>1.0</span><span class=p>,</span><span class=mf>0.0</span><span class=p>,</span><span class=mf>0.0</span><span class=p>);</span>
-  <span class=n>colorTransferFunction</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>200.0</span><span class=p>,</span><span class=mf>0.0</span><span class=p>,</span><span class=mf>1.0</span><span class=p>,</span><span class=mf>0.0</span><span class=p>);</span>
-  <span class=n>colorTransferFunction</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>255.0</span><span class=p>,</span><span class=mf>0.0</span><span class=p>,</span><span class=mf>1.0</span><span class=p>,</span><span class=mf>1.0</span><span class=p>);</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkColorTransferFunction</span><span class=o>&gt;</span> <span class=n>colorTransferFunction</span><span class=p>;</span>
+</span>  <span class=n>colorTransferFunction</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>80.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
+  <span class=n>colorTransferFunction</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>120.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>);</span>
+  <span class=n>colorTransferFunction</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>160.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
+  <span class=n>colorTransferFunction</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>200.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>);</span>
+  <span class=n>colorTransferFunction</span><span class=o>-&gt;</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>255.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>);</span>
 
   <span class=c1>// The property describes how the data will look</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkVolumeProperty</span><span class=o>&gt;</span> <span class=n>volumeProperty</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkVolumeProperty</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkVolumeProperty</span><span class=o>&gt;</span> <span class=n>volumeProperty</span><span class=p>;</span>
 </span>  <span class=n>volumeProperty</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colorTransferFunction</span><span class=p>);</span>
   <span class=n>volumeProperty</span><span class=o>-&gt;</span><span class=n>SetScalarOpacity</span><span class=p>(</span><span class=n>opacityTransferFunction</span><span class=p>);</span>
   <span class=n>volumeProperty</span><span class=o>-&gt;</span><span class=n>ShadeOff</span><span class=p>();</span>
   <span class=n>volumeProperty</span><span class=o>-&gt;</span><span class=n>SetInterpolationTypeToLinear</span><span class=p>();</span>
 
   <span class=c1>// The mapper / ray cast function know how to render the data</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGridVolumeRayCastMapper</span><span class=o>&gt;</span> <span class=n>volumeMapper</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGridVolumeRayCastMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGridVolumeRayCastMapper</span><span class=o>&gt;</span> <span class=n>volumeMapper</span><span class=p>;</span>
 </span>  <span class=n>volumeMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>trifilter</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renWin</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span>  <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span><span class=mi>512</span><span class=p>);</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>ren1</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span> <span class=n>renWin</span><span class=p>;</span>
+</span>  <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>512</span><span class=p>);</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span> <span class=n>ren1</span><span class=p>;</span>
 </span>
   <span class=c1>// contour the second dataset</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkContourFilter</span><span class=o>&gt;</span> <span class=n>contour</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkContourFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkContourFilter</span><span class=o>&gt;</span> <span class=n>contour</span><span class=p>;</span>
 </span>  <span class=n>contour</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>80</span><span class=p>);</span>
   <span class=n>contour</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader2</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
   <span class=c1>// create a mapper for the polygonal data</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapper</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span> <span class=n>mapper</span><span class=p>;</span>
 </span>  <span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>contour</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
   <span class=n>mapper</span><span class=o>-&gt;</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
 
   <span class=c1>// create an actor for the polygonal data</span>
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>actor</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span> <span class=n>actor</span><span class=p>;</span>
 </span>  <span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
 
   <span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
 
-  <span class=n>ren1</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=mf>0.1</span><span class=p>,</span><span class=mf>0.4</span><span class=p>,</span><span class=mf>0.2</span><span class=p>);</span>
+  <span class=n>ren1</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.4</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>);</span>
 
   <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren1</span><span class=p>);</span>
+  <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;IntermixedUnstructuredGrid&quot;</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>iren</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span> <span class=n>iren</span><span class=p>;</span>
 </span>  <span class=n>iren</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkVolume</span><span class=o>&gt;</span> <span class=n>volume</span> <span class=o>=</span>
-</span><span class=hll>    <span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkVolume</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkVolume</span><span class=o>&gt;</span> <span class=n>volume</span><span class=p>;</span>
 </span>  <span class=n>volume</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>volumeMapper</span><span class=p>);</span>
   <span class=n>volume</span><span class=o>-&gt;</span><span class=n>SetProperty</span><span class=p>(</span><span class=n>volumeProperty</span><span class=p>);</span>
 
   <span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddVolume</span><span class=p>(</span><span class=n>volume</span><span class=p>);</span>
 
   <span class=n>ren1</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
+  <span class=n>ren1</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Zoom</span><span class=p>(</span><span class=mf>1.5</span><span class=p>);</span>
 
   <span class=c1>// Render composite. In default mode. For coverage.</span>
   <span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
