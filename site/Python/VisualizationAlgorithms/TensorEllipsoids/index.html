@@ -142,7 +142,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>outlineActor</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>outlineActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>outlineMapper</span><span class=p>)</span>
-    <span class=n>outlineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Black&quot;</span><span class=p>))</span>
+    <span class=n>outlineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
 
     <span class=c1># Create a cone whose apex indicates the application of load.</span>
     <span class=c1>#</span>
@@ -155,7 +155,7 @@ function registerListener(event, func) {
 </span>    <span class=n>coneActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>coneMap</span><span class=p>)</span>
     <span class=n>coneActor</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>11</span><span class=p>)</span>
     <span class=n>coneActor</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
-    <span class=n>coneActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Red&quot;</span><span class=p>))</span>
+    <span class=n>coneActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Red&#39;</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtk</span><span class=o>.</span><span class=n>vtkCamera</span><span class=p>()</span>
 </span>    <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>0.113766</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.13665</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.01919</span><span class=p>)</span>
@@ -167,10 +167,11 @@ function registerListener(event, func) {
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>tensorActor</span><span class=p>)</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>outlineActor</span><span class=p>)</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>coneActor</span><span class=p>)</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;WhiteSmoke&quot;</span><span class=p>))</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;WhiteSmoke&#39;</span><span class=p>))</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>camera</span><span class=p>)</span>
 
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>512</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;TensorEllipsoids&#39;</span><span class=p>)</span>
 
     <span class=n>iren</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
