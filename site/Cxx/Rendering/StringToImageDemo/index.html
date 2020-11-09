@@ -140,7 +140,7 @@ function registerListener(event, func) {
   <span class=c1>//std::uniform_int_distribution&lt;&gt; fontDist(6, 42);</span>
   <span class=c1>//std::uniform_real_distribution&lt;double&gt; orientationDist(-90, 90);</span>
 
-<span class=hll>    <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMinimalStandardRandomSequence</span><span class=o>&gt;</span> <span class=n>randomSequence</span><span class=p>;</span>
+<span class=hll>  <span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMinimalStandardRandomSequence</span><span class=o>&gt;</span> <span class=n>randomSequence</span><span class=p>;</span>
 </span>  <span class=n>randomSequence</span><span class=o>-&gt;</span><span class=n>SetSeed</span><span class=p>(</span><span class=mi>8775070</span><span class=p>);</span>
 
 
@@ -227,9 +227,9 @@ function registerListener(event, func) {
   <span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
   <span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;StringToImageDemo&quot;</span><span class=p>);</span>
 
-<span class=hll>  <span class=n>vtkCamera</span><span class=o>*</span> <span class=n>camera</span> <span class=o>=</span> <span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>();</span>
-</span>  <span class=n>camera</span><span class=o>-&gt;</span><span class=n>ParallelProjectionOn</span><span class=p>();</span>
-  <span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetParallelScale</span><span class=p>(</span><span class=mi>640</span> <span class=o>*</span> <span class=mf>.4</span><span class=p>);</span>
+  <span class=k>auto</span> <span class=n>camera</span> <span class=o>=</span> <span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>();</span>
+  <span class=n>camera</span><span class=o>-&gt;</span><span class=n>ParallelProjectionOn</span><span class=p>();</span>
+  <span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetParallelScale</span><span class=p>(</span><span class=mi>640</span> <span class=o>*</span> <span class=mf>0.4</span><span class=p>);</span>
   <span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
   <span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
   <span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
