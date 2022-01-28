@@ -66,6 +66,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://kitware.github.io/vtk-examples/site/trame/</loc>
+         <lastmod>2022-01-28</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://kitware.github.io/vtk-examples/site/CSharp/Coverage/CSharpVTKClassesNotUsed/</loc>
          <lastmod>2022-01-28</lastmod>
          <changefreq>daily</changefreq>
