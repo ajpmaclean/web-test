@@ -267,20 +267,22 @@ function registerListener(event, func) {
 <span class=w>                 </span><span class=s>&quot;The path to the JSON file e.g. Frog_mhd.json.&quot;</span><span class=p>)</span>
 <span class=w>      </span><span class=o>-&gt;</span><span class=n>required</span><span class=p>()</span>
 <span class=w>      </span><span class=o>-&gt;</span><span class=n>check</span><span class=p>(</span><span class=n>CLI</span><span class=o>::</span><span class=n>ExistingFile</span><span class=p>);</span>
-<span class=w>  </span><span class=kt>bool</span><span class=w> </span><span class=n>flyingEdges</span><span class=p>{</span><span class=nb>true</span><span class=p>};</span>
+
+<span class=w>  </span><span class=kt>bool</span><span class=w> </span><span class=n>flyingEdges</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_flag</span><span class=p>(</span><span class=s>&quot;-m{false},!-n&quot;</span><span class=p>,</span><span class=w> </span><span class=n>flyingEdges</span><span class=p>,</span>
 <span class=w>               </span><span class=s>&quot;Use flying edges by default, marching cubes if set.&quot;</span><span class=p>);</span>
 <span class=w>  </span><span class=kt>bool</span><span class=w> </span><span class=n>decimation</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
 <span class=w>  </span><span class=c1>// -o: obliterate a synonym for decimation.</span>
 <span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_flag</span><span class=p>(</span><span class=s>&quot;-o&quot;</span><span class=p>,</span><span class=w> </span><span class=n>decimation</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Decimate if set.&quot;</span><span class=p>);</span>
+
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=n>chosenTissues</span><span class=p>;</span>
 <span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_option</span><span class=p>(</span><span class=s>&quot;-t&quot;</span><span class=p>,</span><span class=w> </span><span class=n>chosenTissues</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Select one or more tissues.&quot;</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>bool</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=o>&gt;</span><span class=w> </span><span class=n>view</span><span class=p>{</span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=nb>false</span><span class=p>};</span>
-<span class=w>  </span><span class=k>auto</span><span class=o>*</span><span class=w> </span><span class=n>ogroup</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>app</span><span class=p>.</span><span class=n>add_option_group</span><span class=p>(</span>
-<span class=w>      </span><span class=s>&quot;view&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=s>&quot;Select a view corresponding to Fig 12-9 in the VTK Textbook. Only none &quot;</span>
-<span class=w>      </span><span class=s>&quot;or one of these can be selected.&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>bool</span><span class=p>,</span><span class=w> </span><span class=mi>6</span><span class=o>&gt;</span><span class=w> </span><span class=n>view</span><span class=p>{</span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=nb>false</span><span class=p>};</span>
+<span class=w>  </span><span class=k>auto</span><span class=o>*</span><span class=w> </span><span class=n>ogroup</span><span class=w> </span><span class=o>=</span>
+<span class=w>      </span><span class=n>app</span><span class=p>.</span><span class=n>add_option_group</span><span class=p>(</span><span class=s>&quot;view&quot;</span><span class=p>,</span>
+<span class=w>                           </span><span class=s>&quot;Select the orientation of the frog. Only none or &quot;</span>
+<span class=w>                           </span><span class=s>&quot;one of these can be selected.&quot;</span><span class=p>);</span>
 <span class=w>  </span><span class=n>ogroup</span><span class=o>-&gt;</span><span class=n>add_flag</span><span class=p>(</span><span class=s>&quot;-a&quot;</span><span class=p>,</span><span class=w> </span><span class=n>view</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span>
 <span class=w>                   </span><span class=s>&quot;The view corresponds to Fig 12-9a in the VTK Textbook&quot;</span><span class=p>);</span>
 <span class=w>  </span><span class=n>ogroup</span><span class=o>-&gt;</span><span class=n>add_flag</span><span class=p>(</span><span class=s>&quot;-b&quot;</span><span class=p>,</span><span class=w> </span><span class=n>view</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span>
@@ -289,6 +291,12 @@ function registerListener(event, func) {
 <span class=w>                   </span><span class=s>&quot;The view corresponds to Fig 12-9c in the VTK Textbook&quot;</span><span class=p>);</span>
 <span class=w>  </span><span class=n>ogroup</span><span class=o>-&gt;</span><span class=n>add_flag</span><span class=p>(</span><span class=s>&quot;-d&quot;</span><span class=p>,</span><span class=w> </span><span class=n>view</span><span class=p>[</span><span class=mi>3</span><span class=p>],</span>
 <span class=w>                   </span><span class=s>&quot;The view corresponds to Fig 12-9d in the VTK Textbook&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>ogroup</span><span class=o>-&gt;</span><span class=n>add_flag</span><span class=p>(</span>
+<span class=w>      </span><span class=s>&quot;-l&quot;</span><span class=p>,</span><span class=w> </span><span class=n>view</span><span class=p>[</span><span class=mi>4</span><span class=p>],</span>
+<span class=w>      </span><span class=s>&quot;The view corresponds to looking down on the anterior surface&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>ogroup</span><span class=o>-&gt;</span><span class=n>add_flag</span><span class=p>(</span><span class=s>&quot;-p&quot;</span><span class=p>,</span><span class=w> </span><span class=n>view</span><span class=p>[</span><span class=mi>5</span><span class=p>],</span>
+<span class=w>                   </span><span class=s>&quot;The view corresponds to looking down on the posterior &quot;</span>
+<span class=w>                   </span><span class=s>&quot;surface (the default)&quot;</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>CLI11_PARSE</span><span class=p>(</span><span class=n>app</span><span class=p>,</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span>
 
@@ -296,9 +304,9 @@ function registerListener(event, func) {
 <span class=w>                                   </span><span class=p>[</span><span class=o>=</span><span class=p>](</span><span class=k>const</span><span class=w> </span><span class=kt>bool</span><span class=o>&amp;</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>e</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=nb>true</span><span class=p>;</span><span class=w> </span><span class=p>});</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>selectCount</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span>
-<span class=w>        </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Only one or none of the options -a, -b, -c, -d can be selected;&quot;</span>
-<span class=w>        </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Only one or none of the options -a, -b, -c, -d, -l, -p can &quot;</span>
+<span class=w>                 </span><span class=s>&quot;be selected;&quot;</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -352,11 +360,21 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=n>tissues</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>parameters</span><span class=p>.</span><span class=n>fig_129cd</span><span class=p>;</span>
 <span class=w>      </span><span class=n>selectFigure</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=sc>&#39;c&#39;</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>else</span>
+<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>view</span><span class=p>[</span><span class=mi>3</span><span class=p>])</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=c1>// No skin, blood and skeleton.</span>
 <span class=w>      </span><span class=n>tissues</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>parameters</span><span class=p>.</span><span class=n>fig_129cd</span><span class=p>;</span>
 <span class=w>      </span><span class=n>selectFigure</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=sc>&#39;d&#39;</span><span class=p>;</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>view</span><span class=p>[</span><span class=mi>4</span><span class=p>])</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=c1>// Looking down on the anterior surface.</span>
+<span class=w>      </span><span class=n>selectFigure</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=sc>&#39;l&#39;</span><span class=p>;</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=c1>// The default</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=c1>// Looking down on the posterior surface.</span>
+<span class=w>      </span><span class=n>selectFigure</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=sc>&#39;p&#39;</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -457,55 +475,69 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;ParaViewBkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>camera</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>();</span>
-<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>selectFigure</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=sc>&#39;\0&#39;</span><span class=p>)</span>
+<span class=w>  </span><span class=c1>// Superior Anterior Left</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>labels</span><span class=p>{</span><span class=s>&quot;sal&quot;</span><span class=p>};</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>selectFigure</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=sc>&#39;a&#39;</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=c1>// Orient so that we look down on the dorsal surface and</span>
+<span class=w>    </span><span class=c1>// Fig 12-9a in the VTK Textbook</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>742.731237</span><span class=p>,</span><span class=w> </span><span class=mf>-441.329635</span><span class=p>,</span><span class=w> </span><span class=mf>-877.192015</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>247.637687</span><span class=p>,</span><span class=w> </span><span class=mf>120.680880</span><span class=p>,</span><span class=w> </span><span class=mf>-253.487473</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mf>-0.323882</span><span class=p>,</span><span class=w> </span><span class=mf>-0.816232</span><span class=p>,</span><span class=w> </span><span class=mf>0.478398</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>974.669585</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>311.646383</span><span class=p>,</span><span class=w> </span><span class=mf>1803.630763</span><span class=p>);</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>selectFigure</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=sc>&#39;b&#39;</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=c1>// Fig 12-9b in the VTK Textbook</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>717.356065</span><span class=p>,</span><span class=w> </span><span class=mf>-429.889054</span><span class=p>,</span><span class=w> </span><span class=mf>-845.381584</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>243.071719</span><span class=p>,</span><span class=w> </span><span class=mf>100.996487</span><span class=p>,</span><span class=w> </span><span class=mf>-247.446340</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mf>-0.320495</span><span class=p>,</span><span class=w> </span><span class=mf>-0.820148</span><span class=p>,</span><span class=w> </span><span class=mf>0.473962</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>929.683631</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>293.464446</span><span class=p>,</span><span class=w> </span><span class=mf>1732.794957</span><span class=p>);</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>selectFigure</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=sc>&#39;c&#39;</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=c1>// Fig 12-9c in the VTK Textbook</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>447.560023</span><span class=p>,</span><span class=w> </span><span class=mf>-136.611491</span><span class=p>,</span><span class=w> </span><span class=mf>-454.753689</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>253.142277</span><span class=p>,</span><span class=w> </span><span class=mf>91.949451</span><span class=p>,</span><span class=w> </span><span class=mf>-238.583973</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mf>-0.425438</span><span class=p>,</span><span class=w> </span><span class=mf>-0.786048</span><span class=p>,</span><span class=w> </span><span class=mf>0.448477</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>369.821187</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>0.829116</span><span class=p>,</span><span class=w> </span><span class=mf>829.115939</span><span class=p>);</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>selectFigure</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=sc>&#39;d&#39;</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=c1>// Fig 12-9d in the VTK Textbook</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>347.826249</span><span class=p>,</span><span class=w> </span><span class=mf>-469.633647</span><span class=p>,</span><span class=w> </span><span class=mf>-236.234262</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>296.893207</span><span class=p>,</span><span class=w> </span><span class=mf>89.307704</span><span class=p>,</span><span class=w> </span><span class=mf>-225.156581</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mf>-0.687345</span><span class=p>,</span><span class=w> </span><span class=mf>-0.076948</span><span class=p>,</span><span class=w> </span><span class=mf>0.722244</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>561.366478</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>347.962064</span><span class=p>,</span><span class=w> </span><span class=mf>839.649856</span><span class=p>);</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>selectFigure</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=sc>&#39;l&#39;</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=c1>// Orient so that we look down on the anterior surface and</span>
 <span class=w>    </span><span class=c1>//  the superior surface faces the top of the screen.</span>
+<span class=w>    </span><span class=c1>// Left Superior Anterior</span>
+<span class=w>    </span><span class=n>labels</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;lsa&quot;</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>transform</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>SetMatrix</span><span class=p>(</span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>GetModelTransformMatrix</span><span class=p>());</span>
-<span class=w>    </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>-90</span><span class=p>);</span>
+<span class=w>    </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>90</span><span class=p>);</span>
 <span class=w>    </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>RotateZ</span><span class=p>(</span><span class=mi>90</span><span class=p>);</span>
 <span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetModelTransformMatrix</span><span class=p>(</span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>GetMatrix</span><span class=p>());</span>
 <span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>selectFigure</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=sc>&#39;a&#39;</span><span class=p>)</span>
-<span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=c1>// Fig 12-9a in the VTK Textbook</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>742.731237</span><span class=p>,</span><span class=w> </span><span class=mf>-441.329635</span><span class=p>,</span><span class=w> </span><span class=mf>-877.192015</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>247.637687</span><span class=p>,</span><span class=w> </span><span class=mf>120.680880</span><span class=p>,</span><span class=w> </span><span class=mf>-253.487473</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mf>-0.323882</span><span class=p>,</span><span class=w> </span><span class=mf>-0.816232</span><span class=p>,</span><span class=w> </span><span class=mf>0.478398</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>974.669585</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>311.646383</span><span class=p>,</span><span class=w> </span><span class=mf>1803.630763</span><span class=p>);</span>
-<span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>selectFigure</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=sc>&#39;b&#39;</span><span class=p>)</span>
-<span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=c1>// Fig 12-9b in the VTK Textbook</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>717.356065</span><span class=p>,</span><span class=w> </span><span class=mf>-429.889054</span><span class=p>,</span><span class=w> </span><span class=mf>-845.381584</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>243.071719</span><span class=p>,</span><span class=w> </span><span class=mf>100.996487</span><span class=p>,</span><span class=w> </span><span class=mf>-247.446340</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mf>-0.320495</span><span class=p>,</span><span class=w> </span><span class=mf>-0.820148</span><span class=p>,</span><span class=w> </span><span class=mf>0.473962</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>929.683631</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>293.464446</span><span class=p>,</span><span class=w> </span><span class=mf>1732.794957</span><span class=p>);</span>
-<span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>selectFigure</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=sc>&#39;c&#39;</span><span class=p>)</span>
-<span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=c1>// Fig 12-9c in the VTK Textbook</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>447.560023</span><span class=p>,</span><span class=w> </span><span class=mf>-136.611491</span><span class=p>,</span><span class=w> </span><span class=mf>-454.753689</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>253.142277</span><span class=p>,</span><span class=w> </span><span class=mf>91.949451</span><span class=p>,</span><span class=w> </span><span class=mf>-238.583973</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mf>-0.425438</span><span class=p>,</span><span class=w> </span><span class=mf>-0.786048</span><span class=p>,</span><span class=w> </span><span class=mf>0.448477</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>369.821187</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>0.829116</span><span class=p>,</span><span class=w> </span><span class=mf>829.115939</span><span class=p>);</span>
-<span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>selectFigure</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=sc>&#39;d&#39;</span><span class=p>)</span>
-<span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=c1>// Fig 12-9d in the VTK Textbook</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>347.826249</span><span class=p>,</span><span class=w> </span><span class=mf>-469.633647</span><span class=p>,</span><span class=w> </span><span class=mf>-236.234262</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>296.893207</span><span class=p>,</span><span class=w> </span><span class=mf>89.307704</span><span class=p>,</span><span class=w> </span><span class=mf>-225.156581</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mf>-0.687345</span><span class=p>,</span><span class=w> </span><span class=mf>-0.076948</span><span class=p>,</span><span class=w> </span><span class=mf>0.722244</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>561.366478</span><span class=p>);</span>
-<span class=w>      </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>347.962064</span><span class=p>,</span><span class=w> </span><span class=mf>839.649856</span><span class=p>);</span>
-<span class=w>    </span><span class=p>}</span>
+<span class=w>    </span><span class=c1>// Orient so that we look down on the posterior surface and</span>
+<span class=w>    </span><span class=c1>//  the superior surface faces the top of the screen.</span>
+<span class=w>    </span><span class=c1>// Right Superior Posterior</span>
+<span class=w>    </span><span class=n>labels</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;rsp&quot;</span><span class=p>;</span>
+<span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>transform</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>SetMatrix</span><span class=p>(</span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>GetModelTransformMatrix</span><span class=p>());</span>
+<span class=w>    </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>-90</span><span class=p>);</span>
+<span class=w>    </span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>RotateZ</span><span class=p>(</span><span class=mi>90</span><span class=p>);</span>
+<span class=w>    </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetModelTransformMatrix</span><span class=p>(</span><span class=n>transform</span><span class=o>-&gt;</span><span class=n>GetMatrix</span><span class=p>());</span>
+<span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCameraOrientationWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>cow</span><span class=p>;</span>
@@ -514,21 +546,9 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>cow</span><span class=o>-&gt;</span><span class=n>On</span><span class=p>();</span>
 <span class=w>  </span><span class=n>cow</span><span class=o>-&gt;</span><span class=n>EnabledOn</span><span class=p>();</span>
 
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOrientationMarkerWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>om</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>labels</span><span class=p>;</span>
-<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>selectFigure</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=sc>&#39;\0&#39;</span><span class=p>)</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=c1>// Superior Anterior Left</span>
-<span class=w>    </span><span class=n>labels</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;sal&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=c1>// Right Superior Posterior</span>
-<span class=w>    </span><span class=n>labels</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;rsp&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=p>}</span>
-
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>axes</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>MakeCubeActor</span><span class=p>(</span><span class=n>labels</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=p>);</span>
-<span class=w>  </span><span class=n>om</span><span class=o>-&gt;</span><span class=n>SetOrientationMarker</span><span class=p>(</span><span class=n>axes</span><span class=p>);</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOrientationMarkerWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>om</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>om</span><span class=o>-&gt;</span><span class=n>SetOrientationMarker</span><span class=p>(</span><span class=n>axes</span><span class=p>);</span>
 <span class=w>  </span><span class=c1>// Position upper left in the viewport.</span>
 <span class=w>  </span><span class=c1>// om-&gt;SetViewport(0.0, 0.8, 0.2, 1.0);</span>
 <span class=w>  </span><span class=c1>// Position lower left in the viewport.</span>
@@ -923,12 +943,12 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>spacing</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;spacing&quot;</span><span class=p>]);</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>startSlice</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;start_slice&quot;</span><span class=p>]);</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;</span><span class=w> </span><span class=n>dataSpacing</span><span class=p>{</span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>pixelSize</span><span class=p>),</span>
-<span class=w>                                     </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>pixelSize</span><span class=p>),</span><span class=w> </span><span class=n>spacing</span><span class=p>};</span>
+<span class=w>                                    </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=n>pixelSize</span><span class=p>),</span><span class=w> </span><span class=n>spacing</span><span class=p>};</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>columns</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;columns&quot;</span><span class=p>]);</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>rows</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;rows&quot;</span><span class=p>]);</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;</span><span class=w> </span><span class=n>dataOrigin</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=o>-</span><span class=p>(</span><span class=n>columns</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=mf>2.0</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>pixelSize</span><span class=p>,</span>
-<span class=w>                                       </span><span class=o>-</span><span class=p>(</span><span class=n>rows</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=mf>2.0</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>pixelSize</span><span class=p>,</span>
-<span class=w>                                       </span><span class=n>startSlice</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>spacing</span><span class=p>};</span>
+<span class=w>                                      </span><span class=o>-</span><span class=p>(</span><span class=n>rows</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=mf>2.0</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>pixelSize</span><span class=p>,</span>
+<span class=w>                                      </span><span class=n>startSlice</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>spacing</span><span class=p>};</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=mi>6</span><span class=o>&gt;</span><span class=w> </span><span class=n>voi</span><span class=p>;</span>
 <span class=w>  </span><span class=n>voi</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;start_column&quot;</span><span class=p>]);</span>
 <span class=w>  </span><span class=n>voi</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;end_column&quot;</span><span class=p>]);</span>
@@ -1100,30 +1120,47 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>decimator</span><span class=o>-&gt;</span><span class=n>SetTargetReduction</span><span class=p>(</span><span class=n>decimateReduction</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>smoothIterations</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;smooth_iterations&quot;</span><span class=p>]);</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>smoothAngle</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;smooth_angle&quot;</span><span class=p>]);</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>smoothFactor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;smooth_factor&quot;</span><span class=p>]);</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkWindowedSincPolyDataFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>smoother</span><span class=p>;</span>
-</span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>decimate</span><span class=p>)</span>
+</span><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>smoothIterations</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;smooth_iterations&quot;</span><span class=p>]);</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>smoothIterations</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=mi>0</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>decimator</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>smoothAngle</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;smooth_angle&quot;</span><span class=p>]);</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>smoothFactor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;smooth_factor&quot;</span><span class=p>]);</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>decimate</span><span class=p>)</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>decimator</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>    </span><span class=k>else</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tf</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>    </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>SetNumberOfIterations</span><span class=p>(</span><span class=n>smoothIterations</span><span class=p>);</span>
+<span class=w>    </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>BoundarySmoothingOff</span><span class=p>();</span>
+<span class=w>    </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>FeatureEdgeSmoothingOff</span><span class=p>();</span>
+<span class=w>    </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>smoothAngle</span><span class=p>);</span>
+<span class=w>    </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>SetPassBand</span><span class=p>(</span><span class=n>smoothFactor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>NonManifoldSmoothingOn</span><span class=p>();</span>
+<span class=w>    </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>NormalizeCoordinatesOff</span><span class=p>();</span>
+<span class=w>    </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tf</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>SetNumberOfIterations</span><span class=p>(</span><span class=n>smoothIterations</span><span class=p>);</span>
-<span class=w>  </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>BoundarySmoothingOff</span><span class=p>();</span>
-<span class=w>  </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>FeatureEdgeSmoothingOff</span><span class=p>();</span>
-<span class=w>  </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>smoothAngle</span><span class=p>);</span>
-<span class=w>  </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>SetPassBand</span><span class=p>(</span><span class=n>smoothFactor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>NonManifoldSmoothingOn</span><span class=p>();</span>
-<span class=w>  </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>NormalizeCoordinatesOff</span><span class=p>();</span>
-<span class=w>  </span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>featureAngle</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>get_if</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span><span class=p>(</span><span class=o>&amp;</span><span class=n>tissue</span><span class=p>[</span><span class=s>&quot;feature_angle&quot;</span><span class=p>]);</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataNormals</span><span class=o>&gt;</span><span class=w> </span><span class=n>normals</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+</span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>smoothIterations</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=mi>0</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>smoother</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>decimate</span><span class=p>)</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>decimator</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>    </span><span class=k>else</span>
+<span class=w>    </span><span class=p>{</span>
+<span class=w>      </span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tf</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>featureAngle</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStripper</span><span class=o>&gt;</span><span class=w> </span><span class=n>stripper</span><span class=p>;</span>
@@ -1216,6 +1253,13 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>// xyzLabels = std::array&lt;std::string, 3&gt;{&quot;R&quot;, &quot;S&quot;, &quot;P&quot;};</span>
 <span class=w>    </span><span class=n>xyzLabels</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;</span><span class=p>{</span><span class=s>&quot;+X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;+Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;+Z&quot;</span><span class=p>};</span>
 <span class=w>    </span><span class=n>cubeLabels</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=mi>6</span><span class=o>&gt;</span><span class=p>{</span><span class=s>&quot;R&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;L&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;S&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;I&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;P&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;A&quot;</span><span class=p>};</span>
+<span class=w>    </span><span class=n>scale</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;</span><span class=p>{</span><span class=mf>1.5</span><span class=p>,</span><span class=w> </span><span class=mf>1.5</span><span class=p>,</span><span class=w> </span><span class=mf>1.5</span><span class=p>};</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>labelSelector</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;lsa&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=c1>// xyzLabels = std::array&lt;std::string, 3&gt;{&quot;L&quot;, &quot;S&quot;, &quot;A&quot;};</span>
+<span class=w>    </span><span class=n>xyzLabels</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;</span><span class=p>{</span><span class=s>&quot;+X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;+Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;+Z&quot;</span><span class=p>};</span>
+<span class=w>    </span><span class=n>cubeLabels</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=mi>6</span><span class=o>&gt;</span><span class=p>{</span><span class=s>&quot;L&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;R&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;S&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;I&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;A&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;P&quot;</span><span class=p>};</span>
 <span class=w>    </span><span class=n>scale</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;</span><span class=p>{</span><span class=mf>1.5</span><span class=p>,</span><span class=w> </span><span class=mf>1.5</span><span class=p>,</span><span class=w> </span><span class=mf>1.5</span><span class=p>};</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>

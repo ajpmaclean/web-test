@@ -128,6 +128,10 @@ function registerListener(event, func) {
                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Fig 12-9c in the VTK Textbook&#39;</span><span class=p>)</span>
     <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-d&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;d&#39;</span><span class=p>,</span>
                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Fig 12-9d in the VTK Textbook&#39;</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-l&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;l&#39;</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to looking down on the anterior surface&#39;</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-p&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;p&#39;</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to looking down on the posterior surface (the default)&#39;</span><span class=p>)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>set_defaults</span><span class=p>(</span><span class=nb>type</span><span class=o>=</span><span class=kc>None</span><span class=p>)</span>
 
     <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;file_name&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the JSON file e.g. Frog_mhd.json.&#39;</span><span class=p>)</span>
@@ -141,6 +145,9 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>(</span><span class=n>fn</span><span class=p>,</span> <span class=n>select_figure</span><span class=p>,</span> <span class=n>chosen_tissues</span><span class=p>,</span> <span class=n>flying_edges</span><span class=p>,</span> <span class=n>decimate</span><span class=p>):</span>
+    <span class=k>if</span> <span class=ow>not</span> <span class=n>select_figure</span><span class=p>:</span>
+        <span class=n>select_figure</span> <span class=o>=</span> <span class=s1>&#39;p&#39;</span>
+
     <span class=n>fn_path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>suffix</span><span class=p>:</span>
         <span class=n>fn_path</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s2>&quot;.json&quot;</span><span class=p>)</span>
@@ -228,53 +235,61 @@ function registerListener(event, func) {
 
     <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;ParaViewBkg&#39;</span><span class=p>))</span>
 
-    <span class=c1>#  Final view</span>
+    <span class=c1>#  Final view.</span>
     <span class=n>camera</span> <span class=o>=</span> <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span>
-    <span class=k>if</span> <span class=n>select_figure</span><span class=p>:</span>
-        <span class=k>if</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;a&#39;</span><span class=p>:</span>
-            <span class=c1># Fig 12-9a in the VTK Textbook</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>742.731237</span><span class=p>,</span> <span class=o>-</span><span class=mf>441.329635</span><span class=p>,</span> <span class=o>-</span><span class=mf>877.192015</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>247.637687</span><span class=p>,</span> <span class=mf>120.680880</span><span class=p>,</span> <span class=o>-</span><span class=mf>253.487473</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=o>-</span><span class=mf>0.323882</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.816232</span><span class=p>,</span> <span class=mf>0.478398</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>974.669585</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>311.646383</span><span class=p>,</span> <span class=mf>1803.630763</span><span class=p>)</span>
-        <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;b&#39;</span><span class=p>:</span>
-            <span class=c1># Fig 12-9b in the VTK Textbook</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>717.356065</span><span class=p>,</span> <span class=o>-</span><span class=mf>429.889054</span><span class=p>,</span> <span class=o>-</span><span class=mf>845.381584</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>243.071719</span><span class=p>,</span> <span class=mf>100.996487</span><span class=p>,</span> <span class=o>-</span><span class=mf>247.446340</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=o>-</span><span class=mf>0.320495</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.820148</span><span class=p>,</span> <span class=mf>0.473962</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>929.683631</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>293.464446</span><span class=p>,</span> <span class=mf>1732.794957</span><span class=p>)</span>
-        <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;c&#39;</span><span class=p>:</span>
-            <span class=c1># Fig 12-9c in the VTK Textbook</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>447.560023</span><span class=p>,</span> <span class=o>-</span><span class=mf>136.611491</span><span class=p>,</span> <span class=o>-</span><span class=mf>454.753689</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>253.142277</span><span class=p>,</span> <span class=mf>91.949451</span><span class=p>,</span> <span class=o>-</span><span class=mf>238.583973</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=o>-</span><span class=mf>0.425438</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.786048</span><span class=p>,</span> <span class=mf>0.448477</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>369.821187</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>0.829116</span><span class=p>,</span> <span class=mf>829.115939</span><span class=p>)</span>
-        <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;d&#39;</span><span class=p>:</span>
-            <span class=c1># Fig 12-9d in the VTK Textbook</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>347.826249</span><span class=p>,</span> <span class=o>-</span><span class=mf>469.633647</span><span class=p>,</span> <span class=o>-</span><span class=mf>236.234262</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>296.893207</span><span class=p>,</span> <span class=mf>89.307704</span><span class=p>,</span> <span class=o>-</span><span class=mf>225.156581</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=o>-</span><span class=mf>0.687345</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.076948</span><span class=p>,</span> <span class=mf>0.722244</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>561.366478</span><span class=p>)</span>
-            <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>347.962064</span><span class=p>,</span> <span class=mf>839.649856</span><span class=p>)</span>
-    <span class=k>else</span><span class=p>:</span>
-        <span class=c1># Orient so that we look down on the dorsal surface and</span>
+    <span class=c1># Superior Anterior Left</span>
+    <span class=n>labels</span> <span class=o>=</span> <span class=s1>&#39;sal&#39;</span>
+    <span class=k>if</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;a&#39;</span><span class=p>:</span>
+        <span class=c1># Fig 12-9a in the VTK Textbook</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>742.731237</span><span class=p>,</span> <span class=o>-</span><span class=mf>441.329635</span><span class=p>,</span> <span class=o>-</span><span class=mf>877.192015</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>247.637687</span><span class=p>,</span> <span class=mf>120.680880</span><span class=p>,</span> <span class=o>-</span><span class=mf>253.487473</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=o>-</span><span class=mf>0.323882</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.816232</span><span class=p>,</span> <span class=mf>0.478398</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>974.669585</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>311.646383</span><span class=p>,</span> <span class=mf>1803.630763</span><span class=p>)</span>
+    <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;b&#39;</span><span class=p>:</span>
+        <span class=c1># Fig 12-9b in the VTK Textbook</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>717.356065</span><span class=p>,</span> <span class=o>-</span><span class=mf>429.889054</span><span class=p>,</span> <span class=o>-</span><span class=mf>845.381584</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>243.071719</span><span class=p>,</span> <span class=mf>100.996487</span><span class=p>,</span> <span class=o>-</span><span class=mf>247.446340</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=o>-</span><span class=mf>0.320495</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.820148</span><span class=p>,</span> <span class=mf>0.473962</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>929.683631</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>293.464446</span><span class=p>,</span> <span class=mf>1732.794957</span><span class=p>)</span>
+    <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;c&#39;</span><span class=p>:</span>
+        <span class=c1># Fig 12-9c in the VTK Textbook</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>447.560023</span><span class=p>,</span> <span class=o>-</span><span class=mf>136.611491</span><span class=p>,</span> <span class=o>-</span><span class=mf>454.753689</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>253.142277</span><span class=p>,</span> <span class=mf>91.949451</span><span class=p>,</span> <span class=o>-</span><span class=mf>238.583973</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=o>-</span><span class=mf>0.425438</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.786048</span><span class=p>,</span> <span class=mf>0.448477</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>369.821187</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>0.829116</span><span class=p>,</span> <span class=mf>829.115939</span><span class=p>)</span>
+    <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;d&#39;</span><span class=p>:</span>
+        <span class=c1># Fig 12-9d in the VTK Textbook</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>347.826249</span><span class=p>,</span> <span class=o>-</span><span class=mf>469.633647</span><span class=p>,</span> <span class=o>-</span><span class=mf>236.234262</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>296.893207</span><span class=p>,</span> <span class=mf>89.307704</span><span class=p>,</span> <span class=o>-</span><span class=mf>225.156581</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=o>-</span><span class=mf>0.687345</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.076948</span><span class=p>,</span> <span class=mf>0.722244</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>561.366478</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>347.962064</span><span class=p>,</span> <span class=mf>839.649856</span><span class=p>)</span>
+    <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;l&#39;</span><span class=p>:</span>
+        <span class=c1># Orient so that we look down on the anterior surface and</span>
         <span class=c1>#   the superior surface faces the top of the screen.</span>
+        <span class=c1>#  Left Superior Anterior</span>
+        <span class=n>labels</span> <span class=o>=</span> <span class=s1>&#39;lsa&#39;</span>
+<span class=hll>        <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
+</span>        <span class=n>transform</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=n>camera</span><span class=o>.</span><span class=n>GetModelTransformMatrix</span><span class=p>())</span>
+        <span class=n>transform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
+        <span class=n>transform</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
+        <span class=n>camera</span><span class=o>.</span><span class=n>SetModelTransformMatrix</span><span class=p>(</span><span class=n>transform</span><span class=o>.</span><span class=n>GetMatrix</span><span class=p>())</span>
+        <span class=n>ren</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
+    <span class=k>else</span><span class=p>:</span>
+        <span class=c1># The default.</span>
+        <span class=c1># Orient so that we look down on the posterior surface and</span>
+        <span class=c1>#   the superior surface faces the top of the screen.</span>
+        <span class=c1># Right Superior Posterior</span>
+        <span class=n>labels</span> <span class=o>=</span> <span class=s1>&#39;rsp&#39;</span>
 <span class=hll>        <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>transform</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=n>camera</span><span class=o>.</span><span class=n>GetModelTransformMatrix</span><span class=p>())</span>
         <span class=n>transform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=o>-</span><span class=mi>90</span><span class=p>)</span>
         <span class=n>transform</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetModelTransformMatrix</span><span class=p>(</span><span class=n>transform</span><span class=o>.</span><span class=n>GetMatrix</span><span class=p>())</span>
         <span class=n>ren</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
-
-    <span class=k>if</span> <span class=n>select_figure</span><span class=p>:</span>
-        <span class=c1># Superior Anterior Left</span>
-        <span class=n>labels</span> <span class=o>=</span> <span class=s1>&#39;sal&#39;</span>
-    <span class=k>else</span><span class=p>:</span>
-        <span class=c1># Right Superior Posterior</span>
-        <span class=n>labels</span> <span class=o>=</span> <span class=s1>&#39;rsp&#39;</span>
 
 <span class=hll>    <span class=n>cow</span> <span class=o>=</span> <span class=n>vtkCameraOrientationWidget</span><span class=p>()</span>
 </span>    <span class=n>cow</span><span class=o>.</span><span class=n>SetParentRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
@@ -499,19 +514,20 @@ function registerListener(event, func) {
         <span class=n>decimator</span><span class=o>.</span><span class=n>SetTargetReduction</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;decimate_reduction&#39;</span><span class=p>])</span>
         <span class=n>last_connection</span> <span class=o>=</span> <span class=n>decimator</span>
 
-<span class=hll>    <span class=n>smoother</span> <span class=o>=</span> <span class=n>vtkWindowedSincPolyDataFilter</span><span class=p>()</span>
-</span>    <span class=n>smoother</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>last_connection</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>SetNumberOfIterations</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;smooth_iterations&#39;</span><span class=p>])</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>BoundarySmoothingOff</span><span class=p>()</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>FeatureEdgeSmoothingOff</span><span class=p>()</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;smooth_angle&#39;</span><span class=p>])</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>SetPassBand</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;smooth_factor&#39;</span><span class=p>])</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>NonManifoldSmoothingOn</span><span class=p>()</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>NormalizeCoordinatesOff</span><span class=p>()</span>
-    <span class=n>smoother</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
+    <span class=n>smooth_iterations</span> <span class=o>=</span> <span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;smooth_iterations&#39;</span><span class=p>]</span>
+    <span class=k>if</span> <span class=n>smooth_iterations</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>:</span>
+<span class=hll>        <span class=n>smoother</span> <span class=o>=</span> <span class=n>vtkWindowedSincPolyDataFilter</span><span class=p>()</span>
+</span>        <span class=n>smoother</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>last_connection</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+        <span class=n>smoother</span><span class=o>.</span><span class=n>BoundarySmoothingOff</span><span class=p>()</span>
+        <span class=n>smoother</span><span class=o>.</span><span class=n>FeatureEdgeSmoothingOff</span><span class=p>()</span>
+        <span class=n>smoother</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;smooth_angle&#39;</span><span class=p>])</span>
+        <span class=n>smoother</span><span class=o>.</span><span class=n>SetPassBand</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;smooth_factor&#39;</span><span class=p>])</span>
+        <span class=n>smoother</span><span class=o>.</span><span class=n>NonManifoldSmoothingOn</span><span class=p>()</span>
+        <span class=n>smoother</span><span class=o>.</span><span class=n>NormalizeCoordinatesOff</span><span class=p>()</span>
+        <span class=n>last_connection</span> <span class=o>=</span> <span class=n>smoother</span>
 
 <span class=hll>    <span class=n>normals</span> <span class=o>=</span> <span class=n>vtkPolyDataNormals</span><span class=p>()</span>
-</span>    <span class=n>normals</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>smoother</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+</span>    <span class=n>normals</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>last_connection</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>normals</span><span class=o>.</span><span class=n>SetFeatureAngle</span><span class=p>(</span><span class=n>tissue</span><span class=p>[</span><span class=s1>&#39;feature_angle&#39;</span><span class=p>])</span>
 
 <span class=hll>    <span class=n>stripper</span> <span class=o>=</span> <span class=n>vtkStripper</span><span class=p>()</span>
@@ -780,6 +796,11 @@ function registerListener(event, func) {
         <span class=c1># xyz_labels = [&#39;R&#39;, &#39;S&#39;, &#39;P&#39;]</span>
         <span class=n>xyz_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;+X&#39;</span><span class=p>,</span> <span class=s1>&#39;+Y&#39;</span><span class=p>,</span> <span class=s1>&#39;+Z&#39;</span><span class=p>]</span>
         <span class=n>cube_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;R&#39;</span><span class=p>,</span> <span class=s1>&#39;L&#39;</span><span class=p>,</span> <span class=s1>&#39;S&#39;</span><span class=p>,</span> <span class=s1>&#39;I&#39;</span><span class=p>,</span> <span class=s1>&#39;P&#39;</span><span class=p>,</span> <span class=s1>&#39;A&#39;</span><span class=p>]</span>
+        <span class=n>scale</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>]</span>
+    <span class=k>elif</span> <span class=n>label_selector</span> <span class=o>==</span> <span class=s1>&#39;lsa&#39;</span><span class=p>:</span>
+        <span class=c1># xyz_labels = [&#39;L&#39;, &#39;S&#39;, &#39;A&#39;]</span>
+        <span class=n>xyz_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;+X&#39;</span><span class=p>,</span> <span class=s1>&#39;+Y&#39;</span><span class=p>,</span> <span class=s1>&#39;+Z&#39;</span><span class=p>]</span>
+        <span class=n>cube_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;L&#39;</span><span class=p>,</span> <span class=s1>&#39;R&#39;</span><span class=p>,</span> <span class=s1>&#39;S&#39;</span><span class=p>,</span> <span class=s1>&#39;I&#39;</span><span class=p>,</span> <span class=s1>&#39;A&#39;</span><span class=p>,</span> <span class=s1>&#39;P&#39;</span><span class=p>]</span>
         <span class=n>scale</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>]</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>xyz_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;+X&#39;</span><span class=p>,</span> <span class=s1>&#39;+Y&#39;</span><span class=p>,</span> <span class=s1>&#39;+Z&#39;</span><span class=p>]</span>
