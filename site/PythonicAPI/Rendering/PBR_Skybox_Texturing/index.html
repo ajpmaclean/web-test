@@ -576,7 +576,6 @@ Options:
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>flipped_images</span><span class=p>)):</span>
         <span class=n>cube_map</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>flipped_images</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
-    <span class=c1># flipped_images &gt;&gt; cube_map</span>
     <span class=k>return</span> <span class=n>cube_map</span>
 
 
