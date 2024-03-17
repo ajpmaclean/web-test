@@ -169,10 +169,8 @@ function registerListener(event, func) {
     <span class=n>slider_rep</span><span class=o>.</span><span class=n>point2_coordinate</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedDisplay</span><span class=p>()</span>
     <span class=n>slider_rep</span><span class=o>.</span><span class=n>point2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>slider_position</span><span class=p>[</span><span class=s1>&#39;point2&#39;</span><span class=p>]</span>
 
-<span class=hll>    <span class=n>slider</span> <span class=o>=</span> <span class=n>vtkSliderWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>slider_rep</span><span class=p>)</span>
-</span>    <span class=n>slider</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>interactor</span><span class=p>)</span>
-    <span class=n>slider</span><span class=o>.</span><span class=n>SetAnimationModeToAnimate</span><span class=p>()</span>
-    <span class=n>slider</span><span class=o>.</span><span class=n>EnabledOn</span><span class=p>()</span>
+<span class=hll>    <span class=n>slider</span> <span class=o>=</span> <span class=n>vtkSliderWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>slider_rep</span><span class=p>,</span> <span class=n>interactor</span><span class=o>=</span><span class=n>interactor</span><span class=p>,</span> <span class=n>enabled</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span>    <span class=n>slider</span><span class=o>.</span><span class=n>SetAnimationModeToAnimate</span><span class=p>()</span>
 
     <span class=k>return</span> <span class=n>slider</span>
 

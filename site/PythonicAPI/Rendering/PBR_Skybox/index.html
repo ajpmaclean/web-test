@@ -369,6 +369,8 @@ Options:
     <span class=n>sw_roughness_cb</span> <span class=o>=</span> <span class=n>SliderCallbackRoughness</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
 <span class=hll>    <span class=n>sw_roughness</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_roughness_cb</span><span class=p>)</span>
 </span>
+    <span class=n>render_window</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+
     <span class=k>if</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>20210718</span><span class=p>):</span>
         <span class=k>try</span><span class=p>:</span>
 <span class=hll>            <span class=n>cam_orient_manipulator</span> <span class=o>=</span> <span class=n>vtkCameraOrientationWidget</span><span class=p>(</span><span class=n>parent_renderer</span><span class=o>=</span><span class=n>ren2</span><span class=p>)</span>
@@ -382,14 +384,14 @@ Options:
         <span class=n>rgb</span> <span class=o>=</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>rgb</span><span class=p>[:</span><span class=mi>3</span><span class=p>])</span>
 <span class=hll>        <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkOrientationMarkerWidget</span><span class=p>(</span><span class=n>orientation_marker</span><span class=o>=</span><span class=n>vtkAxesActor</span><span class=p>(),</span>
 </span>                                            <span class=n>interactor</span><span class=o>=</span><span class=n>interactor</span><span class=p>,</span> <span class=n>default_renderer</span><span class=o>=</span><span class=n>ren2</span><span class=p>,</span>
-                                            <span class=n>outline_color</span><span class=o>=</span><span class=n>rgb</span><span class=p>,</span> <span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>))</span>
-        <span class=n>widget</span><span class=o>.</span><span class=n>EnabledOn</span><span class=p>()</span>
-        <span class=n>widget</span><span class=o>.</span><span class=n>InteractiveOn</span><span class=p>()</span>
+                                            <span class=n>outline_color</span><span class=o>=</span><span class=n>rgb</span><span class=p>,</span> <span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.8</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>),</span>
+                                            <span class=n>enabled</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>interactive</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>zoom</span><span class=o>=</span><span class=mf>1.5</span><span class=p>)</span>
 
     <span class=n>print_callback</span> <span class=o>=</span> <span class=n>PrintCallback</span><span class=p>(</span><span class=n>interactor</span><span class=p>,</span> <span class=n>name</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=kc>False</span><span class=p>)</span>
     <span class=c1># print_callback = PrintCallback(interactor, name + &#39;.jpg&#39;, 1, False)</span>
     <span class=n>interactor</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;KeyPressEvent&#39;</span><span class=p>,</span> <span class=n>print_callback</span><span class=p>)</span>
 
+    <span class=n>render_window</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
@@ -571,7 +573,7 @@ Options:
 
 <span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>()</span>
 </span>
-    <span class=k>return</span> <span class=p>(</span><span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
+    <span class=k>return</span> <span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span>
 
 
 <span class=k>def</span> <span class=nf>get_mobius</span><span class=p>():</span>
@@ -593,7 +595,7 @@ Options:
 
 <span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
 </span>
-    <span class=k>return</span> <span class=p>(</span><span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
+    <span class=k>return</span> <span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span>
 
 
 <span class=k>def</span> <span class=nf>get_random_hills</span><span class=p>():</span>
@@ -618,7 +620,7 @@ Options:
 
 <span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
 </span>
-    <span class=k>return</span> <span class=p>(</span><span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
+    <span class=k>return</span> <span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span>
 
 
 <span class=k>def</span> <span class=nf>get_sphere</span><span class=p>():</span>
@@ -629,7 +631,7 @@ Options:
     <span class=c1># Now the tangents.</span>
 <span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>()</span>
 </span>
-    <span class=k>return</span> <span class=p>(</span><span class=n>surface</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
+    <span class=k>return</span> <span class=n>surface</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span>
 
 
 <span class=k>def</span> <span class=nf>get_clipped_sphere</span><span class=p>():</span>
@@ -645,7 +647,7 @@ Options:
     <span class=c1># Now the tangents.</span>
 <span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>()</span>
 </span>
-    <span class=k>return</span> <span class=p>(</span><span class=n>surface</span> <span class=o>&gt;&gt;</span> <span class=n>clipper</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
+    <span class=k>return</span> <span class=n>surface</span> <span class=o>&gt;&gt;</span> <span class=n>clipper</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span>
 
 
 <span class=k>def</span> <span class=nf>get_torus</span><span class=p>():</span>
@@ -665,7 +667,7 @@ Options:
 
 <span class=hll>    <span class=n>transform_filter</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>(</span><span class=n>transform</span><span class=o>=</span><span class=n>transform</span><span class=p>)</span>
 </span>
-    <span class=k>return</span> <span class=p>(</span><span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
+    <span class=k>return</span> <span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span>
 
 
 <span class=k>def</span> <span class=nf>get_cube</span><span class=p>():</span>
@@ -678,7 +680,7 @@ Options:
 </span>    <span class=c1># Build the tangents.</span>
 <span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>()</span>
 </span>
-    <span class=k>return</span> <span class=p>(</span><span class=n>surface</span> <span class=o>&gt;&gt;</span> <span class=n>triangulation</span> <span class=o>&gt;&gt;</span> <span class=n>subdivide</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
+    <span class=k>return</span> <span class=n>surface</span> <span class=o>&gt;&gt;</span> <span class=n>triangulation</span> <span class=o>&gt;&gt;</span> <span class=n>subdivide</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span>
 
 
 <span class=k>def</span> <span class=nf>get_clipped_cube</span><span class=p>():</span>
@@ -702,7 +704,7 @@ Options:
     <span class=c1># Now the tangents.</span>
 <span class=hll>    <span class=n>tangents</span> <span class=o>=</span> <span class=n>vtkPolyDataTangents</span><span class=p>(</span><span class=n>compute_cell_tangents</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>compute_point_tangents</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 </span>
-    <span class=k>return</span> <span class=p>(</span><span class=n>surface</span> <span class=o>&gt;&gt;</span> <span class=n>triangulation</span> <span class=o>&gt;&gt;</span> <span class=n>subdivide</span> <span class=o>&gt;&gt;</span> <span class=n>clipper</span> <span class=o>&gt;&gt;</span> <span class=n>cleaner</span> <span class=o>&gt;&gt;</span> <span class=n>normals</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
+    <span class=k>return</span> <span class=n>surface</span> <span class=o>&gt;&gt;</span> <span class=n>triangulation</span> <span class=o>&gt;&gt;</span> <span class=n>subdivide</span> <span class=o>&gt;&gt;</span> <span class=n>clipper</span> <span class=o>&gt;&gt;</span> <span class=n>cleaner</span> <span class=o>&gt;&gt;</span> <span class=n>normals</span> <span class=o>&gt;&gt;</span> <span class=n>tangents</span>
 
 
 <span class=k>def</span> <span class=nf>uv_tcoords</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>,</span> <span class=n>v_resolution</span><span class=p>,</span> <span class=n>pd</span><span class=p>):</span>
@@ -785,10 +787,8 @@ Options:
     <span class=n>slider_rep</span><span class=o>.</span><span class=n>point2_coordinate</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedViewport</span><span class=p>()</span>
     <span class=n>slider_rep</span><span class=o>.</span><span class=n>point2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span><span class=p>[</span><span class=s1>&#39;point2&#39;</span><span class=p>]</span>
 
-<span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkSliderWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>slider_rep</span><span class=p>)</span>
-</span>    <span class=n>widget</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>interactor</span><span class=p>)</span>
-    <span class=n>widget</span><span class=o>.</span><span class=n>SetAnimationModeToAnimate</span><span class=p>()</span>
-    <span class=n>widget</span><span class=o>.</span><span class=n>EnabledOn</span><span class=p>()</span>
+<span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkSliderWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>slider_rep</span><span class=p>,</span> <span class=n>interactor</span><span class=o>=</span><span class=n>interactor</span><span class=p>,</span> <span class=n>enabled</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span>    <span class=n>widget</span><span class=o>.</span><span class=n>SetAnimationModeToAnimate</span><span class=p>()</span>
 
     <span class=k>return</span> <span class=n>widget</span>
 

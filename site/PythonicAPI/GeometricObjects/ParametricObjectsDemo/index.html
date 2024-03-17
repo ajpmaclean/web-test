@@ -204,26 +204,10 @@ function registerListener(event, func) {
                                     <span class=n>font_size</span><span class=o>=</span><span class=n>renderer_size</span> <span class=o>//</span> <span class=mi>12</span><span class=p>,</span> <span class=n>justification</span><span class=o>=</span><span class=n>justification</span><span class=p>[</span><span class=s1>&#39;centered&#39;</span><span class=p>])</span>
 
     <span class=c1># Position text according to its length and centered in the viewport.</span>
-    <span class=n>name_len_min</span> <span class=o>=</span> <span class=mi>0</span>
-    <span class=n>name_len_max</span> <span class=o>=</span> <span class=mi>0</span>
-    <span class=n>first</span> <span class=o>=</span> <span class=kc>True</span>
+    <span class=n>surface_names</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>surfaces</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-        <span class=n>sz</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>surfaces</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>class_name</span><span class=p>)</span>
-        <span class=k>if</span> <span class=n>first</span><span class=p>:</span>
-            <span class=n>name_len_min</span> <span class=o>=</span> <span class=n>name_len_max</span> <span class=o>=</span> <span class=n>sz</span>
-            <span class=n>first</span> <span class=o>=</span> <span class=kc>False</span>
-        <span class=k>else</span><span class=p>:</span>
-            <span class=n>name_len_min</span> <span class=o>=</span> <span class=nb>min</span><span class=p>(</span><span class=n>name_len_min</span><span class=p>,</span> <span class=n>sz</span><span class=p>)</span>
-            <span class=n>name_len_max</span> <span class=o>=</span> <span class=nb>max</span><span class=p>(</span><span class=n>name_len_max</span><span class=p>,</span> <span class=n>sz</span><span class=p>)</span>
-    <span class=n>text_positions</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
-    <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>surfaces</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-        <span class=n>sz</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>surfaces</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>class_name</span><span class=p>)</span>
-        <span class=n>delta_sz</span> <span class=o>=</span> <span class=mf>0.95</span> <span class=o>*</span> <span class=n>sz</span> <span class=o>/</span> <span class=n>name_len_max</span>
-        <span class=n>x0</span> <span class=o>=</span> <span class=mf>0.5</span> <span class=o>-</span> <span class=n>delta_sz</span> <span class=o>/</span> <span class=mf>2.0</span>
-        <span class=n>x1</span> <span class=o>=</span> <span class=n>delta_sz</span>
-        <span class=c1># print(f&#39;{k:15s}: {x0:3.2f}, {x1:3.2f} len: {x0 + x1:3.2f}&#39;)</span>
-        <span class=n>text_positions</span><span class=o>.</span><span class=n>append</span><span class=p>(</span>
-            <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=mf>0.01</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>x1</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>,</span> <span class=mi>0</span><span class=p>]})</span>
+        <span class=n>surface_names</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>surfaces</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>class_name</span><span class=p>)</span>
+    <span class=n>text_positions</span> <span class=o>=</span> <span class=n>get_text_positions</span><span class=p>(</span><span class=n>surface_names</span><span class=p>,</span> <span class=n>justification</span><span class=o>=</span><span class=s1>&#39;center&#39;</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>back_property</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Peru&#39;</span><span class=p>))</span>
 </span>
@@ -252,6 +236,7 @@ function registerListener(event, func) {
 </span>
             <span class=c1># Add the corresponding actor and label for this grid cell, if they exist.</span>
             <span class=k>if</span> <span class=n>index</span> <span class=o>&lt;</span> <span class=nb>len</span><span class=p>(</span><span class=n>surfaces</span><span class=p>):</span>
+                <span class=n>name</span> <span class=o>=</span> <span class=n>surface_names</span><span class=p>[</span><span class=n>index</span><span class=p>]</span>
 <span class=hll>                <span class=n>src</span> <span class=o>=</span> <span class=n>vtkParametricFunctionSource</span><span class=p>(</span><span class=n>parametric_function</span><span class=o>=</span><span class=n>surf_items</span><span class=p>[</span><span class=n>index</span><span class=p>][</span><span class=mi>1</span><span class=p>],</span> <span class=n>u_resolution</span><span class=o>=</span><span class=mi>51</span><span class=p>,</span>
 </span>                                                  <span class=n>v_resolution</span><span class=o>=</span><span class=mi>51</span><span class=p>,</span> <span class=n>w_resolution</span><span class=o>=</span><span class=mi>51</span><span class=p>)</span>
 <span class=hll>                <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
@@ -269,14 +254,13 @@ function registerListener(event, func) {
 
                 <span class=c1># Create the text representation. Used for positioning the text actor.</span>
 <span class=hll>                <span class=n>text_representations</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkTextRepresentation</span><span class=p>(</span><span class=n>enforce_normalized_viewport_bounds</span><span class=o>=</span><span class=kc>True</span><span class=p>))</span>
-</span>                <span class=n>text_representations</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>GetPositionCoordinate</span><span class=p>()</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>index</span><span class=p>][</span><span class=s1>&#39;p&#39;</span><span class=p>]</span>
-                <span class=n>text_representations</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>GetPosition2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>index</span><span class=p>][</span><span class=s1>&#39;p2&#39;</span><span class=p>]</span>
+</span>                <span class=n>text_representations</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>GetPositionCoordinate</span><span class=p>()</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>name</span><span class=p>][</span><span class=s1>&#39;p&#39;</span><span class=p>]</span>
+                <span class=n>text_representations</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>GetPosition2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>name</span><span class=p>][</span><span class=s1>&#39;p2&#39;</span><span class=p>]</span>
 
                 <span class=c1># Create the text widget, setting the default renderer and interactor.</span>
-<span class=hll>                <span class=n>text_widgets</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkTextWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>text_representations</span><span class=p>[</span><span class=n>index</span><span class=p>],</span> <span class=n>text_actor</span><span class=o>=</span><span class=n>text_actor</span><span class=p>))</span>
-</span>                <span class=n>text_widgets</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>SetDefaultRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
-                <span class=n>text_widgets</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>)</span>
-                <span class=n>text_widgets</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>SelectableOff</span><span class=p>()</span>
+                <span class=n>text_widgets</span><span class=o>.</span><span class=n>append</span><span class=p>(</span>
+<span class=hll>                    <span class=n>vtkTextWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>text_representations</span><span class=p>[</span><span class=n>index</span><span class=p>],</span> <span class=n>text_actor</span><span class=o>=</span><span class=n>text_actor</span><span class=p>,</span>
+</span>                                  <span class=n>default_renderer</span><span class=o>=</span><span class=n>renderer</span><span class=p>,</span> <span class=n>interactor</span><span class=o>=</span><span class=n>iren</span><span class=p>,</span> <span class=n>selectable</span><span class=o>=</span><span class=kc>False</span><span class=p>))</span>
 
                 <span class=n>bounds</span> <span class=o>=</span> <span class=n>src</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>bounds</span>
                 <span class=n>bounding_boxes</span><span class=p>[</span><span class=n>surf_items</span><span class=p>[</span><span class=n>index</span><span class=p>][</span><span class=mi>0</span><span class=p>]]</span> <span class=o>=</span> <span class=n>bounds</span>
@@ -454,6 +438,75 @@ function registerListener(event, func) {
 </span>            <span class=n>w2if</span> <span class=o>&gt;&gt;</span> <span class=n>writer</span>
             <span class=n>writer</span><span class=o>.</span><span class=n>Write</span><span class=p>()</span>
             <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Screenshot saved to:&#39;</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>name</span><span class=p>)</span>
+
+
+<span class=k>def</span> <span class=nf>get_text_positions</span><span class=p>(</span><span class=n>available_surfaces</span><span class=p>,</span> <span class=n>justification</span><span class=o>=</span><span class=s1>&#39;center&#39;</span><span class=p>):</span>
+<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>    Get positioning information for the names of the surfaces.</span>
+
+<span class=sd>    :param available_surfaces: The surfaces</span>
+<span class=sd>    :param justification: left, center or right</span>
+<span class=sd>    :return: A list of positioning information.</span>
+<span class=sd>    &quot;&quot;&quot;</span>
+    <span class=c1># Position the source name according to its length and justification in the viewport.</span>
+    <span class=c1># Top</span>
+    <span class=c1># y0 = 0.79</span>
+    <span class=c1># Bottom</span>
+    <span class=n>y0</span> <span class=o>=</span> <span class=mf>0.01</span>
+    <span class=n>dy</span> <span class=o>=</span> <span class=mf>0.1</span>
+    <span class=c1># The gap between the left or right edge of the screen and the text.</span>
+    <span class=n>dx</span> <span class=o>=</span> <span class=mf>0.01</span>
+    <span class=c1># The size of the maximum length of the text in screen units.</span>
+    <span class=n>x_scale</span> <span class=o>=</span> <span class=mf>0.95</span>
+
+    <span class=n>name_len_min</span> <span class=o>=</span> <span class=mi>0</span>
+    <span class=n>name_len_max</span> <span class=o>=</span> <span class=mi>0</span>
+    <span class=n>first</span> <span class=o>=</span> <span class=kc>True</span>
+    <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>available_surfaces</span><span class=p>:</span>
+        <span class=n>sz</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>k</span><span class=p>)</span>
+        <span class=k>if</span> <span class=n>first</span><span class=p>:</span>
+            <span class=n>name_len_min</span> <span class=o>=</span> <span class=n>name_len_max</span> <span class=o>=</span> <span class=n>sz</span>
+            <span class=n>first</span> <span class=o>=</span> <span class=kc>False</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=n>name_len_min</span> <span class=o>=</span> <span class=nb>min</span><span class=p>(</span><span class=n>name_len_min</span><span class=p>,</span> <span class=n>sz</span><span class=p>)</span>
+            <span class=n>name_len_max</span> <span class=o>=</span> <span class=nb>max</span><span class=p>(</span><span class=n>name_len_max</span><span class=p>,</span> <span class=n>sz</span><span class=p>)</span>
+    <span class=n>text_positions</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
+    <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>available_surfaces</span><span class=p>:</span>
+        <span class=n>sz</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>k</span><span class=p>)</span>
+        <span class=n>delta_sz</span> <span class=o>=</span> <span class=n>x_scale</span> <span class=o>*</span> <span class=n>sz</span> <span class=o>/</span> <span class=n>name_len_max</span>
+        <span class=k>if</span> <span class=n>delta_sz</span> <span class=o>&lt;=</span> <span class=mf>2.0</span> <span class=o>*</span> <span class=n>dx</span><span class=p>:</span>
+            <span class=n>dx</span> <span class=o>=</span> <span class=mf>0.01</span>
+            <span class=n>delta_sz</span> <span class=o>-=</span> <span class=mf>0.02</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=n>delta_sz</span> <span class=o>-=</span> <span class=mf>2.0</span> <span class=o>*</span> <span class=n>dx</span>
+
+        <span class=k>if</span> <span class=n>justification</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;center&#39;</span><span class=p>,</span> <span class=s1>&#39;centre&#39;</span><span class=p>]:</span>
+            <span class=n>x0</span> <span class=o>=</span> <span class=mf>0.5</span> <span class=o>-</span> <span class=n>delta_sz</span> <span class=o>/</span> <span class=mf>2.0</span>
+        <span class=k>elif</span> <span class=n>justification</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>&#39;right&#39;</span><span class=p>:</span>
+            <span class=n>x0</span> <span class=o>=</span> <span class=mf>1.0</span> <span class=o>-</span> <span class=n>delta_sz</span>
+            <span class=k>if</span> <span class=n>dx</span> <span class=o>&lt;</span> <span class=n>x0</span><span class=p>:</span>
+                <span class=n>x0</span> <span class=o>-=</span> <span class=n>dx</span>
+            <span class=k>else</span><span class=p>:</span>
+                <span class=n>x0</span> <span class=o>=</span> <span class=n>dx</span>
+            <span class=k>if</span> <span class=n>x0</span> <span class=o>+</span> <span class=n>delta_sz</span> <span class=o>&gt;=</span> <span class=mi>1</span><span class=p>:</span>
+                <span class=n>delta_sz</span> <span class=o>-=</span> <span class=n>dx</span>
+                <span class=n>x0</span> <span class=o>-=</span> <span class=n>dx</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=c1># Default is left justification.</span>
+            <span class=n>x0</span> <span class=o>=</span> <span class=n>dx</span>
+            <span class=k>if</span> <span class=n>x0</span> <span class=o>+</span> <span class=n>dx</span> <span class=o>&gt;=</span> <span class=mf>1.0</span><span class=p>:</span>
+                <span class=n>x0</span> <span class=o>=</span> <span class=n>dx</span> <span class=o>-</span> <span class=n>x0</span>
+            <span class=k>if</span> <span class=n>x0</span> <span class=o>+</span> <span class=n>delta_sz</span> <span class=o>&gt;=</span> <span class=mi>1</span><span class=p>:</span>
+                <span class=n>delta_sz</span> <span class=o>-=</span> <span class=n>dx</span>
+                <span class=n>x0</span> <span class=o>=</span> <span class=n>dx</span>
+
+        <span class=c1># For debugging!</span>
+        <span class=c1># print(</span>
+        <span class=c1>#     f&#39;{k:16s}: (x0, y0) = ({x0:3.2f}, {y0:3.2f}), (x1, y1) = ({x0 + delta_sz:3.2f}, {y0 + dy:3.2f})&#39;</span>
+        <span class=c1>#     f&#39;, width={delta_sz:3.2f}&#39;)</span>
+        <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
+
+    <span class=k>return</span> <span class=n>text_positions</span>
 
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>

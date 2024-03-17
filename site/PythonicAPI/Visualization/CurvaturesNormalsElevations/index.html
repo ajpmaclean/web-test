@@ -223,26 +223,21 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>text_representation</span> <span class=o>=</span> <span class=n>vtkTextRepresentation</span><span class=p>(</span><span class=n>enforce_normalized_viewport_bounds</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 </span>    <span class=n>text_representation</span><span class=o>.</span><span class=n>GetPositionCoordinate</span><span class=p>()</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>surface</span><span class=o>.</span><span class=n>name</span><span class=p>][</span><span class=s1>&#39;p&#39;</span><span class=p>]</span>
     <span class=n>text_representation</span><span class=o>.</span><span class=n>GetPosition2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>surface</span><span class=o>.</span><span class=n>name</span><span class=p>][</span><span class=s1>&#39;p2&#39;</span><span class=p>]</span>
-<span class=hll>    <span class=n>text_widget</span> <span class=o>=</span> <span class=n>vtkTextWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>text_representation</span><span class=p>,</span> <span class=n>text_actor</span><span class=o>=</span><span class=n>text_actor</span><span class=p>)</span>
-</span>    <span class=n>text_widget</span><span class=o>.</span><span class=n>SelectableOff</span><span class=p>()</span>
-    <span class=n>text_widget</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>)</span>
-
-    <span class=n>mapper_scalar_mode</span> <span class=o>=</span> <span class=n>MapperScalarMode</span><span class=p>()</span>
-    <span class=n>mapper_resolve_coincident_topology</span> <span class=o>=</span> <span class=n>MapperResolveCoincidentTopology</span><span class=p>()</span>
-    <span class=n>mapper_color_mode</span> <span class=o>=</span> <span class=n>MapperColorMode</span><span class=p>()</span>
+<span class=hll>    <span class=n>text_widget</span> <span class=o>=</span> <span class=n>vtkTextWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>text_representation</span><span class=p>,</span> <span class=n>text_actor</span><span class=o>=</span><span class=n>text_actor</span><span class=p>,</span> <span class=n>interactor</span><span class=o>=</span><span class=n>iren</span><span class=p>,</span>
+</span>                                <span class=n>selectable</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
 
     <span class=n>first</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>curvatures</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
 <span class=hll>        <span class=n>src_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>scalar_range</span><span class=o>=</span><span class=n>v</span><span class=p>[</span><span class=s1>&#39;scalar_range_curvatures&#39;</span><span class=p>],</span>
 </span>                                       <span class=n>lookup_table</span><span class=o>=</span><span class=n>v</span><span class=p>[</span><span class=s1>&#39;lut&#39;</span><span class=p>],</span>
-                                       <span class=n>scalar_mode</span><span class=o>=</span><span class=n>mapper_scalar_mode</span><span class=o>.</span><span class=n>VTK_SCALAR_MODE_USE_CELL_DATA</span><span class=p>)</span>
+                                       <span class=n>scalar_mode</span><span class=o>=</span><span class=n>MapperScalarMode</span><span class=p>()</span><span class=o>.</span><span class=n>VTK_SCALAR_MODE_USE_CELL_DATA</span><span class=p>)</span>
 
 <span class=hll>        <span class=n>src_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>src_mapper</span><span class=p>)</span>
 </span>        <span class=n>v</span><span class=p>[</span><span class=s1>&#39;bcf&#39;</span><span class=p>]</span> <span class=o>&gt;&gt;</span> <span class=n>src_mapper</span>
 
         <span class=c1># Create contour edges</span>
 <span class=hll>        <span class=n>edge_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span>
-</span>            <span class=n>resolve_coincident_topology</span><span class=o>=</span><span class=n>mapper_resolve_coincident_topology</span><span class=o>.</span><span class=n>VTK_RESOLVE_POLYGON_OFFSET</span><span class=p>)</span>
+</span>            <span class=n>resolve_coincident_topology</span><span class=o>=</span><span class=n>MapperResolveCoincidentTopology</span><span class=p>()</span><span class=o>.</span><span class=n>VTK_RESOLVE_POLYGON_OFFSET</span><span class=p>)</span>
 
 <span class=hll>        <span class=n>edge_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>edge_mapper</span><span class=p>)</span>
 </span>        <span class=n>edge_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>)</span>
@@ -250,9 +245,9 @@ function registerListener(event, func) {
 
 <span class=hll>        <span class=n>glyph_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>scalar_range</span><span class=o>=</span><span class=n>v</span><span class=p>[</span><span class=s1>&#39;scalar_range_elevation&#39;</span><span class=p>],</span>
 </span>                                         <span class=n>lookup_table</span><span class=o>=</span><span class=n>v</span><span class=p>[</span><span class=s1>&#39;lut1&#39;</span><span class=p>],</span>
-                                         <span class=n>scalar_mode</span><span class=o>=</span><span class=n>mapper_scalar_mode</span><span class=o>.</span><span class=n>VTK_SCALAR_MODE_USE_POINT_FIELD_DATA</span><span class=p>,</span>
+                                         <span class=n>scalar_mode</span><span class=o>=</span><span class=n>MapperScalarMode</span><span class=p>()</span><span class=o>.</span><span class=n>VTK_SCALAR_MODE_USE_POINT_FIELD_DATA</span><span class=p>,</span>
                                          <span class=n>scalar_visibility</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
-                                         <span class=n>color_mode</span><span class=o>=</span><span class=n>mapper_color_mode</span><span class=o>.</span><span class=n>VTK_COLOR_MODE_MAP_SCALARS</span><span class=p>)</span>
+                                         <span class=n>color_mode</span><span class=o>=</span><span class=n>MapperColorMode</span><span class=p>()</span><span class=o>.</span><span class=n>VTK_COLOR_MODE_MAP_SCALARS</span><span class=p>)</span>
         <span class=n>glyph_mapper</span><span class=o>.</span><span class=n>SelectColorArray</span><span class=p>(</span><span class=s1>&#39;Elevation&#39;</span><span class=p>)</span>
 
 <span class=hll>        <span class=n>glyph_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>glyph_mapper</span><span class=p>)</span>
@@ -314,9 +309,8 @@ function registerListener(event, func) {
         <span class=n>rgb</span> <span class=o>=</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>rgb</span><span class=p>[:</span><span class=mi>3</span><span class=p>])</span>
 <span class=hll>        <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkOrientationMarkerWidget</span><span class=p>(</span><span class=n>orientation_marker</span><span class=o>=</span><span class=n>vtkAxesActor</span><span class=p>(),</span>
 </span>                                            <span class=n>interactor</span><span class=o>=</span><span class=n>iren</span><span class=p>,</span> <span class=n>default_renderer</span><span class=o>=</span><span class=n>renderers</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span>
-                                            <span class=n>outline_color</span><span class=o>=</span><span class=n>rgb</span><span class=p>,</span> <span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.7</span><span class=p>,</span> <span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.9</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>),</span> <span class=n>zoom</span><span class=o>=</span><span class=mf>1.5</span><span class=p>)</span>
-        <span class=n>widget</span><span class=o>.</span><span class=n>EnabledOn</span><span class=p>()</span>
-        <span class=n>widget</span><span class=o>.</span><span class=n>InteractiveOn</span><span class=p>()</span>
+                                            <span class=n>outline_color</span><span class=o>=</span><span class=n>rgb</span><span class=p>,</span> <span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.7</span><span class=p>,</span> <span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.9</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>),</span> <span class=n>zoom</span><span class=o>=</span><span class=mf>1.5</span><span class=p>,</span> <span class=n>enabled</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
+                                            <span class=n>interactive</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 
     <span class=n>camera</span> <span class=o>=</span> <span class=kc>None</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>renderers</span><span class=p>)):</span>
@@ -809,14 +803,10 @@ function registerListener(event, func) {
 </span>
     <span class=n>p</span> <span class=o>=</span> <span class=p>(</span><span class=n>arrow</span> <span class=o>&gt;&gt;</span> <span class=n>transform_filter</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
 
-    <span class=n>scale_mode</span> <span class=o>=</span> <span class=n>Glyph3DScaleMode</span><span class=p>()</span>
-    <span class=n>color_mode</span> <span class=o>=</span> <span class=n>Glyph3DColorMode</span><span class=p>()</span>
-    <span class=n>vector_mode</span> <span class=o>=</span> <span class=n>Glyph3DVectorMode</span><span class=p>()</span>
-    <span class=c1># index_mode = Glyph3DIndexMode()</span>
 <span class=hll>    <span class=n>glyph</span> <span class=o>=</span> <span class=n>vtkGlyph3D</span><span class=p>(</span><span class=n>source_data</span><span class=o>=</span><span class=n>p</span><span class=p>,</span> <span class=n>scale_factor</span><span class=o>=</span><span class=n>scale_factor</span><span class=p>,</span>
-</span>                       <span class=n>vector_mode</span><span class=o>=</span><span class=n>vector_mode</span><span class=o>.</span><span class=n>VTK_USE_NORMAL</span><span class=p>,</span>
-                       <span class=n>color_mode</span><span class=o>=</span><span class=n>color_mode</span><span class=o>.</span><span class=n>VTK_COLOR_BY_VECTOR</span><span class=p>,</span>
-                       <span class=n>scale_mode</span><span class=o>=</span><span class=n>scale_mode</span><span class=o>.</span><span class=n>VTK_SCALE_BY_VECTOR</span>
+</span>                       <span class=n>vector_mode</span><span class=o>=</span><span class=n>Glyph3DVectorMode</span><span class=p>()</span><span class=o>.</span><span class=n>VTK_USE_NORMAL</span><span class=p>,</span>
+                       <span class=n>color_mode</span><span class=o>=</span><span class=n>Glyph3DColorMode</span><span class=p>()</span><span class=o>.</span><span class=n>VTK_COLOR_BY_VECTOR</span><span class=p>,</span>
+                       <span class=n>scale_mode</span><span class=o>=</span><span class=n>Glyph3DScaleMode</span><span class=p>()</span><span class=o>.</span><span class=n>VTK_SCALE_BY_VECTOR</span>
                        <span class=p>)</span>
     <span class=n>glyph</span><span class=o>.</span><span class=n>OrientOn</span><span class=p>()</span>
 
@@ -997,8 +987,7 @@ function registerListener(event, func) {
     <span class=n>source</span> <span class=o>=</span> <span class=n>surface</span><span class=o>.</span><span class=n>source</span>
     <span class=n>curvature</span> <span class=o>=</span> <span class=s1>&#39;Gauss_Curvature&#39;</span>
 
-    <span class=n>curvature_types</span> <span class=o>=</span> <span class=n>CurvaturesCurvatureType</span><span class=p>()</span>
-<span class=hll>    <span class=n>curvatures</span> <span class=o>=</span> <span class=n>vtkCurvatures</span><span class=p>(</span><span class=n>curvature_type</span><span class=o>=</span><span class=n>curvature_types</span><span class=o>.</span><span class=n>VTK_CURVATURE_GAUSS</span><span class=p>)</span>
+<span class=hll>    <span class=n>curvatures</span> <span class=o>=</span> <span class=n>vtkCurvatures</span><span class=p>(</span><span class=n>curvature_type</span><span class=o>=</span><span class=n>CurvaturesCurvatureType</span><span class=p>()</span><span class=o>.</span><span class=n>VTK_CURVATURE_GAUSS</span><span class=p>)</span>
 </span>    <span class=n>p</span> <span class=o>=</span> <span class=p>(</span><span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>curvatures</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
 
     <span class=k>if</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>needs_adjusting</span><span class=p>:</span>
@@ -1085,9 +1074,8 @@ function registerListener(event, func) {
 
     <span class=c1># Create the contour bands.</span>
     <span class=c1># We will use an indexed lookup table.</span>
-    <span class=n>bcf_scalar_mode</span> <span class=o>=</span> <span class=n>BandedPolyDataContourFilterScalarMode</span><span class=p>()</span>
 <span class=hll>    <span class=n>bcf</span> <span class=o>=</span> <span class=n>vtkBandedPolyDataContourFilter</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>p</span><span class=p>,</span>
-</span>                                         <span class=n>scalar_mode</span><span class=o>=</span><span class=n>bcf_scalar_mode</span><span class=o>.</span><span class=n>VTK_SCALAR_MODE_INDEX</span><span class=p>,</span>
+</span>                                         <span class=n>scalar_mode</span><span class=o>=</span><span class=n>BandedPolyDataContourFilterScalarMode</span><span class=p>()</span><span class=o>.</span><span class=n>VTK_SCALAR_MODE_INDEX</span><span class=p>,</span>
                                          <span class=n>generate_contour_edges</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 
     <span class=c1># Use either the minimum or maximum value for each band.</span>
@@ -1123,8 +1111,7 @@ function registerListener(event, func) {
     <span class=n>source</span> <span class=o>=</span> <span class=n>surface</span><span class=o>.</span><span class=n>source</span>
     <span class=n>curvature</span> <span class=o>=</span> <span class=s1>&#39;Mean_Curvature&#39;</span>
 
-    <span class=n>curvature_types</span> <span class=o>=</span> <span class=n>CurvaturesCurvatureType</span><span class=p>()</span>
-<span class=hll>    <span class=n>curvatures</span> <span class=o>=</span> <span class=n>vtkCurvatures</span><span class=p>(</span><span class=n>curvature_type</span><span class=o>=</span><span class=n>curvature_types</span><span class=o>.</span><span class=n>VTK_CURVATURE_MEAN</span><span class=p>)</span>
+<span class=hll>    <span class=n>curvatures</span> <span class=o>=</span> <span class=n>vtkCurvatures</span><span class=p>(</span><span class=n>curvature_type</span><span class=o>=</span><span class=n>CurvaturesCurvatureType</span><span class=p>()</span><span class=o>.</span><span class=n>VTK_CURVATURE_MEAN</span><span class=p>)</span>
 </span>    <span class=n>p</span> <span class=o>=</span> <span class=p>(</span><span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>curvatures</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
 
     <span class=k>if</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>needs_adjusting</span><span class=p>:</span>
@@ -1178,9 +1165,8 @@ function registerListener(event, func) {
 
     <span class=c1># Create the contour bands.</span>
     <span class=c1># We will use an indexed lookup table.</span>
-    <span class=n>bcf_scalar_mode</span> <span class=o>=</span> <span class=n>BandedPolyDataContourFilterScalarMode</span><span class=p>()</span>
 <span class=hll>    <span class=n>bcf</span> <span class=o>=</span> <span class=n>vtkBandedPolyDataContourFilter</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>p</span><span class=p>,</span>
-</span>                                         <span class=n>scalar_mode</span><span class=o>=</span><span class=n>bcf_scalar_mode</span><span class=o>.</span><span class=n>VTK_SCALAR_MODE_INDEX</span><span class=p>,</span>
+</span>                                         <span class=n>scalar_mode</span><span class=o>=</span><span class=n>BandedPolyDataContourFilterScalarMode</span><span class=p>()</span><span class=o>.</span><span class=n>VTK_SCALAR_MODE_INDEX</span><span class=p>,</span>
                                          <span class=n>generate_contour_edges</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 
     <span class=c1># Use either the minimum or maximum value for each band.</span>
@@ -1248,10 +1234,8 @@ function registerListener(event, func) {
         <span class=n>sb_rep</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span><span class=p>[</span><span class=s1>&#39;point1&#39;</span><span class=p>]</span>
         <span class=n>sb_rep</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span><span class=p>[</span><span class=s1>&#39;point2&#39;</span><span class=p>]</span>
 
-<span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkScalarBarWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>sb_rep</span><span class=p>,</span> <span class=n>scalar_bar_actor</span><span class=o>=</span><span class=n>sb_actor</span><span class=p>)</span>
-</span>    <span class=n>widget</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>interactor</span><span class=p>)</span>
-    <span class=n>widget</span><span class=o>.</span><span class=n>EnabledOn</span><span class=p>()</span>
-
+<span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkScalarBarWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>sb_rep</span><span class=p>,</span> <span class=n>scalar_bar_actor</span><span class=o>=</span><span class=n>sb_actor</span><span class=p>,</span> <span class=n>interactor</span><span class=o>=</span><span class=n>interactor</span><span class=p>,</span> <span class=n>enabled</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span>
     <span class=k>return</span> <span class=n>widget</span>
 
 

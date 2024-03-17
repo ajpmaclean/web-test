@@ -101,9 +101,8 @@ function registerListener(event, func) {
     <span class=n>topography</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>randint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>5</span><span class=p>,</span> <span class=p>(</span><span class=n>size</span><span class=p>,</span> <span class=n>size</span><span class=p>))</span>
 
     <span class=c1># Define points, triangles and colors</span>
-<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkUnsignedCharArray</span><span class=p>()</span>
-</span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
-<span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtkPoints</span><span class=p>()</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkUnsignedCharArray</span><span class=p>(</span><span class=n>number_of_components</span><span class=o>=</span><span class=mi>3</span><span class=p>)</span>
+</span><span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtkPoints</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>triangles</span> <span class=o>=</span> <span class=n>vtkCellArray</span><span class=p>()</span>
 </span>
     <span class=c1># Build the meshgrid manually.</span>
@@ -154,12 +153,9 @@ function registerListener(event, func) {
             <span class=n>colors</span><span class=o>.</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>r</span><span class=p>)</span>
 
     <span class=c1># Create a polydata object.</span>
-<span class=hll>    <span class=n>triangle_poly_data</span> <span class=o>=</span> <span class=n>vtkPolyData</span><span class=p>()</span>
-</span>
-    <span class=c1># Add the geometry and topology to the polydata.</span>
-    <span class=n>triangle_poly_data</span><span class=o>.</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>points</span><span class=p>)</span>
-    <span class=n>triangle_poly_data</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>SetScalars</span><span class=p>(</span><span class=n>colors</span><span class=p>)</span>
-    <span class=n>triangle_poly_data</span><span class=o>.</span><span class=n>SetPolys</span><span class=p>(</span><span class=n>triangles</span><span class=p>)</span>
+    <span class=c1># Adding the geometry and topology to the polydata.</span>
+<span class=hll>    <span class=n>triangle_poly_data</span> <span class=o>=</span> <span class=n>vtkPolyData</span><span class=p>(</span><span class=n>points</span><span class=o>=</span><span class=n>points</span><span class=p>,</span> <span class=n>polys</span><span class=o>=</span><span class=n>triangles</span><span class=p>)</span>
+</span>    <span class=n>triangle_poly_data</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>SetScalars</span><span class=p>(</span><span class=n>colors</span><span class=p>)</span>
 
     <span class=c1># Clean the polydata so that the edges are shared!</span>
 <span class=hll>    <span class=n>clean_poly_data</span> <span class=o>=</span> <span class=n>vtkCleanPolyData</span><span class=p>()</span>
