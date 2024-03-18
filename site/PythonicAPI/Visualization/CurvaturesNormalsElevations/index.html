@@ -140,8 +140,6 @@ function registerListener(event, func) {
 <span class=s1>    &#39;&#39;&#39;</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=c1># parser.add_argument(&#39;-s&#39;, &#39;--surface_name&#39;, default=&#39;random hills&#39;,</span>
-    <span class=c1>#                     help=&#39;The name of the surface.&#39;)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;surface_name&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s1>&#39;random hills&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The name of the surface.&#39;</span><span class=p>)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-f&#39;</span><span class=p>,</span> <span class=s1>&#39;--frequency_table&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Display the frequency table.&#39;</span><span class=p>)</span>
 
@@ -175,7 +173,7 @@ function registerListener(event, func) {
     <span class=n>surface</span> <span class=o>=</span> <span class=n>Surface</span><span class=p>(</span><span class=n>surface_name</span><span class=p>,</span> <span class=n>get_source</span><span class=p>(</span><span class=n>surface_name</span><span class=p>,</span> <span class=n>available_surfaces</span><span class=p>))</span>
 
     <span class=c1># --------------------------------------------------------------------------------------</span>
-    <span class=c1># Get the actors, scalar range of curvatures and elevation along with the lookup tables.</span>
+    <span class=c1># Get the filters, scalar range of curvatures and elevation along with the lookup tables.</span>
     <span class=c1># --------------------------------------------------------------------------------------</span>
     <span class=c1># Use an ordered dictionary as we want the keys in a specific order.</span>
     <span class=n>curvatures</span> <span class=o>=</span> <span class=n>OrderedDict</span><span class=p>()</span>
@@ -194,8 +192,8 @@ function registerListener(event, func) {
     <span class=n>viewports</span><span class=p>[</span><span class=s1>&#39;Gauss_Curvature&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
     <span class=n>viewports</span><span class=p>[</span><span class=s1>&#39;Mean_Curvature&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
 
-    <span class=n>window_width</span> <span class=o>=</span> <span class=mi>800</span> <span class=o>*</span> <span class=mi>2</span>
     <span class=n>window_height</span> <span class=o>=</span> <span class=mi>800</span>
+    <span class=n>window_width</span> <span class=o>=</span> <span class=mi>2</span> <span class=o>*</span> <span class=n>window_height</span>
 
     <span class=c1># --------------------------------------------------</span>
     <span class=c1># Create the RenderWindow, Renderers and Interactor.</span>
@@ -259,8 +257,6 @@ function registerListener(event, func) {
         <span class=c1># scalar_bar_properties.lut = curvatures[k][&#39;lutr&#39;]</span>
         <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>orientation</span> <span class=o>=</span> <span class=kc>False</span>
         <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=n>k</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;_&#39;</span><span class=p>,</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
-        <span class=k>if</span> <span class=n>surface_name</span> <span class=o>==</span> <span class=s1>&#39;plane&#39;</span><span class=p>:</span>
-            <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>number_of_labels</span> <span class=o>=</span> <span class=mi>1</span>
         <span class=n>contour_widgets</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=n>make_scalar_bar_widget</span><span class=p>(</span><span class=n>scalar_bar_properties</span><span class=p>,</span> <span class=n>text_property</span><span class=p>,</span> <span class=n>iren</span><span class=p>)</span>
 
         <span class=c1># Now for the elevation, it is the same for both surface actors.</span>
@@ -957,7 +953,7 @@ function registerListener(event, func) {
     <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>bands</span><span class=p>)</span> <span class=o>!=</span> <span class=nb>len</span><span class=p>(</span><span class=n>freq</span><span class=p>):</span>
         <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Bands and Frequencies must be the same size.&#39;</span><span class=p>)</span>
         <span class=k>return</span>
-    <span class=n>s</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>curvature</span><span class=si>}</span><span class=se>\n</span><span class=s1>Bands &amp; Frequencies:</span><span class=se>\n</span><span class=s1>&#39;</span>
+    <span class=n>s</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>&#39;Bands &amp; Frequencies:</span><span class=se>\n</span><span class=si>{</span><span class=s2>&quot; &quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>curvature</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s2>&quot;_&quot;</span><span class=p>,</span><span class=w> </span><span class=s2>&quot; &quot;</span><span class=p>)</span><span class=o>.</span><span class=n>split</span><span class=p>())</span><span class=o>.</span><span class=n>title</span><span class=p>()</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
     <span class=n>total</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=n>width</span> <span class=o>=</span> <span class=n>prec</span> <span class=o>+</span> <span class=mi>6</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>bands</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
@@ -976,12 +972,12 @@ function registerListener(event, func) {
 
 <span class=k>def</span> <span class=nf>generate_gaussian_curvatures</span><span class=p>(</span><span class=n>surface</span><span class=p>,</span> <span class=n>needs_adjusting</span><span class=p>,</span> <span class=n>frequency_table</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
 <span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>    Generate the actors for the surface.</span>
+<span class=sd>    Generate the filters for the surface.</span>
 
 <span class=sd>    :param surface: The surface.</span>
 <span class=sd>    :param needs_adjusting: Surfaces whose curvatures need to be adjusted along the edges of the surface or constrained.</span>
 <span class=sd>    :param frequency_table: True if a frequency table is to be displayed.</span>
-<span class=sd>    :return: Return the actors, scalar ranges of curvatures and elevation along with the lookup tables.</span>
+<span class=sd>    :return: Return the filters, scalar ranges of curvatures and elevation along with the lookup tables.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
     <span class=n>name</span> <span class=o>=</span> <span class=n>surface</span><span class=o>.</span><span class=n>name</span>
     <span class=n>source</span> <span class=o>=</span> <span class=n>surface</span><span class=o>.</span><span class=n>source</span>
@@ -1095,17 +1091,18 @@ function registerListener(event, func) {
     <span class=n>glyph</span> <span class=o>=</span> <span class=n>get_glyphs</span><span class=p>(</span><span class=n>surface</span><span class=p>,</span> <span class=n>arrow_scale</span><span class=o>=</span><span class=n>arrow_scale</span><span class=p>,</span> <span class=n>scale_factor</span><span class=o>=</span><span class=n>scale_factor</span><span class=p>,</span> <span class=n>reverse_normals</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
 
     <span class=k>return</span> <span class=p>{</span><span class=s1>&#39;bcf&#39;</span><span class=p>:</span> <span class=n>bcf</span><span class=p>,</span> <span class=s1>&#39;glyph&#39;</span><span class=p>:</span> <span class=n>glyph</span><span class=p>,</span> <span class=s1>&#39;scalar_range_curvatures&#39;</span><span class=p>:</span> <span class=n>scalar_range_curvatures</span><span class=p>,</span>
-            <span class=s1>&#39;scalar_range_elevation&#39;</span><span class=p>:</span> <span class=n>scalar_range_elevation</span><span class=p>,</span> <span class=s1>&#39;lut&#39;</span><span class=p>:</span> <span class=n>lut</span><span class=p>,</span> <span class=s1>&#39;lut1&#39;</span><span class=p>:</span> <span class=n>lut1</span><span class=p>,</span> <span class=s1>&#39;lutr&#39;</span><span class=p>:</span> <span class=n>lutr</span><span class=p>}</span>
+            <span class=s1>&#39;scalar_range_elevation&#39;</span><span class=p>:</span> <span class=n>scalar_range_elevation</span><span class=p>,</span> <span class=s1>&#39;lut&#39;</span><span class=p>:</span> <span class=n>lut</span><span class=p>,</span>
+            <span class=s1>&#39;lut1&#39;</span><span class=p>:</span> <span class=n>lut1</span><span class=p>,</span> <span class=s1>&#39;lutr&#39;</span><span class=p>:</span> <span class=n>lutr</span><span class=p>}</span>
 
 
 <span class=k>def</span> <span class=nf>generate_mean_curvatures</span><span class=p>(</span><span class=n>surface</span><span class=p>,</span> <span class=n>needs_adjusting</span><span class=p>,</span> <span class=n>frequency_table</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
 <span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>    Generate the actors for the surface.</span>
+<span class=sd>    Generate the filters for the surface.</span>
 
 <span class=sd>    :param surface: The surface.</span>
 <span class=sd>    :param needs_adjusting: Surfaces whose curvatures need to be adjusted along the edges of the surface or constrained.</span>
 <span class=sd>    :param frequency_table: True if a frequency table is to be displayed.</span>
-<span class=sd>    :return: Return the actors, scalar ranges of curvatures and elevation along with the lookup tables.</span>
+<span class=sd>    :return: Return the filters, scalar ranges of curvatures and elevation along with the lookup tables.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
     <span class=n>name</span> <span class=o>=</span> <span class=n>surface</span><span class=o>.</span><span class=n>name</span>
     <span class=n>source</span> <span class=o>=</span> <span class=n>surface</span><span class=o>.</span><span class=n>source</span>
@@ -1186,7 +1183,8 @@ function registerListener(event, func) {
     <span class=n>glyph</span> <span class=o>=</span> <span class=n>get_glyphs</span><span class=p>(</span><span class=n>surface</span><span class=p>,</span> <span class=n>arrow_scale</span><span class=o>=</span><span class=n>arrow_scale</span><span class=p>,</span> <span class=n>scale_factor</span><span class=o>=</span><span class=n>scale_factor</span><span class=p>,</span> <span class=n>reverse_normals</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
 
     <span class=k>return</span> <span class=p>{</span><span class=s1>&#39;bcf&#39;</span><span class=p>:</span> <span class=n>bcf</span><span class=p>,</span> <span class=s1>&#39;glyph&#39;</span><span class=p>:</span> <span class=n>glyph</span><span class=p>,</span> <span class=s1>&#39;scalar_range_curvatures&#39;</span><span class=p>:</span> <span class=n>scalar_range_curvatures</span><span class=p>,</span>
-            <span class=s1>&#39;scalar_range_elevation&#39;</span><span class=p>:</span> <span class=n>scalar_range_elevation</span><span class=p>,</span> <span class=s1>&#39;lut&#39;</span><span class=p>:</span> <span class=n>lut</span><span class=p>,</span> <span class=s1>&#39;lut1&#39;</span><span class=p>:</span> <span class=n>lut1</span><span class=p>,</span> <span class=s1>&#39;lutr&#39;</span><span class=p>:</span> <span class=n>lutr</span><span class=p>}</span>
+            <span class=s1>&#39;scalar_range_elevation&#39;</span><span class=p>:</span> <span class=n>scalar_range_elevation</span><span class=p>,</span> <span class=s1>&#39;lut&#39;</span><span class=p>:</span> <span class=n>lut</span><span class=p>,</span>
+            <span class=s1>&#39;lut1&#39;</span><span class=p>:</span> <span class=n>lut1</span><span class=p>,</span> <span class=s1>&#39;lutr&#39;</span><span class=p>:</span> <span class=n>lutr</span><span class=p>}</span>
 
 
 <span class=k>class</span> <span class=nc>ScalarBarProperties</span><span class=p>:</span>
