@@ -1508,3 +1508,9 @@ https://github.com/ajpmaclean/web-test/blob/gh-pages/src/Testing/Baseline/Python
 https://github.com/ajpmaclean/web-test/blob/gh-pages/src/Testing/Baseline/PythonicAPI/ExplicitStructuredGrid/TestCreateESGrid.png https://tinyurl.com/2yojurmd
 https://github.com/ajpmaclean/web-test/blob/gh-pages/src/Testing/Baseline/PythonicAPI/ExplicitStructuredGrid/TestLoadESGrid.png https://tinyurl.com/28d36e7l
 https://github.com/ajpmaclean/web-test/blob/gh-pages/src/Testing/Baseline/PythonicAPI/HyperTreeGrid/TestHyperTreeGridSource.png https://tinyurl.com/2bnrr7gp
+https://github.com/ajpmaclean/web-test/blob/gh-pages/src/Testing/Baseline/PythonicAPI/ImageData/TestImageWeightedSum.png https://tinyurl.com/yob5lvve
+https://github.com/ajpmaclean/web-test/blob/gh-pages/src/Testing/Baseline/PythonicAPI/ImageData/TestImageNormalize.png https://tinyurl.com/ymm9s2ac
+https://github.com/ajpmaclean/web-test/blob/gh-pages/src/Testing/Baseline/PythonicAPI/ImageProcessing/TestAttenuation.png https://tinyurl.com/yuwluzgm
+https://github.com/ajpmaclean/web-test/blob/gh-pages/src/Testing/Baseline/PythonicAPI/ImageProcessing/TestEnhanceEdges.png https://tinyurl.com/ysgbn7yj
+https://github.com/ajpmaclean/web-test/blob/gh-pages/src/Testing/Baseline/PythonicAPI/ImageProcessing/TestGaussianSmooth.png https://tinyurl.com/yvr3bxan
+https://github.com/ajpmaclean/web-test/blob/gh-pages/src/Testing/Baseline/PythonicAPI/ImageProcessing/TestVTKSpectrum.png https://tinyurl.com/yqxyfsjg
