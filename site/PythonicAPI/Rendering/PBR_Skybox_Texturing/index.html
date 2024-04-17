@@ -281,11 +281,11 @@ Options:
 
     <span class=c1># Get the textures</span>
     <span class=n>base_color</span> <span class=o>=</span> <span class=n>read_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;albedo&#39;</span><span class=p>])</span>
-    <span class=n>base_color</span><span class=o>.</span><span class=n>use_s_r_g_b_color_space</span> <span class=o>=</span> <span class=kc>True</span>
+    <span class=n>base_color</span><span class=o>.</span><span class=n>use_srgb_color_space</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=n>normal</span> <span class=o>=</span> <span class=n>read_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;normal&#39;</span><span class=p>])</span>
     <span class=n>material</span> <span class=o>=</span> <span class=n>read_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;material&#39;</span><span class=p>])</span>
     <span class=n>emissive</span> <span class=o>=</span> <span class=n>read_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;emissive&#39;</span><span class=p>])</span>
-    <span class=n>emissive</span><span class=o>.</span><span class=n>use_s_r_g_b_color_space</span> <span class=o>=</span> <span class=kc>True</span>
+    <span class=n>emissive</span><span class=o>.</span><span class=n>use_srgb_color_space</span> <span class=o>=</span> <span class=kc>True</span>
 
     <span class=c1># Get the surface</span>
     <span class=n>surface</span> <span class=o>=</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;object&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>

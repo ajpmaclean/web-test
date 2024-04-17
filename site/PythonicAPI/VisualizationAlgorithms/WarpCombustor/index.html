@@ -88,8 +88,8 @@ function registerListener(event, func) {
     <span class=c1># Here we read data from an annular combustor. A combustor burns fuel and air</span>
     <span class=c1># in a gas turbine (e.g., a jet engine) and the hot gas eventually makes its</span>
     <span class=c1># way to the turbine section.</span>
-    <span class=c1># Note that SetFileName is an alias for SetXYZFileName so you can use file_name instead of `x_y_z_file_name`.</span>
-<span class=hll>    <span class=n>pl3d</span> <span class=o>=</span> <span class=n>vtkMultiBlockPLOT3DReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>xyz_fn</span><span class=p>,</span> <span class=n>q_file_name</span><span class=o>=</span><span class=n>q_fn</span><span class=p>,</span> <span class=n>scalar_function_number</span><span class=o>=</span><span class=mi>100</span><span class=p>,</span>
+    <span class=c1># Note that SetFileName is an alias for SetXYZFileName so you can use `file_name` instead of `xyz_file_name`.</span>
+<span class=hll>    <span class=n>pl3d</span> <span class=o>=</span> <span class=n>vtkMultiBlockPLOT3DReader</span><span class=p>(</span><span class=n>xyz_file_name</span><span class=o>=</span><span class=n>xyz_fn</span><span class=p>,</span> <span class=n>q_file_name</span><span class=o>=</span><span class=n>q_fn</span><span class=p>,</span> <span class=n>scalar_function_number</span><span class=o>=</span><span class=mi>100</span><span class=p>,</span>
 </span>                                     <span class=n>vector_function_number</span><span class=o>=</span><span class=mi>202</span><span class=p>)</span>
     <span class=c1># Update and get the block that we want.</span>
     <span class=n>pl3d</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
