@@ -9821,6 +9821,31 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://ajpmaclean.github.io/web-test/site/PythonicAPI/Texture/AnimateVectors/</loc>
+         <lastmod>2024-04-19</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ajpmaclean.github.io/web-test/site/PythonicAPI/Texture/TextureCutQuadric/</loc>
+         <lastmod>2024-04-19</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ajpmaclean.github.io/web-test/site/PythonicAPI/Texture/TextureCutSphere/</loc>
+         <lastmod>2024-04-19</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ajpmaclean.github.io/web-test/site/PythonicAPI/Texture/TexturePlane/</loc>
+         <lastmod>2024-04-19</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ajpmaclean.github.io/web-test/site/PythonicAPI/Texture/TextureThreshold/</loc>
+         <lastmod>2024-04-19</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://ajpmaclean.github.io/web-test/site/PythonicAPI/Utilities/CheckVTKVersion/</loc>
          <lastmod>2024-04-19</lastmod>
          <changefreq>daily</changefreq>
