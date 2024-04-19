@@ -557,9 +557,8 @@ function registerListener(event, func) {
 
 <span class=sd>    :return:</span>
 <span class=sd>    &quot;&quot;&quot;</span>
-<span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>()</span>
-</span>    <span class=n>ctf</span><span class=o>.</span><span class=n>SetColorSpaceToDiverging</span><span class=p>()</span>
-    <span class=c1># Cool to warm.</span>
+<span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>ColorSpace</span><span class=o>.</span><span class=n>VTK_CTF_DIVERGING</span><span class=p>)</span>
+</span>    <span class=c1># Cool to warm.</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.230</span><span class=p>,</span> <span class=mf>0.299</span><span class=p>,</span> <span class=mf>0.754</span><span class=p>)</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>)</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.706</span><span class=p>,</span> <span class=mf>0.016</span><span class=p>,</span> <span class=mf>0.150</span><span class=p>)</span>
@@ -578,9 +577,8 @@ function registerListener(event, func) {
 <span class=k>def</span> <span class=nf>get_diverging_lut1</span><span class=p>():</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>    <span class=c1># Colour transfer function.</span>
-<span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>()</span>
-</span>    <span class=n>ctf</span><span class=o>.</span><span class=n>SetColorSpaceToDiverging</span><span class=p>()</span>
-    <span class=n>p1</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>))</span>
+<span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>ColorSpace</span><span class=o>.</span><span class=n>VTK_CTF_DIVERGING</span><span class=p>)</span>
+</span>    <span class=n>p1</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>))</span>
     <span class=n>p2</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.5</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gainsboro&#39;</span><span class=p>))</span>
     <span class=n>p3</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkOrange&#39;</span><span class=p>))</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=o>*</span><span class=n>p1</span><span class=p>)</span>
@@ -1065,6 +1063,23 @@ function registerListener(event, func) {
         <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
 
     <span class=k>return</span> <span class=n>text_positions</span>
+
+
+<span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+<span class=k>class</span> <span class=nc>ColorTransferFunction</span><span class=p>:</span>
+    <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+    <span class=k>class</span> <span class=nc>ColorSpace</span><span class=p>:</span>
+        <span class=n>VTK_CTF_RGB</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=n>VTK_CTF_HSV</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
+        <span class=n>VTK_CTF_LAB</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
+        <span class=n>VTK_CTF_DIVERGING</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>3</span>
+        <span class=n>VTK_CTF_LAB_CIEDE2000</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>4</span>
+        <span class=n>VTK_CTF_STEP</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>5</span>
+
+    <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+    <span class=k>class</span> <span class=nc>Scale</span><span class=p>:</span>
+        <span class=n>VTK_CTF_LINEAR</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=n>VTK_CTF_LOG10</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
 
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>

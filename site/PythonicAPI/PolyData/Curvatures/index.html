@@ -153,9 +153,8 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>color_series</span> <span class=o>=</span> <span class=n>vtkColorSeries</span><span class=p>(</span><span class=n>color_scheme</span><span class=o>=</span><span class=n>color_map_idx</span><span class=p>)</span>
 </span>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Using color scheme #: </span><span class=si>{</span><span class=n>color_series</span><span class=o>.</span><span class=n>GetColorScheme</span><span class=p>()</span><span class=si>}</span><span class=s1>, </span><span class=si>{</span><span class=n>color_series</span><span class=o>.</span><span class=n>GetColorSchemeName</span><span class=p>()</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>()</span>
-</span>    <span class=n>lut</span><span class=o>.</span><span class=n>SetColorSpaceToHSV</span><span class=p>()</span>
-
+<span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>ColorSpace</span><span class=o>.</span><span class=n>VTK_CTF_HSV</span><span class=p>)</span>
+</span>
     <span class=c1># Use a color series to create a transfer function</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>color_series</span><span class=o>.</span><span class=n>GetNumberOfColors</span><span class=p>()):</span>
         <span class=n>color</span> <span class=o>=</span> <span class=n>color_series</span><span class=o>.</span><span class=n>GetColor</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
@@ -365,6 +364,23 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkScalarBarWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>sb_rep</span><span class=p>,</span> <span class=n>scalar_bar_actor</span><span class=o>=</span><span class=n>sb_actor</span><span class=p>,</span> <span class=n>interactor</span><span class=o>=</span><span class=n>interactor</span><span class=p>,</span> <span class=n>enabled</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 </span>
     <span class=k>return</span> <span class=n>widget</span>
+
+
+<span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+<span class=k>class</span> <span class=nc>ColorTransferFunction</span><span class=p>:</span>
+    <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+    <span class=k>class</span> <span class=nc>ColorSpace</span><span class=p>:</span>
+        <span class=n>VTK_CTF_RGB</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=n>VTK_CTF_HSV</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
+        <span class=n>VTK_CTF_LAB</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
+        <span class=n>VTK_CTF_DIVERGING</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>3</span>
+        <span class=n>VTK_CTF_LAB_CIEDE2000</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>4</span>
+        <span class=n>VTK_CTF_STEP</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>5</span>
+
+    <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+    <span class=k>class</span> <span class=nc>Scale</span><span class=p>:</span>
+        <span class=n>VTK_CTF_LINEAR</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=n>VTK_CTF_LOG10</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
 
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>

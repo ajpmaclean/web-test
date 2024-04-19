@@ -699,9 +699,8 @@ function registerListener(event, func) {
 
 <span class=sd>    :return: The lookup table.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
-<span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>()</span>
-</span>    <span class=n>ctf</span><span class=o>.</span><span class=n>SetColorSpaceToDiverging</span><span class=p>()</span>
-    <span class=c1># Cool to warm.</span>
+<span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>ColorSpace</span><span class=o>.</span><span class=n>VTK_CTF_DIVERGING</span><span class=p>)</span>
+</span>    <span class=c1># Cool to warm.</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.085</span><span class=p>,</span> <span class=mf>0.532</span><span class=p>,</span> <span class=mf>0.201</span><span class=p>)</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>,</span> <span class=mf>0.865</span><span class=p>)</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.758</span><span class=p>,</span> <span class=mf>0.214</span><span class=p>,</span> <span class=mf>0.233</span><span class=p>)</span>
@@ -1293,6 +1292,23 @@ function registerListener(event, func) {
     <span class=k>class</span> <span class=nc>ScalarMode</span><span class=p>:</span>
         <span class=n>VTK_SCALAR_MODE_INDEX</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
         <span class=n>VTK_SCALAR_MODE_VALUE</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
+
+
+<span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+<span class=k>class</span> <span class=nc>ColorTransferFunction</span><span class=p>:</span>
+    <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+    <span class=k>class</span> <span class=nc>ColorSpace</span><span class=p>:</span>
+        <span class=n>VTK_CTF_RGB</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=n>VTK_CTF_HSV</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
+        <span class=n>VTK_CTF_LAB</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
+        <span class=n>VTK_CTF_DIVERGING</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>3</span>
+        <span class=n>VTK_CTF_LAB_CIEDE2000</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>4</span>
+        <span class=n>VTK_CTF_STEP</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>5</span>
+
+    <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+    <span class=k>class</span> <span class=nc>Scale</span><span class=p>:</span>
+        <span class=n>VTK_CTF_LINEAR</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=n>VTK_CTF_LOG10</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
 
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>

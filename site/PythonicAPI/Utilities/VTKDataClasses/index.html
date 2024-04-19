@@ -102,13 +102,20 @@ function registerListener(event, func) {
 
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-<span class=k>class</span> <span class=nc>Curvatures</span><span class=p>:</span>
+<span class=k>class</span> <span class=nc>ColorTransferFunction</span><span class=p>:</span>
     <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-    <span class=k>class</span> <span class=nc>CurvatureType</span><span class=p>:</span>
-        <span class=n>VTK_CURVATURE_GAUSS</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
-        <span class=n>VTK_CURVATURE_MEAN</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
-        <span class=n>VTK_CURVATURE_MAXIMUM</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
-        <span class=n>VTK_CURVATURE_MINIMUM</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>3</span>
+    <span class=k>class</span> <span class=nc>ColorSpace</span><span class=p>:</span>
+        <span class=n>VTK_CTF_RGB</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=n>VTK_CTF_HSV</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
+        <span class=n>VTK_CTF_LAB</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
+        <span class=n>VTK_CTF_DIVERGING</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>3</span>
+        <span class=n>VTK_CTF_LAB_CIEDE2000</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>4</span>
+        <span class=n>VTK_CTF_STEP</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>5</span>
+
+    <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+    <span class=k>class</span> <span class=nc>Scale</span><span class=p>:</span>
+        <span class=n>VTK_CTF_LINEAR</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=n>VTK_CTF_LOG10</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
 
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
@@ -135,6 +142,16 @@ function registerListener(event, func) {
         <span class=n>VTK_POSE</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>5</span>
         <span class=n>VTK_WORLD</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>6</span>
         <span class=n>VTK_USERDEFINED</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>7</span>
+
+
+<span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+<span class=k>class</span> <span class=nc>Curvatures</span><span class=p>:</span>
+    <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+    <span class=k>class</span> <span class=nc>CurvatureType</span><span class=p>:</span>
+        <span class=n>VTK_CURVATURE_GAUSS</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=n>VTK_CURVATURE_MEAN</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
+        <span class=n>VTK_CURVATURE_MAXIMUM</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
+        <span class=n>VTK_CURVATURE_MINIMUM</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>3</span>
 
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
