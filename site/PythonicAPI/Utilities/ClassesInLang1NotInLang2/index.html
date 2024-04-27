@@ -159,13 +159,19 @@ function registerListener(event, func) {
 
     <span class=n>d12</span> <span class=o>=</span> <span class=n>dict_filter</span><span class=p>(</span><span class=n>d1</span><span class=p>,</span> <span class=n>wanted_keys</span><span class=p>)</span>
     <span class=n>keys</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>d12</span><span class=o>.</span><span class=n>keys</span><span class=p>())</span>
-    <span class=n>s</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>&#39;### Classes in </span><span class=si>{</span><span class=n>lang1</span><span class=si>}</span><span class=s1> but not in </span><span class=si>{</span><span class=n>lang2</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
+    <span class=n>res</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
+    <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;### VTK Classes in </span><span class=si>{</span><span class=n>lang1</span><span class=si>}</span><span class=s1> but not in </span><span class=si>{</span><span class=n>lang2</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+    <span class=n>number_of_examples</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>keys</span><span class=p>:</span>
-        <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>#### </span><span class=si>{</span><span class=n>k</span><span class=si>}</span><span class=se>\n\n</span><span class=s1>&#39;</span>
-        <span class=k>for</span> <span class=n>k1</span><span class=p>,</span> <span class=n>v1</span> <span class=ow>in</span> <span class=n>d12</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-            <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>&#39;  [</span><span class=si>{</span><span class=n>k1</span><span class=si>}</span><span class=s1>](</span><span class=si>{</span><span class=n>v1</span><span class=si>}</span><span class=s1>)</span><span class=se>\n</span><span class=s1>&#39;</span>
-    <span class=n>s</span> <span class=o>+=</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
-    <span class=k>return</span> <span class=n>s</span>
+        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>#### </span><span class=si>{</span><span class=n>k</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=n>k1</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>d12</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>keys</span><span class=p>())</span>
+        <span class=k>for</span> <span class=n>kk1</span> <span class=ow>in</span> <span class=n>k1</span><span class=p>:</span>
+            <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;  [</span><span class=si>{</span><span class=n>kk1</span><span class=si>}</span><span class=s1>](</span><span class=si>{</span><span class=n>d12</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=n>kk1</span><span class=p>]</span><span class=si>}</span><span class=s1>)&#39;</span><span class=p>)</span>
+            <span class=n>number_of_examples</span> <span class=o>+=</span> <span class=mi>1</span>
+    <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>Count of VTK Classes :</span><span class=si>{</span><span class=nb>len</span><span class=p>(</span><span class=n>wanted_keys</span><span class=p>)</span><span class=si>:</span><span class=s1>6</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+    <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;             Examples:</span><span class=si>{</span><span class=n>number_of_examples</span><span class=si>:</span><span class=s1>6</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+    <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>)</span>
+    <span class=k>return</span> <span class=n>res</span>
 
 
 <span class=k>def</span> <span class=nf>get_crossref_dict</span><span class=p>(</span><span class=n>ref_dir</span><span class=p>,</span> <span class=n>xref_url</span><span class=p>,</span> <span class=n>overwrite</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
@@ -221,11 +227,11 @@ function registerListener(event, func) {
         <span class=k>if</span> <span class=n>file_name</span><span class=p>:</span>
             <span class=n>fn</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>&#39;.md&#39;</span><span class=p>)</span>
             <span class=k>if</span> <span class=n>fn</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-                <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Cannot overwrite </span><span class=si>{fn}</span><span class=s1>, please select a new file name.&#39;</span><span class=p>)</span>
+                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Cannot overwrite </span><span class=si>{</span><span class=n>fn</span><span class=si>}</span><span class=s1>, please select a new file name.&#39;</span><span class=p>)</span>
                 <span class=k>return</span>
             <span class=k>else</span><span class=p>:</span>
                 <span class=k>with</span> <span class=n>fn</span><span class=o>.</span><span class=n>open</span><span class=p>(</span><span class=n>mode</span><span class=o>=</span><span class=s1>&#39;w&#39;</span><span class=p>):</span>
-                    <span class=n>fn</span><span class=o>.</span><span class=n>write_text</span><span class=p>(</span><span class=n>res</span><span class=p>)</span>
+                    <span class=n>fn</span><span class=o>.</span><span class=n>write_text</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
         <span class=k>else</span><span class=p>:</span>
             <span class=nb>print</span><span class=p>(</span><span class=n>res</span><span class=p>)</span>
 
