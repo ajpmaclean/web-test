@@ -63,7 +63,9 @@ function registerListener(event, func) {
 <span class=kn>import</span> <span class=nn>vtkmodules.vtkInteractionStyle</span>
 <span class=c1># noinspection PyUnresolvedReferences</span>
 <span class=kn>import</span> <span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=n>vtkMutableDirectedGraph</span>
+<span class=kn>from</span> <span class=nn>vtkmodules.util.execution_model</span> <span class=kn>import</span> <span class=n>select_ports</span>
+<span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
+</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonDataModel</span> <span class=kn>import</span> <span class=n>vtkMutableDirectedGraph</span>
 </span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersCore</span> <span class=kn>import</span> <span class=n>vtkGlyph3D</span>
 </span><span class=kn>from</span> <span class=nn>vtkmodules.vtkFiltersSources</span> <span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkGlyphSource2D</span><span class=p>,</span>
@@ -78,11 +80,9 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span>
 </span><span class=p>)</span>
 <span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkViewsInfovis</span> <span class=kn>import</span> <span class=n>vtkGraphLayoutView</span>
-</span><span class=hll><span class=kn>from</span> <span class=nn>vtkmodules.vtkCommonColor</span> <span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span>
 
 <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
 <span class=hll>    <span class=n>g</span> <span class=o>=</span> <span class=n>vtkMutableDirectedGraph</span><span class=p>()</span>
@@ -123,17 +123,17 @@ function registerListener(event, func) {
 </span>
     <span class=c1># Use Glyph3D to repeat the glyph on all edges.</span>
 <span class=hll>    <span class=n>arrow_glyph</span> <span class=o>=</span> <span class=n>vtkGlyph3D</span><span class=p>()</span>
-</span>    <span class=n>arrow_glyph</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>graph_to_poly</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>(</span><span class=mi>1</span><span class=p>))</span>
-    <span class=n>arrow_glyph</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>arrow_source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
+</span>    <span class=n>select_ports</span><span class=p>(</span><span class=n>graph_to_poly</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span> <span class=o>&gt;&gt;</span> <span class=n>arrow_glyph</span>
+    <span class=n>arrow_source</span> <span class=o>&gt;&gt;</span> <span class=n>select_ports</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>arrow_glyph</span><span class=p>)</span>
 
     <span class=c1># Add the edge arrow actor to the view.</span>
 <span class=hll>    <span class=n>arrow_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>arrow_glyph</span> <span class=o>&gt;&gt;</span> <span class=n>arrow_mapper</span>
-<span class=hll>    <span class=n>arrowActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>arrow_mapper</span><span class=p>)</span>
+<span class=hll>    <span class=n>arrow_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>arrow_mapper</span><span class=p>)</span>
 </span>
     <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>renderer</span><span class=o>.</span><span class=n>background</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SaddleBrown&#39;</span><span class=p>)</span>
     <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>renderer</span><span class=o>.</span><span class=n>background2</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Wheat&#39;</span><span class=p>)</span>
-    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>arrowActor</span><span class=p>)</span>
+    <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>arrow_actor</span><span class=p>)</span>
 
     <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
     <span class=n>graph_layout_view</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
