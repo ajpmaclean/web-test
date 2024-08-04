@@ -107,6 +107,7 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkCoordinate</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkDataSetMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkGlyph3DMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkLightKit</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper2D</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkProperty</span><span class=p>,</span>
@@ -286,6 +287,9 @@ function registerListener(event, func) {
         <span class=n>border</span> <span class=o>=</span> <span class=n>viewports</span><span class=p>[</span><span class=n>key</span><span class=p>]</span><span class=o>.</span><span class=n>border</span>
 <span class=hll>        <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightSteelBlue&#39;</span><span class=p>),</span> <span class=n>viewport</span><span class=o>=</span><span class=n>viewport</span><span class=p>)</span>
 </span>        <span class=n>draw_viewport_border</span><span class=p>(</span><span class=n>renderer</span><span class=p>,</span> <span class=n>border</span><span class=o>=</span><span class=n>border</span><span class=p>,</span> <span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>),</span> <span class=n>line_width</span><span class=o>=</span><span class=mi>4</span><span class=p>)</span>
+
+<span class=hll>        <span class=n>light_kit</span> <span class=o>=</span> <span class=n>vtkLightKit</span><span class=p>()</span>
+</span>        <span class=n>light_kit</span><span class=o>.</span><span class=n>AddLightsToRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
         <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
         <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>label_actor</span><span class=p>)</span>
