@@ -93,6 +93,7 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkActor2D</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkDataSetMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkGlyph3DMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkLightKit</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkProperty</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
@@ -170,14 +171,13 @@ function registerListener(event, func) {
     <span class=n>lines</span> <span class=o>=</span> <span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>)</span>
 
     <span class=c1># Set up the viewports.</span>
+    <span class=n>grid_column_dimensions</span> <span class=o>=</span> <span class=mi>4</span>
+    <span class=n>grid_row_dimensions</span> <span class=o>=</span> <span class=mi>4</span>
+    <span class=n>renderer_size</span> <span class=o>=</span> <span class=mi>300</span>
     <span class=k>if</span> <span class=n>single_object</span><span class=p>:</span>
         <span class=n>grid_column_dimensions</span> <span class=o>=</span> <span class=mi>1</span>
         <span class=n>grid_row_dimensions</span> <span class=o>=</span> <span class=mi>1</span>
         <span class=n>renderer_size</span> <span class=o>=</span> <span class=mi>1200</span>
-    <span class=k>else</span><span class=p>:</span>
-        <span class=n>grid_column_dimensions</span> <span class=o>=</span> <span class=mi>4</span>
-        <span class=n>grid_row_dimensions</span> <span class=o>=</span> <span class=mi>4</span>
-        <span class=n>renderer_size</span> <span class=o>=</span> <span class=mi>300</span>
     <span class=n>window_size</span> <span class=o>=</span> <span class=p>(</span><span class=n>grid_column_dimensions</span> <span class=o>*</span> <span class=n>renderer_size</span><span class=p>,</span> <span class=n>grid_row_dimensions</span> <span class=o>*</span> <span class=n>renderer_size</span><span class=p>)</span>
 
     <span class=n>viewports</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
@@ -206,38 +206,24 @@ function registerListener(event, func) {
                 <span class=n>viewports</span><span class=p>[</span><span class=n>s</span><span class=p>]</span> <span class=o>=</span> <span class=n>viewport</span>
                 <span class=n>blank_viewports</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>s</span><span class=p>)</span>
 
-    <span class=c1># Create one text property for all.</span>
-<span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>()</span>
-</span>    <span class=n>text_property</span><span class=o>.</span><span class=n>SetFontSize</span><span class=p>(</span><span class=nb>int</span><span class=p>(</span><span class=n>renderer_size</span> <span class=o>/</span> <span class=mi>18</span><span class=p>))</span>
-    <span class=n>text_property</span><span class=o>.</span><span class=n>BoldOn</span><span class=p>()</span>
-    <span class=n>text_property</span><span class=o>.</span><span class=n>SetJustificationToCentered</span><span class=p>()</span>
-    <span class=n>text_property</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
-
-<span class=hll>    <span class=n>label_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>()</span>
-</span>    <span class=n>label_property</span><span class=o>.</span><span class=n>BoldOn</span><span class=p>()</span>
-    <span class=n>label_property</span><span class=o>.</span><span class=n>ShadowOn</span><span class=p>()</span>
-    <span class=n>label_property</span><span class=o>.</span><span class=n>SetJustificationToCentered</span><span class=p>()</span>
-    <span class=n>label_property</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DeepPink&#39;</span><span class=p>))</span>
-    <span class=k>if</span> <span class=n>single_object</span><span class=p>:</span>
-        <span class=n>label_property</span><span class=o>.</span><span class=n>SetFontSize</span><span class=p>(</span><span class=nb>int</span><span class=p>(</span><span class=n>renderer_size</span> <span class=o>/</span> <span class=mi>36</span><span class=p>))</span>
-    <span class=k>else</span><span class=p>:</span>
-        <span class=n>label_property</span><span class=o>.</span><span class=n>SetFontSize</span><span class=p>(</span><span class=nb>int</span><span class=p>(</span><span class=n>renderer_size</span> <span class=o>/</span> <span class=mi>16</span><span class=p>))</span>
-
-<span class=hll>    <span class=n>back_property</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>()</span>
-</span>    <span class=n>back_property</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DodgerBlue&#39;</span><span class=p>))</span>
-
 <span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=n>window_size</span><span class=p>)</span>
-    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;LinearCellDemo&#39;</span><span class=p>)</span>
+    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;LinearCellsDemo&#39;</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>ren_win</span><span class=p>)</span>
+    <span class=c1># Since we always import vtkmodules.vtkInteractionStyle we can do this</span>
+    <span class=c1># because vtkInteractorStyleSwitch is automatically imported:</span>
+    <span class=n>iren</span><span class=o>.</span><span class=n>GetInteractorStyle</span><span class=p>()</span><span class=o>.</span><span class=n>SetCurrentStyleToTrackballCamera</span><span class=p>()</span>
 
     <span class=n>renderers</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
 
     <span class=c1># Create and link the mappers, actors and renderers together.</span>
     <span class=k>for</span> <span class=n>idx</span><span class=p>,</span> <span class=n>key</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>keys</span><span class=p>):</span>
         <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Creating:&#39;</span><span class=p>,</span> <span class=n>names</span><span class=p>[</span><span class=n>idx</span><span class=p>])</span>
+
+        <span class=n>text_property</span> <span class=o>=</span> <span class=n>get_text_property</span><span class=p>()</span>
+        <span class=n>text_property</span><span class=o>.</span><span class=n>SetFontSize</span><span class=p>(</span><span class=nb>int</span><span class=p>(</span><span class=n>renderer_size</span> <span class=o>/</span> <span class=mi>18</span><span class=p>))</span>
 
 <span class=hll>        <span class=n>text_mapper</span> <span class=o>=</span> <span class=n>vtkTextMapper</span><span class=p>()</span>
 </span>        <span class=n>text_mapper</span><span class=o>.</span><span class=n>SetTextProperty</span><span class=p>(</span><span class=n>text_property</span><span class=p>)</span>
@@ -250,26 +236,28 @@ function registerListener(event, func) {
 </span>        <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>cells</span><span class=p>[</span><span class=n>key</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span>
 <span class=hll>        <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>        <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
+        <span class=n>actor</span><span class=o>.</span><span class=n>SetProperty</span><span class=p>(</span><span class=n>get_actor_property</span><span class=p>())</span>
+
         <span class=k>if</span> <span class=n>wireframe_on</span> <span class=ow>or</span> <span class=n>key</span> <span class=ow>in</span> <span class=n>lines</span><span class=p>:</span>
             <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetRepresentationToWireframe</span><span class=p>()</span>
             <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
             <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
             <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
-            <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
-            <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Snow&#39;</span><span class=p>))</span>
             <span class=k>if</span> <span class=n>backface_on</span><span class=p>:</span>
-                <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>0.4</span><span class=p>)</span>
-                <span class=n>actor</span><span class=o>.</span><span class=n>SetBackfaceProperty</span><span class=p>(</span><span class=n>back_property</span><span class=p>)</span>
-                <span class=n>back_property</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>0.6</span><span class=p>)</span>
-            <span class=k>else</span><span class=p>:</span>
-                <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>0.8</span><span class=p>)</span>
+                <span class=n>actor</span><span class=o>.</span><span class=n>SetBackfaceProperty</span><span class=p>(</span><span class=n>get_back_face_property</span><span class=p>())</span>
 
         <span class=c1># Label the points.</span>
+        <span class=n>label_property</span> <span class=o>=</span> <span class=n>get_label_property</span><span class=p>()</span>
+        <span class=k>if</span> <span class=n>single_object</span><span class=p>:</span>
+            <span class=n>label_property</span><span class=o>.</span><span class=n>SetFontSize</span><span class=p>(</span><span class=nb>int</span><span class=p>(</span><span class=n>renderer_size</span> <span class=o>/</span> <span class=mi>36</span><span class=p>))</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=n>label_property</span><span class=o>.</span><span class=n>SetFontSize</span><span class=p>(</span><span class=nb>int</span><span class=p>(</span><span class=n>renderer_size</span> <span class=o>/</span> <span class=mi>16</span><span class=p>))</span>
+
 <span class=hll>        <span class=n>label_mapper</span> <span class=o>=</span> <span class=n>vtkLabeledDataMapper</span><span class=p>()</span>
 </span>        <span class=n>label_mapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>cells</span><span class=p>[</span><span class=n>key</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span>
         <span class=n>label_mapper</span><span class=o>.</span><span class=n>SetLabelTextProperty</span><span class=p>(</span><span class=n>label_property</span><span class=p>)</span>
+
 <span class=hll>        <span class=n>label_actor</span> <span class=o>=</span> <span class=n>vtkActor2D</span><span class=p>()</span>
 </span>        <span class=n>label_actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>label_mapper</span><span class=p>)</span>
 
@@ -282,11 +270,14 @@ function registerListener(event, func) {
 
 <span class=hll>        <span class=n>point_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>        <span class=n>point_actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>point_mapper</span><span class=p>)</span>
-        <span class=n>point_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>))</span>
+        <span class=n>point_actor</span><span class=o>.</span><span class=n>SetProperty</span><span class=p>(</span><span class=n>get_point_actor_property</span><span class=p>())</span>
 
 <span class=hll>        <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>        <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightSteelBlue&#39;</span><span class=p>))</span>
         <span class=n>renderer</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>viewports</span><span class=p>[</span><span class=n>key</span><span class=p>])</span>
+
+<span class=hll>        <span class=n>light_kit</span> <span class=o>=</span> <span class=n>vtkLightKit</span><span class=p>()</span>
+</span>        <span class=n>light_kit</span><span class=o>.</span><span class=n>AddLightsToRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
         <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>text_actor</span><span class=p>)</span>
         <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
@@ -295,9 +286,9 @@ function registerListener(event, func) {
         <span class=k>if</span> <span class=ow>not</span> <span class=n>plinth_off</span><span class=p>:</span>
             <span class=c1># Add a plinth.</span>
             <span class=k>if</span> <span class=n>key</span> <span class=ow>in</span> <span class=n>add_plinth</span><span class=p>:</span>
-                <span class=n>tile_actor</span> <span class=o>=</span> <span class=n>make_tile</span><span class=p>(</span><span class=n>cells</span><span class=p>[</span><span class=n>key</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>GetBounds</span><span class=p>(),</span> <span class=n>expansion_factor</span><span class=o>=</span><span class=mf>0.5</span><span class=p>,</span> <span class=n>thickness_ratio</span><span class=o>=</span><span class=mf>0.05</span><span class=p>)</span>
-                <span class=n>tile_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Lavender&#39;</span><span class=p>))</span>
-                <span class=n>tile_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>0.3</span><span class=p>)</span>
+                <span class=n>tile_actor</span> <span class=o>=</span> <span class=n>make_tile</span><span class=p>(</span><span class=n>cells</span><span class=p>[</span><span class=n>key</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>GetBounds</span><span class=p>(),</span>
+                                       <span class=n>expansion_factor</span><span class=o>=</span><span class=mf>0.5</span><span class=p>,</span> <span class=n>thickness_ratio</span><span class=o>=</span><span class=mf>0.01</span><span class=p>,</span> <span class=n>shift_y</span><span class=o>=-</span><span class=mf>0.05</span><span class=p>)</span>
+                <span class=n>tile_actor</span><span class=o>.</span><span class=n>SetProperty</span><span class=p>(</span><span class=n>get_tile_property</span><span class=p>())</span>
                 <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>tile_actor</span><span class=p>)</span>
 
         <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
@@ -793,7 +784,7 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>ug</span>
 
 
-<span class=k>def</span> <span class=nf>make_tile</span><span class=p>(</span><span class=n>bounds</span><span class=p>,</span> <span class=n>expansion_factor</span><span class=o>=</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>thickness_ratio</span><span class=o>=</span><span class=mf>0.05</span><span class=p>):</span>
+<span class=k>def</span> <span class=nf>make_tile</span><span class=p>(</span><span class=n>bounds</span><span class=p>,</span> <span class=n>expansion_factor</span><span class=o>=</span><span class=mf>0.5</span><span class=p>,</span> <span class=n>thickness_ratio</span><span class=o>=</span><span class=mf>0.05</span><span class=p>,</span> <span class=n>shift_y</span><span class=o>=-</span><span class=mf>0.05</span><span class=p>):</span>
 <span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
 <span class=sd>    Make a tile slightly larger or smaller than the bounds in the</span>
 <span class=sd>      X and Z directions and thinner or thicker in the Y direction.</span>
@@ -803,6 +794,7 @@ function registerListener(event, func) {
 <span class=sd>    :param bounds: The bounds for the tile.</span>
 <span class=sd>    :param expansion_factor: The expansion factor in the XZ plane.</span>
 <span class=sd>    :param thickness_ratio: The thickness ratio in the Y direction, &gt;= 0.</span>
+<span class=sd>    :param shift_y: Used to shift the centre of the plinth in the Y-direction.</span>
 <span class=sd>    :return: An actor corresponding to the tile.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
 
@@ -813,7 +805,7 @@ function registerListener(event, func) {
     <span class=p>)</span>
     <span class=n>thickness</span> <span class=o>=</span> <span class=n>d_xyz</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>*</span> <span class=nb>abs</span><span class=p>(</span><span class=n>thickness_ratio</span><span class=p>)</span>
     <span class=n>center</span> <span class=o>=</span> <span class=p>((</span><span class=n>bounds</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>+</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>/</span> <span class=mf>2.0</span><span class=p>,</span>
-              <span class=n>bounds</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>-</span> <span class=n>thickness</span> <span class=o>/</span> <span class=mf>2.0</span><span class=p>,</span>
+              <span class=n>bounds</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>-</span> <span class=n>thickness</span> <span class=o>/</span> <span class=mf>2.0</span> <span class=o>+</span> <span class=n>shift_y</span><span class=p>,</span>
               <span class=p>(</span><span class=n>bounds</span><span class=p>[</span><span class=mi>5</span><span class=p>]</span> <span class=o>+</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>4</span><span class=p>])</span> <span class=o>/</span> <span class=mf>2.0</span><span class=p>)</span>
     <span class=n>x_length</span> <span class=o>=</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=p>(</span><span class=n>d_xyz</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>*</span> <span class=n>expansion_factor</span><span class=p>)</span>
     <span class=n>z_length</span> <span class=o>=</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>5</span><span class=p>]</span> <span class=o>-</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>+</span> <span class=p>(</span><span class=n>d_xyz</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>*</span> <span class=n>expansion_factor</span><span class=p>)</span>
@@ -830,6 +822,91 @@ function registerListener(event, func) {
 </span>    <span class=n>tile_actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>plane_mapper</span><span class=p>)</span>
 
     <span class=k>return</span> <span class=n>tile_actor</span>
+
+
+<span class=k>def</span> <span class=nf>get_text_property</span><span class=p>():</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
+<span class=hll>    <span class=n>pty</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>()</span>
+</span>    <span class=n>pty</span><span class=o>.</span><span class=n>BoldOn</span><span class=p>()</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetJustificationToCentered</span><span class=p>()</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
+    <span class=k>return</span> <span class=n>pty</span>
+
+
+<span class=k>def</span> <span class=nf>get_label_property</span><span class=p>():</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
+<span class=hll>    <span class=n>pty</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>()</span>
+</span>    <span class=n>pty</span><span class=o>.</span><span class=n>BoldOn</span><span class=p>()</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>ShadowOn</span><span class=p>()</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetJustificationToCentered</span><span class=p>()</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DeepPink&#39;</span><span class=p>))</span>
+    <span class=k>return</span> <span class=n>pty</span>
+
+
+<span class=k>def</span> <span class=nf>get_back_face_property</span><span class=p>():</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
+<span class=hll>    <span class=n>pty</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>()</span>
+</span>    <span class=n>pty</span><span class=o>.</span><span class=n>SetAmbientColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightSalmon&#39;</span><span class=p>))</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;OrangeRed&#39;</span><span class=p>))</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetSpecularColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;White&#39;</span><span class=p>))</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>0.2</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>0.2</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mf>20.0</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)</span>
+    <span class=k>return</span> <span class=n>pty</span>
+
+
+<span class=k>def</span> <span class=nf>get_actor_property</span><span class=p>():</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
+<span class=hll>    <span class=n>pty</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>()</span>
+</span>    <span class=n>pty</span><span class=o>.</span><span class=n>SetAmbientColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkSalmon&#39;</span><span class=p>))</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Seashell&#39;</span><span class=p>))</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetSpecularColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;White&#39;</span><span class=p>))</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=mf>0.7</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mf>20.0</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>0.8</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
+    <span class=k>return</span> <span class=n>pty</span>
+
+
+<span class=k>def</span> <span class=nf>get_point_actor_property</span><span class=p>():</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
+<span class=hll>    <span class=n>pty</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>()</span>
+</span>    <span class=n>pty</span><span class=o>.</span><span class=n>SetAmbientColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>))</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Yellow&#39;</span><span class=p>))</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetSpecularColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;White&#39;</span><span class=p>))</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=mf>0.7</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mf>20.0</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)</span>
+    <span class=k>return</span> <span class=n>pty</span>
+
+
+<span class=k>def</span> <span class=nf>get_tile_property</span><span class=p>():</span>
+<span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
+</span>
+<span class=hll>    <span class=n>pty</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>()</span>
+</span>    <span class=n>pty</span><span class=o>.</span><span class=n>SetAmbientColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SteelBlue&#39;</span><span class=p>))</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightSteelBlue&#39;</span><span class=p>))</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetSpecularColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;White&#39;</span><span class=p>))</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=mf>0.7</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mf>20.0</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>0.8</span><span class=p>)</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
+    <span class=n>pty</span><span class=o>.</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+    <span class=k>return</span> <span class=n>pty</span>
 
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
