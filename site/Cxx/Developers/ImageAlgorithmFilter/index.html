@@ -78,7 +78,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>input</span><span class=o>-&gt;</span><span class=n>AllocateScalars</span><span class=p>(</span><span class=n>VTK_DOUBLE</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Fill every entry of the image data with &quot;2.0&quot;</span>
-<span class=w>  </span><span class=kt>int</span><span class=o>*</span><span class=w> </span><span class=n>dims</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>input</span><span class=o>-&gt;</span><span class=n>GetDimensions</span><span class=p>();</span>
+<span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>int</span><span class=o>*</span><span class=w> </span><span class=n>dims</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>input</span><span class=o>-&gt;</span><span class=n>GetDimensions</span><span class=p>();</span>
 
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>y</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>y</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>dims</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span><span class=w> </span><span class=n>y</span><span class=o>++</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
@@ -105,7 +105,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>PrintImage</span><span class=p>(</span><span class=n>vtkImageData</span><span class=o>*</span><span class=w> </span><span class=n>image</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=w>  </span><span class=kt>int</span><span class=o>*</span><span class=w> </span><span class=n>dims</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>image</span><span class=o>-&gt;</span><span class=n>GetDimensions</span><span class=p>();</span>
+<span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>int</span><span class=o>*</span><span class=w> </span><span class=n>dims</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>image</span><span class=o>-&gt;</span><span class=n>GetDimensions</span><span class=p>();</span>
 
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>y</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>y</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>dims</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span><span class=w> </span><span class=n>y</span><span class=o>++</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
