@@ -127,9 +127,28 @@ function registerListener(event, func) {
 
 <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=nf>dispParameters</span><span class=p>();</span>
 
+<span class=c1>// Commands for the vertex and fragment shaders.</span>
+<span class=k>struct</span><span class=w> </span><span class=nc>ShaderCommand</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>p1</span><span class=p>;</span>
+<span class=w>  </span><span class=kt>bool</span><span class=w> </span><span class=n>p2</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>p3</span><span class=p>;</span>
+<span class=w>  </span><span class=kt>bool</span><span class=w> </span><span class=n>p4</span><span class=p>;</span>
+<span class=p>};</span>
+
+<span class=n>ShaderCommand</span><span class=w> </span><span class=nf>GetVertexShaderReplacement1</span><span class=p>();</span>
+
+<span class=n>ShaderCommand</span><span class=w> </span><span class=nf>GetVertexShaderReplacement2</span><span class=p>();</span>
+
+<span class=n>ShaderCommand</span><span class=w> </span><span class=nf>GetFragmentShaderReplacement1</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>shaderCode</span><span class=p>);</span>
+
+<span class=n>ShaderCommand</span><span class=w> </span><span class=nf>GetFragmentShaderReplacement2</span><span class=p>();</span>
+
+<span class=n>ShaderCommand</span><span class=w> </span><span class=nf>GetFragmentShaderReplacement3</span><span class=p>();</span>
+
 <span class=c1>// -----------------------------------------------------------------------</span>
-<span class=c1>// Update uniform variables in the shader for each render. We do this with a</span>
-<span class=c1>// callback for the UpdateShaderEvent.</span>
+<span class=c1>// Update uniform variables in the shader for each render. We do this with</span>
+<span class=c1>//  a callback for the UpdateShaderEvent.</span>
 <span class=hll><span class=k>class</span><span class=w> </span><span class=nc>ShaderCallback</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkCommand</span>
 </span><span class=p>{</span>
 <span class=k>public</span><span class=o>:</span>
@@ -467,190 +486,49 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>ren2</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Modify the vertex shader to pass the position of the vertex.</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>cmd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetVertexShaderReplacement1</span><span class=p>();</span>
 <span class=cp>#if USE_SHADER_PROPERTIES</span>
 <span class=hll><span class=w>  </span><span class=n>vtkShaderProperty</span><span class=o>*</span><span class=w> </span><span class=n>sp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetShaderProperty</span><span class=p>();</span>
-</span><span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddVertexShaderReplacement</span><span class=p>(</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Normal::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
-<span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                  </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>      </span><span class=s>&quot;  out vec4 myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
-<span class=w>  </span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddVertexShaderReplacement</span><span class=p>(</span><span class=n>cmd</span><span class=p>.</span><span class=n>p1</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p2</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p3</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p4</span><span class=p>);</span>
 <span class=cp>#else</span>
-<span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span>
-<span class=hll><span class=w>      </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Vertex</span><span class=p>,</span>
-</span><span class=w>      </span><span class=s>&quot;//VTK::Normal::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
-<span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                  </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>      </span><span class=s>&quot;  out vec4 myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
-<span class=w>  </span><span class=p>);</span>
+<span class=hll><span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Vertex</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p1</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p2</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p3</span><span class=p>,</span>
+</span><span class=w>                               </span><span class=n>cmd</span><span class=p>.</span><span class=n>p4</span><span class=p>);</span>
 <span class=cp>#endif</span>
+
+<span class=w>  </span><span class=n>cmd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetVertexShaderReplacement2</span><span class=p>();</span>
 <span class=cp>#if USE_SHADER_PROPERTIES</span>
-<span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddVertexShaderReplacement</span><span class=p>(</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Normal::Impl&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
-<span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                   </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Normal::Impl</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>      </span><span class=s>&quot;  myVertexMC = vertexMC;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
-<span class=w>  </span><span class=p>);</span>
+<span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddVertexShaderReplacement</span><span class=p>(</span><span class=n>cmd</span><span class=p>.</span><span class=n>p1</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p2</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p3</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p4</span><span class=p>);</span>
 <span class=cp>#else</span>
-<span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span>
-<span class=hll><span class=w>      </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Vertex</span><span class=p>,</span>
-</span><span class=w>      </span><span class=s>&quot;//VTK::Normal::Impl&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
-<span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                   </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Normal::Impl</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>      </span><span class=s>&quot;  myVertexMC = vertexMC;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
-<span class=w>  </span><span class=p>);</span>
+<span class=hll><span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Vertex</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p1</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p2</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p3</span><span class=p>,</span>
+</span><span class=w>                               </span><span class=n>cmd</span><span class=p>.</span><span class=n>p4</span><span class=p>);</span>
 <span class=cp>#endif</span>
 
 <span class=w>  </span><span class=c1>// Add the code to generate noise.</span>
 <span class=w>  </span><span class=c1>// These functions need to be defined outside of main.</span>
 <span class=w>  </span><span class=c1>// Use the System::Dec to declare and implement.</span>
+<span class=w>  </span><span class=n>cmd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetFragmentShaderReplacement1</span><span class=p>(</span><span class=n>shaderCode</span><span class=p>.</span><span class=n>str</span><span class=p>());</span>
 <span class=cp>#if USE_SHADER_PROPERTIES</span>
-<span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddFragmentShaderReplacement</span><span class=p>(</span><span class=s>&quot;//VTK::System::Dec&quot;</span><span class=p>,</span>
-<span class=w>                                   </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=c1>// before the standard replacements</span>
-<span class=w>                                   </span><span class=n>shaderCode</span><span class=p>.</span><span class=n>str</span><span class=p>(),</span>
-<span class=w>                                   </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
-<span class=w>  </span><span class=p>);</span>
+<span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddFragmentShaderReplacement</span><span class=p>(</span><span class=n>cmd</span><span class=p>.</span><span class=n>p1</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p2</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p3</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p4</span><span class=p>);</span>
 <span class=cp>#else</span>
 <span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w> </span><span class=c1>// in the fragment shader</span>
-<span class=w>                               </span><span class=s>&quot;//VTK::System::Dec&quot;</span><span class=p>,</span>
-<span class=w>                               </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=c1>// before the standard replacements</span>
-<span class=w>                               </span><span class=n>shaderCode</span><span class=p>.</span><span class=n>str</span><span class=p>(),</span>
-<span class=w>                               </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
-<span class=w>  </span><span class=p>);</span>
+<span class=w>                               </span><span class=n>cmd</span><span class=p>.</span><span class=n>p1</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p2</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p3</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p4</span><span class=p>);</span>
 <span class=cp>#endif</span>
-<span class=c1>// Define varying and uniforms for the fragment shader here.</span>
-<span class=cp>#if USE_SHADER_PROPERTIES</span>
-<span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddFragmentShaderReplacement</span><span class=p>(</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Normal::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
-<span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                  </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>      </span><span class=s>&quot;  varying vec4 myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  uniform vec3 veincolor = vec3(1.0, 1.0, 1.0);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  uniform float veinfreq = 10.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  uniform int veinlevels = 2;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  uniform float warpfreq = 1;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  uniform float warping = .5;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  uniform float sharpness = 8.0;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
-<span class=w>  </span><span class=p>);</span>
-<span class=cp>#else</span>
-<span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span>
-<span class=w>      </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w>   </span><span class=c1>// in the fragment shader</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Normal::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
-<span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                  </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>      </span><span class=s>&quot;  varying vec4 myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  uniform vec3 veincolor = vec3(1.0, 1.0, 1.0);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  uniform float veinfreq = 10.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  uniform int veinlevels = 2;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  uniform float warpfreq = 1;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  uniform float warping = .5;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  uniform float sharpness = 8.0;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
-<span class=w>  </span><span class=p>);</span>
 
-<span class=cp>#endif</span>
+<span class=w>  </span><span class=c1>// Define varying and uniforms for the fragment shader here.</span>
+<span class=w>  </span><span class=n>cmd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetFragmentShaderReplacement2</span><span class=p>();</span>
 <span class=cp>#if USE_SHADER_PROPERTIES</span>
-<span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddFragmentShaderReplacement</span><span class=p>(</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Light::Impl&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the light block</span>
-<span class=w>      </span><span class=nb>false</span><span class=p>,</span><span class=w>                 </span><span class=c1>// after the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Light::Impl</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default calc</span>
-<span class=w>      </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;#define pnoise(x) ((noise(x) + 1.0) / 2.0)</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;#define snoise(x) (2.0 * pnoise(x) - 1.0)</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  vec3 Ct;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  int i;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  float turb, freq;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  float turbsum;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  /* perturb the lookup */</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  freq = 1.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  vec4 offset = vec4(0.0,0.0,0.0,0.0);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  vec4 noisyPoint;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  vec4 myLocalVertexMC = myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    for (i = 0;  i &lt; 6;  i += 1) {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      noisyPoint[0] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      noisyPoint[1] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      noisyPoint[2] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      noisyPoint[3] = 1.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      offset += 2.0 * warping * (noisyPoint - 0.5)  / freq;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      freq *= 2.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    myLocalVertexMC.x += offset.x;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    myLocalVertexMC.y += offset.y;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    myLocalVertexMC.z += offset.z;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    /* Now calculate the veining function for the lookup area */</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    turbsum = 0.0;  freq = 1.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    myLocalVertexMC *= veinfreq;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    for (i = 0;  i &lt; veinlevels;  i += 1) {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      turb = abs (snoise (myLocalVertexMC));</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      turb = pow (smoothstep (0.8, 1.0, 1.0 - turb), sharpness) / &quot;</span>
-<span class=w>      </span><span class=s>&quot;freq;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      turbsum += (1.0-turbsum) * turb;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      freq *= 1.5;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      myLocalVertexMC *= 1.5;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    Ct = mix (diffuseColor, veincolor, turbsum);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  fragOutput0.rgb = opacity * (ambientColor + Ct + specular);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  fragOutput0.a = opacity;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
-<span class=w>  </span><span class=p>);</span>
+<span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddFragmentShaderReplacement</span><span class=p>(</span><span class=n>cmd</span><span class=p>.</span><span class=n>p1</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p2</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p3</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p4</span><span class=p>);</span>
 <span class=cp>#else</span>
-<span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span>
-<span class=w>      </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w>   </span><span class=c1>// in the fragment shader</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Light::Impl&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the light block</span>
-<span class=w>      </span><span class=nb>false</span><span class=p>,</span><span class=w>                 </span><span class=c1>// after the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Light::Impl</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default calc</span>
-<span class=w>      </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;#define pnoise(x) ((noise(x) + 1.0) / 2.0)</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;#define snoise(x) (2.0 * pnoise(x) - 1.0)</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  vec3 Ct;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  int i;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  float turb, freq;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  float turbsum;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  /* perturb the lookup */</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  freq = 1.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  vec4 offset = vec4(0.0,0.0,0.0,0.0);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  vec4 noisyPoint;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  vec4 myLocalVertexMC = myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    for (i = 0;  i &lt; 6;  i += 1) {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      noisyPoint[0] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      noisyPoint[1] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      noisyPoint[2] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      noisyPoint[3] = 1.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      offset += 2.0 * warping * (noisyPoint - 0.5)  / freq;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      freq *= 2.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    myLocalVertexMC.x += offset.x;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    myLocalVertexMC.y += offset.y;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    myLocalVertexMC.z += offset.z;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    /* Now calculate the veining function for the lookup area */</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    turbsum = 0.0;  freq = 1.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    myLocalVertexMC *= veinfreq;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    for (i = 0;  i &lt; veinlevels;  i += 1) {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      turb = abs (snoise (myLocalVertexMC));</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      turb = pow (smoothstep (0.8, 1.0, 1.0 - turb), sharpness) / &quot;</span>
-<span class=w>      </span><span class=s>&quot;freq;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      turbsum += (1.0-turbsum) * turb;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      freq *= 1.5;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;      myLocalVertexMC *= 1.5;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;    Ct = mix (diffuseColor, veincolor, turbsum);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  fragOutput0.rgb = opacity * (ambientColor + Ct + specular);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  fragOutput0.a = opacity;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
-<span class=w>  </span><span class=p>);</span>
+<span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w> </span><span class=c1>// in the fragment shader</span>
+<span class=w>                               </span><span class=n>cmd</span><span class=p>.</span><span class=n>p1</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p2</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p3</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p4</span><span class=p>);</span>
+<span class=cp>#endif</span>
+
+<span class=w>  </span><span class=n>cmd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetFragmentShaderReplacement3</span><span class=p>();</span>
+<span class=cp>#if USE_SHADER_PROPERTIES</span>
+<span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddFragmentShaderReplacement</span><span class=p>(</span><span class=n>cmd</span><span class=p>.</span><span class=n>p1</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p2</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p3</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p4</span><span class=p>);</span>
+<span class=cp>#else</span>
+<span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w> </span><span class=c1>// in the fragment shader</span>
+<span class=w>                               </span><span class=n>cmd</span><span class=p>.</span><span class=n>p1</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p2</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p3</span><span class=p>,</span><span class=w> </span><span class=n>cmd</span><span class=p>.</span><span class=n>p4</span><span class=p>);</span>
 <span class=cp>#endif</span>
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;------------&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
@@ -869,6 +747,116 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>source</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>polyData</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=n>ShaderCommand</span><span class=w> </span><span class=n>GetVertexShaderReplacement1</span><span class=p>()</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=n>ShaderCommand</span><span class=w> </span><span class=n>sc</span><span class=p>;</span>
+
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;//VTK::Normal::Dec&quot;</span><span class=p>;</span><span class=w>  </span><span class=c1>// replace the normal block</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>true</span><span class=p>;</span><span class=w>                  </span><span class=c1>// before the standard replacements</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p3</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>          </span><span class=s>&quot;  out vec4 myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p4</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>;</span><span class=w>                 </span><span class=c1>// only do it once</span>
+
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>sc</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=n>ShaderCommand</span><span class=w> </span><span class=n>GetVertexShaderReplacement2</span><span class=p>()</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=n>ShaderCommand</span><span class=w> </span><span class=n>sc</span><span class=p>;</span>
+
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;//VTK::Normal::Impl&quot;</span><span class=p>;</span><span class=w>  </span><span class=c1>// replace the normal block</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>true</span><span class=p>;</span><span class=w>                   </span><span class=c1>// before the standard replacements</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p3</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;//VTK::Normal::Impl</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>          </span><span class=s>&quot;  myVertexMC = vertexMC;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p4</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>;</span><span class=w>                  </span><span class=c1>// only do it once</span>
+
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>sc</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=n>ShaderCommand</span><span class=w> </span><span class=n>GetFragmentShaderReplacement1</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>shaderCode</span><span class=p>)</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=n>ShaderCommand</span><span class=w> </span><span class=n>sc</span><span class=p>;</span>
+
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;//VTK::System::Dec&quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>;</span><span class=w> </span><span class=c1>// before the standard replacements</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p3</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>shaderCode</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p4</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>;</span><span class=w> </span><span class=c1>// only do it once</span>
+
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>sc</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=n>ShaderCommand</span><span class=w> </span><span class=n>GetFragmentShaderReplacement2</span><span class=p>()</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=n>ShaderCommand</span><span class=w> </span><span class=n>sc</span><span class=p>;</span>
+
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;//VTK::Normal::Dec&quot;</span><span class=p>;</span><span class=w>  </span><span class=c1>// replace the normal block</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>;</span><span class=w>                 </span><span class=c1>// before the standard replacements</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p3</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>          </span><span class=s>&quot;  varying vec4 myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  uniform vec3 veincolor = vec3(1.0, 1.0, 1.0);</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  uniform float veinfreq = 10.0;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  uniform int veinlevels = 2;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  uniform float warpfreq = 1;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  uniform float warping = .5;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  uniform float sharpness = 8.0;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p4</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>;</span><span class=w>                 </span><span class=c1>// only do it once</span>
+
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>sc</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=n>ShaderCommand</span><span class=w> </span><span class=n>GetFragmentShaderReplacement3</span><span class=p>()</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=n>ShaderCommand</span><span class=w> </span><span class=n>sc</span><span class=p>;</span>
+
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;//VTK::Light::Impl&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the light block</span>
+<span class=w>      </span><span class=n>sc</span><span class=p>.</span><span class=n>p2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>;</span><span class=w>             </span><span class=c1>// after the standard replacements</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p3</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;//VTK::Light::Impl</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default calc</span>
+<span class=w>          </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;#define pnoise(x) ((noise(x) + 1.0) / 2.0)</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;#define snoise(x) (2.0 * pnoise(x) - 1.0)</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  vec3 Ct;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  int i;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  float turb, freq;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  float turbsum;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  /* perturb the lookup */</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  freq = 1.0;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  vec4 offset = vec4(0.0,0.0,0.0,0.0);</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  vec4 noisyPoint;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  vec4 myLocalVertexMC = myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;    for (i = 0;  i &lt; 6;  i += 1) {</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;      noisyPoint[0] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;      noisyPoint[1] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;      noisyPoint[2] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;      noisyPoint[3] = 1.0;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;      offset += 2.0 * warping * (noisyPoint - 0.5)  / freq;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;      freq *= 2.0;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;    }</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;    myLocalVertexMC.x += offset.x;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;    myLocalVertexMC.y += offset.y;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;    myLocalVertexMC.z += offset.z;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;    /* Now calculate the veining function for the lookup area */</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;    turbsum = 0.0;  freq = 1.0;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;    myLocalVertexMC *= veinfreq;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;    for (i = 0;  i &lt; veinlevels;  i += 1) {</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;      turb = abs (snoise (myLocalVertexMC));</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;      turb = pow (smoothstep (0.8, 1.0, 1.0 - turb), sharpness) / &quot;</span>
+<span class=w>          </span><span class=s>&quot;freq;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;      turbsum += (1.0-turbsum) * turb;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;      freq *= 1.5;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;      myLocalVertexMC *= 1.5;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;    }</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;    Ct = mix (diffuseColor, veincolor, turbsum);</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  fragOutput0.rgb = opacity * (ambientColor + Ct + specular);</span><span class=se>\n</span><span class=s>&quot;</span>
+<span class=w>          </span><span class=s>&quot;  fragOutput0.a = opacity;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sc</span><span class=p>.</span><span class=n>p4</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>false</span><span class=p>;</span><span class=w>                 </span><span class=c1>// only do it once</span>
+
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>sc</span><span class=p>;</span>
 <span class=p>}</span>
 
 <span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>MakeSliderWidget</span><span class=p>(</span><span class=n>SliderProperties</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>properties</span><span class=p>,</span>
