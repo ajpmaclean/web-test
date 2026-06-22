@@ -1227,7 +1227,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>//  2) source-&gt;GetCellPoints(cellId, cellPointIds) for all cellId in cellIds</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;</span><span class=w> </span><span class=n>cellIds</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>source</span><span class=o>-&gt;</span><span class=n>GetPointCells</span><span class=p>(</span><span class=n>pId</span><span class=p>,</span><span class=w> </span><span class=n>cellIds</span><span class=p>);</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>set</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=w> </span><span class=n>neighbours</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>set</span><span class=o>&lt;</span><span class=n>vtkIdType</span><span class=o>&gt;</span><span class=w> </span><span class=n>neighbors</span><span class=p>;</span>
 <span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>cellIds</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=k>auto</span><span class=w> </span><span class=n>cellId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cellIds</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
@@ -1235,10 +1235,10 @@ function registerListener(event, func) {
 </span><span class=w>      </span><span class=n>source</span><span class=o>-&gt;</span><span class=n>GetCellPoints</span><span class=p>(</span><span class=n>cellId</span><span class=p>,</span><span class=w> </span><span class=n>cellPointIds</span><span class=p>);</span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>j</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>j</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>cellPointIds</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>j</span><span class=p>)</span>
 <span class=w>      </span><span class=p>{</span>
-<span class=w>        </span><span class=n>neighbours</span><span class=p>.</span><span class=n>insert</span><span class=p>(</span><span class=n>cellPointIds</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=n>j</span><span class=p>));</span>
+<span class=w>        </span><span class=n>neighbors</span><span class=p>.</span><span class=n>insert</span><span class=p>(</span><span class=n>cellPointIds</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=n>j</span><span class=p>));</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>neighbours</span><span class=p>;</span>
+<span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>neighbors</span><span class=p>;</span>
 <span class=w>  </span><span class=p>};</span>
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>ComputeDistance</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>[</span><span class=o>&amp;</span><span class=n>source</span><span class=p>](</span><span class=n>vtkIdType</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>ptIdA</span><span class=p>,</span>
@@ -1325,7 +1325,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=n>distsNonZero</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>dists</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=c1>// Iterate over the edge points and compute the curvature as the weighted</span>
-<span class=w>    </span><span class=c1>// average of the neighbours.</span>
+<span class=w>    </span><span class=c1>// average of the neighbors.</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>countInvalid</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>newCurv</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.0</span><span class=p>;</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>curvsNonZero</span><span class=p>.</span><span class=n>size</span><span class=p>()</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>0</span><span class=p>)</span>

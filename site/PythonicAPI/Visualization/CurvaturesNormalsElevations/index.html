@@ -826,7 +826,7 @@ function registerListener(event, func) {
     <span class=n>p_ids_set</span> <span class=o>=</span> <span class=nb>set</span><span class=p>(</span><span class=n>boundary_ids</span><span class=p>)</span>
 
     <span class=c1># Iterate over the edge points and compute the curvature as the weighted</span>
-    <span class=c1># average of the neighbours.</span>
+    <span class=c1># average of the neighbors.</span>
     <span class=n>count_invalid</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=k>for</span> <span class=n>p_id</span> <span class=ow>in</span> <span class=n>boundary_ids</span><span class=p>:</span>
         <span class=n>p_ids_neighbors</span> <span class=o>=</span> <span class=n>point_neighbourhood</span><span class=p>(</span><span class=n>p_id</span><span class=p>)</span>
