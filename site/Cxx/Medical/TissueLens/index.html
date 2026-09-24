@@ -164,7 +164,7 @@ function registerListener(event, func) {
 <span class=cm> * @param ren The renderer.</span>
 <span class=cm> * @param alc The key specifying the desired labels and colors for the axes.</span>
 <span class=hll><span class=cm> * @param colors A reference to the vtkNamedColors object.</span>
-</span><span class=cm> * @param reposition Move the camera orientation widget to upper left.</span>
+</span><span class=cm> * @param position Move the camera orientation widget to upper left.</span>
 <span class=cm> *</span>
 <span class=cm> * @return The camera orientation widget.</span>
 <span class=cm> */</span>
@@ -420,7 +420,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCameraOrientationWidget</span><span class=o>&gt;</span>
 </span><span class=hll><span class=n>MakeCameraOrientationWidget</span><span class=p>(</span><span class=n>vtkRenderer</span><span class=o>*</span><span class=w> </span><span class=n>ren</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>alcKey</span><span class=p>,</span>
-</span><span class=w>                            </span><span class=kt>int</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>reposition</span><span class=p>)</span>
+</span><span class=w>                            </span><span class=kt>int</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>position</span><span class=p>)</span>
 <span class=p>{</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCameraOrientationWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>cow</span><span class=p>;</span>
@@ -456,7 +456,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCameraOrientationRepresentation</span><span class=o>&gt;</span><span class=w> </span><span class=n>rep</span><span class=p>;</span>
 </span>
-<span class=w>  </span><span class=k>switch</span><span class=w> </span><span class=p>(</span><span class=n>reposition</span><span class=p>)</span>
+<span class=w>  </span><span class=k>switch</span><span class=w> </span><span class=p>(</span><span class=n>position</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>  </span><span class=k>case</span><span class=w> </span><span class=mi>0</span><span class=p>:</span>
 <span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>AnchorToLowerLeft</span><span class=p>();</span>
